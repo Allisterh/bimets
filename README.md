@@ -37,7 +37,7 @@ R-MARTIN/
 │   └── read_fixture.R, paths.R, utils.R                  # plumbing
 ├── extdata/             # bundled model files + catalogues + frozen data fixture
 │   └── model_af/        # AF model: one file per equation, grouped by block
-├── scripts/             # runnable drivers, one per capability (01..09)
+├── scripts/             # runnable drivers, one per capability (01..10)
 ├── results/irfs/        # committed standard-IRF output CSVs
 ├── tests/               # testthat suite + tests/run_tests.R
 └── data/                # local parquet cache + saved projections (gitignored)
@@ -82,6 +82,7 @@ Rscript scripts/06_stochastic.R            # uncertainty bands
 Rscript scripts/07_beveridge_curve.R       # ABS job vacancies -> vacancy rate -> Beveridge curve
 Rscript scripts/08_standard_irfs.R         # standard IRF battery -> results/irfs/*.csv
 Rscript scripts/09_forecast_from_csv.R     # forecast from a CSV instead of downloading
+Rscript scripts/10_forecast_profiles.R     # impose forecast profiles (conditional forecast)
 ```
 
 Or interactively:
@@ -97,6 +98,13 @@ af <- adjustment_list(
              value = rep(0.5, 4), rationale = "scenario: +50bp", tail = "zero")
 )
 tight <- solve_martin(db, adjustments = af, horizon = c("2010Q1","2018Q4"))
+
+# conditional: impose forecast PROFILES — a full path on a global variable and
+# a 1-quarter-ahead nowcast on inflation, in one solve (see the guide below)
+fc <- solve_martin(db, horizon = c("2010Q1","2018Q4"), profiles = rbind(
+  data.frame(variable = "WY",  quarter = quarter_seq("2016Q1","2018Q4"), value = wy_path),
+  data.frame(variable = "PTM", quarter = "2016Q1", value = cpi_nowcast)
+))
 
 # impulse responses; uncertainty bands
 irf   <- sensitivity_matrix(db, baseline = base, horizon = c("2010Q1","2018Q4"))
@@ -123,6 +131,14 @@ partial / recent-only CSV, fill the gaps from the bundled data
 **Full step-by-step walkthrough: [docs/running_from_csv.md](docs/running_from_csv.md)**
 (includes forecasting past your data end, scenarios, and IRFs). The runnable
 demo is `Rscript scripts/09_forecast_from_csv.R`.
+
+## Impose forecast profiles (conditional forecasting)
+
+Pin variables to judgemental paths and let the model solve around them — a full
+path for the global variables, a 1-quarter-ahead nowcast for CPI / unemployment,
+all in one solve, via `solve_martin(profiles = ...)`. See
+**[docs/imposing_forecast_profiles.md](docs/imposing_forecast_profiles.md)** and
+the runnable `scripts/10_forecast_profiles.R`.
 
 ## Build the database from public data
 

@@ -50,6 +50,16 @@
 #' @param estimation_end Optional `"yyyyQq"` string. Required when
 #'   `coefficients = "reestimated"`. Ignored under `"frozen"`.
 #' @param scenario A label written into the returned tibble.
+#' @param profiles Optional data.frame of imposed forecast paths, columns
+#'   `(variable, quarter, value)` in each variable's native units (the level the
+#'   database stores). Each variable is held (`Exogenize`d) at the supplied
+#'   values over the **span of its own quarters**, then solves freely again — so
+#'   you can impose a full path on a global variable (e.g. `WY` every quarter of
+#'   the forecast) *and* a single-quarter nowcast on an endogenous one (e.g.
+#'   `PTM`/`LUR` for the first forecast quarter) in the same solve. A variable's
+#'   quarters must be contiguous. This is the general conditioning tool; it
+#'   composes with `adjustments`. Unlike `exogenize`, it needs no separate
+#'   baseline tibble — the supplied values *are* the path.
 #' @param sim_convergence Bimets simulation convergence tolerance.
 #' @param sim_iter_limit  Bimets simulation iteration limit.
 #'
@@ -65,6 +75,7 @@ solve_martin <- function(database,
                          exogenize       = character(0),
                          baseline_for_exogenize = NULL,
                          exogenize_range = NULL,
+                         profiles        = NULL,
                          features        = character(0),
                          feature_params  = list(),
                          sim_convergence = 1e-6,
@@ -113,6 +124,20 @@ solve_martin <- function(database,
     )
   }
 
+  # `profiles`: impose forecast paths for chosen variables, each over its OWN
+  # window (a full path for global variables, a single quarter for a nowcast
+  # of CPI / unemployment, etc.). Splice the imposed values into the database
+  # now; the per-variable Exogenize windows are built after the model loads.
+  profile_spec <- if (is.null(profiles)) NULL else normalize_profiles(profiles)
+  if (!is.null(profile_spec)) {
+    for (v in names(profile_spec)) {
+      database <- splice_exogenize_baseline(
+        database, profiles, v,
+        profile_spec[[v]]$ex_start, profile_spec[[v]]$ex_end
+      )
+    }
+  }
+
   if (length(features)) {
     database <- seed_feature_data(database, features, feature_params)
   }
@@ -154,6 +179,19 @@ solve_martin <- function(database,
     )
   }
 
+  # Add a per-variable Exogenize window for each imposed profile. Only
+  # endogenous variables need Exogenize; for a truly exogenous variable the
+  # spliced database value is already what bimets reads, so we skip it.
+  if (!is.null(profile_spec)) {
+    for (v in names(profile_spec)) {
+      if (!v %in% model$vendog) next
+      s <- profile_spec[[v]]$ex_start
+      e <- profile_spec[[v]]$ex_end
+      if (is.null(exogenize_list)) exogenize_list <- list()
+      exogenize_list[[v]] <- c(s$year, s$quarter, e$year, e$quarter)
+    }
+  }
+
   .suppress_bimets_version_warning({
     model <- bimets::SIMULATE(
       model,
@@ -169,6 +207,7 @@ solve_martin <- function(database,
   attr(out, "horizon")     <- horizon
   attr(out, "adjustments") <- adjustments
   attr(out, "exogenize")   <- exogenize
+  attr(out, "profiles")    <- profiles
   attr(out, "scenario")    <- scenario
   # Convergence / NaN diagnostics. bimets hard-stops via stop() on numeric
   # overflow, but a soft iteration-limit warning can leave NaN/Inf in the
@@ -311,6 +350,48 @@ simulation_to_tibble <- function(model, scenario = "baseline") {
 # variables instead of iterating their equations. To "hold X at
 # baseline" we have to put the baseline values *into* the database
 # first.
+# Validate a `profiles` data.frame (variable, quarter, value) and return a
+# named list: variable -> list(ex_start, ex_end), where the window is the span
+# of that variable's imposed quarters. Each variable's quarters must be
+# contiguous (they define a single Exogenize window); non-contiguous quarters
+# would silently hold the intervening quarters at their database values.
+normalize_profiles <- function(profiles) {
+  if (!is.data.frame(profiles) ||
+      !all(c("variable", "quarter", "value") %in% names(profiles))) {
+    stop("`profiles` must be a data.frame with columns ",
+         "(variable, quarter, value).", call. = FALSE)
+  }
+  if (nrow(profiles) == 0L) {
+    stop("`profiles` is empty.", call. = FALSE)
+  }
+  if (anyNA(profiles$value)) {
+    stop("`profiles$value` has NA(s); every imposed cell needs a value.",
+         call. = FALSE)
+  }
+  spec <- list()
+  for (v in unique(profiles$variable)) {
+    qs <- profiles$quarter[profiles$variable == v]
+    p  <- parse_quarter(qs)
+    qi <- quarter_index(p$year, p$quarter)
+    ord <- order(qi)
+    qi  <- qi[ord]
+    qs  <- qs[ord]
+    if (anyDuplicated(qi)) {
+      stop("`profiles` has duplicate quarters for '", v, "'.", call. = FALSE)
+    }
+    if (length(qi) > 1L && any(diff(qi) != 1L)) {
+      stop("`profiles` for '", v, "' must be a contiguous run of quarters ",
+           "(it defines one imposition window). Split non-contiguous ",
+           "impositions into separate solves.", call. = FALSE)
+    }
+    spec[[v]] <- list(
+      ex_start = parse_quarter(qs[1]),
+      ex_end   = parse_quarter(qs[length(qs)])
+    )
+  }
+  spec
+}
+
 splice_exogenize_baseline <- function(database, baseline, exogenize,
                                       ex_start, ex_end) {
   ex_lookup <- split(baseline, baseline$variable)

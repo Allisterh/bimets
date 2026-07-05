@@ -39,13 +39,13 @@ Bundled data files live in `extdata/` and are resolved with `extdata_path()`
 | `R/transformations.R`, `identities.R`, `derived.R`, `dummies.R`, `state_space.R`, `tpw.R`, `production.R`, `extend_exogenous.R`, `merge.R` | manipulate / create data (splicing, Chow-Lin, PIM, KFAS trends, dummies) |
 | `R/nowcast.R`, `handover.R`, `conversion.R` | ragged-edge handover (Q+0/Q+1) via `fable` |
 | `R/load_martin.R`, `model_features.R`, `equation_catalogue.R` | estimate + build the model in bimets |
-| `R/solve_martin.R` | forecast: `solve_martin()` (unconditional + conditional via add-factors / exogenise) and `solve_martin_stochastic()` |
+| `R/solve_martin.R` | forecast: `solve_martin()` (unconditional + conditional via add-factors / exogenise / `profiles=` imposed paths) and `solve_martin_stochastic()`. `profiles=` (a tidy `variable,quarter,value` frame) imposes a forecast path per variable over the span of its own quarters — full path for globals, 1-qtr nowcast for CPI/unemployment — in one solve. |
 | `R/sensitivity_matrix.R` | generic IRF / multiplier table: every adjustable equation swept with a tiny standardized add-factor |
 | `R/irf_scenarios.R` | the four *named, economically-sized* standard IRFs (`standard_irfs()`): +100bp cash rate, +1% govt consumption, permanent +10% commodity prices, +10% real-exchange-rate appreciation. All delivered as add-factors (exogenize does **not** propagate downstream in this engine). |
 | `R/adjustment.R`, `quarter.R` | the add-factor S3 class + horizon expansion |
 | `extdata/model_af/` | the default behavioural (AF) model, split into **one file per equation** (`RC.txt`, `ID.txt`, ...) grouped into per-block subdirectories (`01_household/`, `05_prices_wages/`, ..., `12_trends/`); assembled at load by `read_model_lines("af")` (recurses the subdirs, wraps in `MODEL`...`END`). Equation/file order is irrelevant — bimets builds the system from the equations. `extdata/MARTINMOD.txt`/`MARTINMOD_EST.txt` are the other single-file variants. |
 | `extdata/` | `equation_catalogue.csv`, `series_catalogue.csv`, dummy specs, the CMO commodity xlsx, frozen `martin_data_fixture.xlsx` |
-| `scripts/01..09` | runnable drivers, one per capability (03 unconditional forecast, 04 conditional forecast, 05 generic IRF matrix, 08 standard IRF battery, 09 forecast from a CSV instead of downloading) |
+| `scripts/01..10` | runnable drivers, one per capability (03 unconditional forecast, 04 conditional forecast, 05 generic IRF matrix, 08 standard IRF battery, 09 forecast from a CSV instead of downloading, 10 impose forecast profiles) |
 | `tests/` | `testthat` suite + `tests/run_tests.R` |
 
 ## Key facts to preserve
