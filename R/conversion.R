@@ -74,12 +74,17 @@ bimets_to_tsibble <- function(ts, variable) {
 #' @keywords internal
 quarterly_tibble_to_bimets <- function(df) {
   df <- df[order(df$quarter), , drop = FALSE]
-  first_q <- df$quarter[1]
-  year    <- as.integer(format(first_q, "%Y"))
-  qnum    <- as.integer(substr(format(first_q), 7, 7))
+  yr <- as.integer(format(df$quarter, "%Y"))
+  qn <- as.integer(substr(format(df$quarter), 7, 7))
+  qidx <- yr * 4L + (qn - 1L)
+  # Reindex onto a full contiguous quarterly axis (NA for any missing quarter)
+  # so a gap in `df` does not silently shift later observations earlier.
+  full <- seq.int(min(qidx), max(qidx))
+  vals <- rep(NA_real_, length(full))
+  vals[match(qidx, full)] <- df$value
   bimets::TIMESERIES(
-    df$value,
-    START = c(year, qnum),
+    vals,
+    START = c(full[1] %/% 4L, full[1] %% 4L + 1L),
     FREQ  = 4
   )
 }

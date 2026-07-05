@@ -10,6 +10,19 @@ test_that("extend_exogenous() carries values forward by default", {
   expect_equal(tail(as.numeric(out$X), 4), c(4, 4, 4, 4))
 })
 
+test_that("extend_exogenous() fills interior trailing NAs, not just past span", {
+  # Series spans 2020Q1-Q4 but the last two cells are NA (last real print at
+  # 2020Q2). Extending to 2021Q4 must fill the interior trailing NAs too, so
+  # there are no NA holes left in-range for SIMULATE to hit.
+  db <- list(X = mk_ts(c(1, 2, NA, NA)))
+  out <- extend_exogenous(db, end_quarter = "2021Q4")
+  v <- as.numeric(out$X)
+  expect_false(anyNA(v))                 # no interior NA holes remain
+  expect_equal(v[1:2], c(1, 2))          # real history preserved
+  expect_true(all(v[3:length(v)] == 2))  # carried from the last real value (2)
+  expect_equal(length(v), 8L)            # spans through 2021Q4
+})
+
 test_that("extend_exogenous() constant mode uses the supplied value", {
   db <- list(PI_TARGET = mk_ts(rep(2.5, 4)))
   out <- extend_exogenous(

@@ -304,37 +304,102 @@ pim_accumulate <- function(change_ts, base, base_quarter) {
 #' @keywords internal
 apply_chowlin <- function(database, annual_db, catalogue) {
   if (length(annual_db) == 0L) return(database)
-  if (!requireNamespace("tempdisagg", quietly = TRUE)) {
-    warning("tempdisagg not installed; Chow-Lin rows will be skipped.",
-            call. = FALSE)
-    return(database)
-  }
 
-  # Map of annual martin_var -> quarterly indicator martin_var (where
-  # known). Lifted from the EViews MARTIN modify_data.prg.
-  CHOWLIN_INDICATORS <- list(
-    IBRE  = "IBRE_CAPEX",
-    NIBRE = "NIBRE_CAPEX",
-    KIBRE = NULL,
-    KID   = NULL,
-    KTOT  = NULL,
-    KOTC  = NULL
+  # Per-series disaggregation spec. The KIND governs how an annual figure maps
+  # to quarters. Lifted from the EViews MARTIN modify_data.prg:
+  #
+  #   "flow"  - business investment: a FLOW, so the four quarters must SUM to
+  #             the annual total. Disaggregated with Chow-Lin against a
+  #             quarterly indicator (or a smooth Denton path when none exists).
+  #   "stock" - net capital stock: a point-in-time LEVEL measured at the
+  #             fiscal-year end (~Q2 in ABS convention). Each annual value is
+  #             anchored at Q2 of its year and linearly interpolated between
+  #             anchors -- NOT summed (that would scale every quarter to ~1/4 of
+  #             the true level) and NOT distributed over calendar quarters
+  #             (that would shift the level ~2 quarters). This matches
+  #             apply_ibndr_annual(), which anchors the SAME annual capital-stock
+  #             inputs at Q2, and keeps the capital-accumulation identities
+  #             (e.g. KID = (1 - IDDR/100)*KID(-1) + ID) on a consistent grid.
+  CHOWLIN_SPEC <- list(
+    IBRE  = list(kind = "flow",  indicator = "IBRE_CAPEX"),
+    NIBRE = list(kind = "flow",  indicator = "NIBRE_CAPEX"),
+    KIBRE = list(kind = "stock", indicator = NULL),
+    KID   = list(kind = "stock", indicator = NULL),
+    KTOT  = list(kind = "stock", indicator = NULL),
+    KOTC  = list(kind = "stock", indicator = NULL)
   )
+  span <- database_span(database)
+  have_tempdisagg <- requireNamespace("tempdisagg", quietly = TRUE)
 
   for (mv in names(annual_db)) {
     if (!is.null(database[[mv]])) next
     annual_ts <- annual_db[[mv]]
-    indicator_mv <- CHOWLIN_INDICATORS[[mv]]
-    indicator_ts <- if (!is.null(indicator_mv)) database[[indicator_mv]] else NULL
+    spec <- CHOWLIN_SPEC[[mv]]
+    kind <- if (!is.null(spec)) spec$kind else "flow"
 
-    qrt <- try(chowlin_one(annual_ts, indicator_ts), silent = TRUE)
-    if (!inherits(qrt, "try-error")) database[[mv]] <- qrt
+    if (kind == "stock") {
+      qrt <- try(disaggregate_annual_stock(annual_ts, span), silent = TRUE)
+    } else {
+      if (!have_tempdisagg) {
+        warning("tempdisagg not installed; Chow-Lin flow '", mv,
+                "' skipped.", call. = FALSE)
+        next
+      }
+      indicator_mv <- if (!is.null(spec)) spec$indicator else NULL
+      indicator_ts <- if (!is.null(indicator_mv)) database[[indicator_mv]] else NULL
+      qrt <- try(chowlin_one(annual_ts, indicator_ts), silent = TRUE)
+    }
+    if (!inherits(qrt, "try-error") && !is.null(qrt)) database[[mv]] <- qrt
   }
   database
 }
 
-# Disaggregate one annual ts to quarterly. If indicator is supplied and
-# overlaps, use Chow-Lin; otherwise constant-indicator Denton.
+# Disaggregate an annual STOCK series (a point-in-time level measured at the
+# fiscal-year end) to quarterly. Each annual value is anchored at Q2 of its
+# year and the intervening quarters are linearly interpolated; the ends are
+# backcast/forward-filled from the first/last anchor. This is the point-in-time
+# convention for an end-of-period stock and matches apply_ibndr_annual()'s
+# treatment of the same annual capital-stock inputs. `span` is a
+# database_span() list (start_year, start_quarter, n_quarters).
+disaggregate_annual_stock <- function(annual_ts, span) {
+  vals <- as.numeric(annual_ts)
+  tsp  <- stats::tsp(annual_ts)
+  first_year <- floor(tsp[1] + 1e-9)
+  ann_years  <- first_year + seq_along(vals) - 1L
+
+  qn  <- span$n_quarters
+  qy0 <- span$start_year
+  qq0 <- span$start_quarter
+
+  q <- rep(NA_real_, qn)
+  for (i in seq_along(vals)) {
+    if (is.na(vals[i])) next
+    idx <- (ann_years[i] - qy0) * 4L + (2L - qq0) + 1L  # Q2 of ann_years[i]
+    if (idx >= 1L && idx <= qn) q[idx] <- vals[i]
+  }
+  nonna <- which(!is.na(q))
+  if (length(nonna) == 0L) return(NULL)
+  # Linear interpolation between consecutive anchors.
+  if (length(nonna) >= 2L) {
+    for (k in seq_len(length(nonna) - 1L)) {
+      lo <- nonna[k]; hi <- nonna[k + 1L]
+      if (hi - lo > 1L) {
+        q[(lo + 1L):(hi - 1L)] <- seq(q[lo], q[hi],
+                                      length.out = hi - lo + 1L)[-c(1L, hi - lo + 1L)]
+      }
+    }
+  }
+  # Backcast the first anchor, forward-fill the last.
+  first <- nonna[1]; last <- nonna[length(nonna)]
+  if (first > 1L) q[seq_len(first - 1L)] <- q[first]
+  if (last < qn)  q[(last + 1L):qn] <- q[last]
+
+  bimets::TIMESERIES(q, START = c(qy0, qq0), FREQ = 4)
+}
+
+# Disaggregate one annual FLOW ts to quarterly. If an indicator is supplied and
+# overlaps, use Chow-Lin; otherwise a constant-indicator Denton path. The four
+# quarters sum to the annual total (conversion = "sum").
 chowlin_one <- function(annual_ts, indicator_ts = NULL) {
   # tempdisagg expects ts of frequency 1 for annual input; convert.
   vals <- as.numeric(annual_ts)

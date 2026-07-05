@@ -6,10 +6,22 @@ equation) is statistically insignificant. This note diagnoses why and proposes
 drop-in re-specifications, each tested by re-estimating through the same bimets
 pipeline (`ESTIMATE`, restrictions intact, frozen 2019Q3 sample, bundled fixture).
 
-**These are proposals, not applied changes.** `extdata/MARTINMOD_AF.txt` is left
-untouched so the baseline stays bit-identical to the bimets reference. To adopt one,
-replace the block in that file and re-run `scripts/equation_diagnostics.R` and the
-regression test.
+**Update (2026 audit): the malformed trend term — "problem 1" of the XS block
+below — has since been FIXED.** The `tdllpop + tdllpop` transcription typo was
+corrected to `tdllpop + tdllhpp` across all 12 affected equations (XS, XM, XO,
+XRE, XAGEXRAIN, M, RC, NHOY, NHFA, OTC, PRT, LE), and XS's homogeneity
+`RESTRICT` was corrected from `c6+c7=1` to `c5+c7=1` to match the canonical
+`MARTINMOD.txt`. Those changes are applied in `extdata/model_af/` and mirrored
+in `MARTINMOD_EST.txt`. The re-estimated coefficients now reproduce the
+published `MARTINMOD.txt` values (verified).
+
+**The remaining items below are still proposals, not applied changes** — the
+larger re-specifications (dropping the insignificant `REWI` level and redundant
+`XS_TREND` in XS; replacing GC's ad-hoc cyclical-adjustment target) are left for
+the modeller to adopt deliberately, since they change which terms are in the
+model rather than just correcting a transcription error. To adopt one, replace
+the block in the relevant `extdata/model_af/` file and re-run
+`scripts/equation_diagnostics.R` and the regression test.
 
 ---
 

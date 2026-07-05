@@ -49,7 +49,9 @@ test_that("inverted_le retargets LE to LESTAR and re-estimates", {
   le_inv <- coef_of(load_martin(data, features = c("output_gap", "inverted_le"),
                                 feature_params = fp), "LE")
   # Default keeps the published LE fit (regression test pins c1, c3).
-  expect_equal(unname(le_def["c1"]), 0.11129236, tolerance = 1e-5)
+  # c1 = 0.11493 after the c7 detrending term was corrected to use tdllhpp
+  # (was 0.11129236 under the `- tdllpop - tdllpop` transcription bug).
+  expect_equal(unname(le_def["c1"]), 0.11493423, tolerance = 1e-5)
   # Re-specified LE moves.
   expect_false(isTRUE(all.equal(unname(le_def), unname(le_inv))))
 

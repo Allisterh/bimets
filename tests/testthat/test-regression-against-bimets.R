@@ -162,15 +162,24 @@ test_that("frozen ESTIMATE pins expected behavioural coefficients", {
   expect_equal(unname(ptm["c5"] + ptm["c6"]), 1, tolerance = 1e-8,
                info = "PTM c5+c6=1 cross-coefficient restriction")
 
+  # RC c1 = 0.41117808 reproduces the published MARTINMOD.txt value
+  # (0.41116875694) after the trend-growth term was corrected from the
+  # transcription bug `tdllpop + tdllpop` back to `tdllpop + tdllhpp`
+  # (see extdata/model_af/01_household/RC.txt). The prior pin (0.38775212)
+  # asserted the buggy fit.
   rc <- coef_of("RC")
-  expect_equal(unname(rc["c1"]), 0.38775212, tolerance = 1e-5)
+  expect_equal(unname(rc["c1"]), 0.41117808, tolerance = 1e-5)
   # c5=0.15 is an exact RESTRICT, not an estimated value.
   expect_equal(unname(rc["c5"]), 0.15, tolerance = 1e-8,
                info = "RC c5=0.15 exact restriction")
 
+  # LE c1/c3 moved when the c7 detrending term was corrected from
+  # `- tdllpop - tdllpop` to `- tdllpop - tdllhpp` (matches MARTINMOD.txt
+  # line 56). LE is 2SLS in the published model but re-fit by OLS here, so
+  # the af value (0.11493) is close to but not identical to canonical (0.11213).
   le <- coef_of("LE")
-  expect_equal(unname(le["c1"]), 0.11129236, tolerance = 1e-5)
-  expect_equal(unname(le["c3"]), 0.48376731, tolerance = 1e-5)
+  expect_equal(unname(le["c1"]), 0.11493423, tolerance = 1e-5)
+  expect_equal(unname(le["c3"]), 0.48021600, tolerance = 1e-5)
 })
 
 # --- (3) Pin the term-structure FORM --------------------------------------

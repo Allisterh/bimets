@@ -40,7 +40,18 @@ db <- read_fixture()
 # matching scripts/05_irf.R. The shock lands with room for the longest offset.
 horizon     <- c("2005Q1", "2019Q2")
 shock_start <- "2010Q1"
-offsets     <- c(0L, 1L, 2L, 4L, 8L, 12L, 16L, 20L)
+# FULL quarterly response path: every quarter from the shock to the horizon end
+# (0..37 quarters here), so the CSVs carry the complete impulse response, not a
+# sparse sample. Override MARTIN_IRF_OFFSETS (comma-separated) to report a
+# subset instead.
+offsets <- {
+  env <- Sys.getenv("MARTIN_IRF_OFFSETS", unset = "")
+  if (nzchar(env)) {
+    as.integer(strsplit(env, ",")[[1]])
+  } else {
+    0:(length(quarter_seq(shock_start, horizon[2])) - 1L)
+  }
+}
 
 # Report every variable the model solves; present each as a % deviation EXCEPT
 # the rate variables (.irf_rate_vars() — unemployment + interest rates/spreads),

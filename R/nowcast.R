@@ -284,35 +284,48 @@ forecast_one_bridge_monthly <- function(target_ts, variable,
   # quarters (1-2 months observed) get a partial mean and are flagged so we
   # can widen the interval to reflect the carry-forward uncertainty.
   level_central <- last_level
+  # Cumulative growth-error variance (log/level space), summed in quadrature
+  # across horizons so multi-step bands widen with the forecast horizon.
+  cum_var_lo <- 0
+  cum_var_hi <- 0
   rows <- vector("list", h)
   for (i in seq_len(h)) {
     k   <- fc_keys[i]
     pos <- match(k, ind_q_keys)
-    partial <- FALSE
-    if (is.na(pos)) {
-      # No indicator coverage at all for this quarter — carry the last
-      # available indicator quarter forward and treat it as fully partial.
+    partial     <- FALSE
+    no_coverage <- is.na(pos)
+    if (no_coverage) {
+      # No indicator coverage for this quarter — hold the indicator level flat
+      # (carry forward) and treat it as fully partial.
       pos <- length(ind_q_keys)
       partial <- TRUE
     } else if (!isTRUE(ind_nmonth[pos] >= 3L)) {
       partial <- TRUE   # 1-2 months observed: partial-quarter indicator
     }
 
-    # Previous quarter's indicator level for the growth denominator: the
-    # quarter immediately before k, else the last full indicator quarter.
-    prev_key <- {
-      pk_q <- (k %% 10L) - 1L; pk_y <- k %/% 10L
-      if (pk_q < 1L) { pk_q <- 4L; pk_y <- pk_y - 1L }
-      pk_y * 10L + pk_q
-    }
-    prev_pos <- match(prev_key, ind_q_keys)
-    if (is.na(prev_pos)) prev_pos <- max(pos - 1L, 1L)
+    if (no_coverage) {
+      # Indicator carried forward flat => no growth signal. Feed dx = 0 so the
+      # bridge returns its unconditional (intercept) growth rather than
+      # repeating the last observed indicator growth every quarter, which would
+      # compound a stale signal over the whole no-coverage tail.
+      dx_val <- 0
+    } else {
+      # Previous quarter's indicator level for the growth denominator: the
+      # quarter immediately before k, else the last full indicator quarter.
+      prev_key <- {
+        pk_q <- (k %% 10L) - 1L; pk_y <- k %/% 10L
+        if (pk_q < 1L) { pk_q <- 4L; pk_y <- pk_y - 1L }
+        pk_y * 10L + pk_q
+      }
+      prev_pos <- match(prev_key, ind_q_keys)
+      if (is.na(prev_pos)) prev_pos <- max(pos - 1L, 1L)
 
-    ind_now  <- ind_means[pos]
-    ind_prev <- ind_means[prev_pos]
-    dx_val <- if (use_log) log(ind_now) - log(ind_prev)
-              else ind_now - ind_prev
-    if (!is.finite(dx_val)) dx_val <- 0  # flat fallback
+      ind_now  <- ind_means[pos]
+      ind_prev <- ind_means[prev_pos]
+      dx_val <- if (use_log) log(ind_now) - log(ind_prev)
+                else ind_now - ind_prev
+      if (!is.finite(dx_val)) dx_val <- 0  # flat fallback
+    }
 
     pred <- stats::predict(
       fit, newdata = data.frame(dx = dx_val),
@@ -333,15 +346,25 @@ forecast_one_bridge_monthly <- function(target_ts, variable,
       dy_hi <- dy_hat + half_hi
     }
 
-    # Reconstruct levels by applying growth to the running central level.
+    # Accumulate the per-step growth-interval half-widths in QUADRATURE so the
+    # band widens with the forecast horizon (independent step errors) instead
+    # of reflecting only the current step's uncertainty. (dy_lo/dy_hi already
+    # include the partial-quarter inflation above.)
+    cum_var_lo <- cum_var_lo + (dy_hat - dy_lo)^2
+    cum_var_hi <- cum_var_hi + (dy_hi - dy_hat)^2
+    band_lo <- sqrt(cum_var_lo)
+    band_hi <- sqrt(cum_var_hi)
+
+    # Reconstruct levels: central growth applied to the running level, with the
+    # horizon-accumulated band around it.
     if (use_log) {
       level_central <- level_central * exp(dy_hat)
-      level_lower   <- level_central * exp(dy_lo - dy_hat)
-      level_upper   <- level_central * exp(dy_hi - dy_hat)
+      level_lower   <- level_central * exp(-band_lo)
+      level_upper   <- level_central * exp(band_hi)
     } else {
       level_central <- level_central + dy_hat
-      level_lower   <- level_central + (dy_lo - dy_hat)
-      level_upper   <- level_central + (dy_hi - dy_hat)
+      level_lower   <- level_central - band_lo
+      level_upper   <- level_central + band_hi
     }
 
     yr <- k %/% 10L; qn <- k %% 10L

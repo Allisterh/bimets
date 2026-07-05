@@ -34,6 +34,15 @@ test_that("detect_period_column prefers known names then first column", {
   expect_equal(suppressMessages(detect_period_column(c("RC", "Y"))), "RC")
 })
 
+test_that("detect_period_column does NOT treat 'X' (real exports) as period", {
+  # "X" is MARTIN's real-exports variable, not a period column. With a real
+  # period column present it must be chosen; with only variables it falls back
+  # to the first column, never singling out "X".
+  expect_equal(detect_period_column(c("period", "X", "RC")), "period")
+  expect_equal(suppressMessages(detect_period_column(c("X", "RC", "Y"))), "X")  # first-col fallback, not X-as-period
+  expect_equal(suppressMessages(detect_period_column(c("RC", "X", "Y"))), "RC") # X in the middle is ignored
+})
+
 # ---- bimets-backed behaviour -----------------------------------------------
 
 csv_fixture_db <- function() {

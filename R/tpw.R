@@ -69,13 +69,17 @@ tpw_partner_weights <- function(scheme = c("goods_exports", "two_way")) {
 #' Compute a trading-partner-weighted aggregate index
 #'
 #' Given per-partner time series and a partner-weight vector, builds a
-#' weighted-average index normalised to 100 at `base_quarter`.
+#' CHAIN-LINKED weighted-average index normalised to 100 at `base_quarter`.
 #'
-#' Each partner series is independently normalised so that its value at
-#' `base_quarter` equals 100; the aggregate is then
-#' `sum_i weight_i * partner_i_index_t`. Partners with no observation
-#' at `base_quarter` are dropped from the aggregate at that period
-#' (their weight reallocated proportionally across remaining partners).
+#' The index is chained from growth rates: each step's gross growth is the
+#' weighted geometric mean of the partners present in both that quarter and the
+#' previous one, with weights renormalised over that common set, and
+#' `index_t = index_{t-1} * growth_t`. Chaining growth (rather than averaging
+#' rebased levels) keeps the aggregate continuous when a partner enters or exits
+#' the sample -- level-averaging would jump the index at any composition change.
+#' A partner therefore need not have an observation at `base_quarter` to
+#' contribute. Steps with no common partner break the chain and re-anchor when
+#' data returns; the result is placed on a full contiguous quarterly axis.
 #'
 #' @param partner_series Named list of `bimets::TIMESERIES` objects,
 #'   one per partner. Names must match the names in `weights`.
@@ -103,12 +107,10 @@ compute_tpw <- function(partner_series, weights, base_quarter = "2010Q1") {
          call. = FALSE)
   }
 
-  # Each series's quarterly bimets ts → numeric, indexed by start.
-  # Build a per-partner (date -> value) map and a global date set.
-  base_yq <- parse_yyyyQq(base_quarter)
-  base_year    <- base_yq$year
-  base_quarter_i <- base_yq$quarter
-
+  # Build a per-partner (quarter-label -> RAW level) map (finite cells only).
+  # We keep raw levels rather than per-partner-rebased levels because the
+  # aggregate is chain-linked from growth rates (below), so a partner need not
+  # have an observation at the base quarter to contribute.
   partner_index <- lapply(partners, function(p) {
     ts <- partner_series[[p]]
     if (!inherits(ts, "ts")) {
@@ -120,64 +122,80 @@ compute_tpw <- function(partner_series, weights, base_quarter = "2010Q1") {
     s_year <- floor(tsp[1] + 1e-9)
     s_q    <- round((tsp[1] - s_year) * 4 + 1)
     vals   <- as.numeric(ts)
-    # Quarter labels for each cell.
     n <- length(vals)
     quarters <- vapply(seq_len(n), function(i) {
       abs_q <- s_year * 4L + (s_q - 1L) + (i - 1L)
       sprintf("%04dQ%d", abs_q %/% 4L, (abs_q %% 4L) + 1L)
     }, character(1))
-    base_v <- vals[quarters == base_quarter]
-    if (length(base_v) == 0L || !is.finite(base_v) || base_v == 0) {
-      warning(sprintf(
-        "[compute_tpw] partner %s: no usable observation at %s; dropped.",
-        p, base_quarter), call. = FALSE)
-      return(NULL)
-    }
-    setNames(100 * vals / base_v, quarters)
+    v <- stats::setNames(vals, quarters)
+    v[is.finite(v)]
   })
   names(partner_index) <- partners
-  partner_index <- partner_index[!vapply(partner_index, is.null,
-                                          logical(1))]
+  partner_index <- partner_index[!vapply(partner_index, is.null, logical(1))]
+  partner_index <- partner_index[vapply(partner_index, length, integer(1)) > 0L]
   if (length(partner_index) == 0L) {
-    stop("[compute_tpw] no partners have data at the base quarter.",
+    stop("[compute_tpw] no partners have any usable observations.",
          call. = FALSE)
   }
 
-  all_quarters <- sort(unique(unlist(lapply(partner_index, names))))
-  out <- numeric(length(all_quarters))
-  for (i in seq_along(all_quarters)) {
-    q <- all_quarters[i]
-    contributions <- vapply(names(partner_index), function(p) {
-      # `[q]` on a named numeric returns NA for missing names (vs `[[q]]`
-      # which errors).
-      v <- partner_index[[p]][q]
-      if (is.na(v) || !is.finite(v)) NA_real_ else unname(v)
-    }, numeric(1))
-    keep <- !is.na(contributions)
-    if (!any(keep)) {
-      out[i] <- NA_real_
-      next
+  # Full CONTIGUOUS quarterly axis spanning all partners, so each step is
+  # exactly one calendar quarter (a wholly-missing quarter becomes a break we
+  # re-anchor across, rather than silently compressing the series).
+  qi <- function(q) { yq <- parse_yyyyQq(q); yq$year * 4L + (yq$quarter - 1L) }
+  all_qi  <- unlist(lapply(partner_index, function(v) vapply(names(v), qi, integer(1))))
+  full_qi <- seq.int(min(all_qi), max(all_qi))
+  labels  <- vapply(full_qi, function(x) sprintf("%04dQ%d", x %/% 4L, (x %% 4L) + 1L),
+                    character(1))
+  n <- length(full_qi)
+
+  # CHAIN-LINK: index_t = index_{t-1} * G_t, where G_t is the weighted GEOMETRIC
+  # mean of gross growth over the partners present in BOTH quarter t-1 and t,
+  # with weights renormalised over that common set. Chaining growth (rather than
+  # averaging rebased levels) keeps the index continuous when a partner enters
+  # or exits -- level-averaging jumps the aggregate at any composition change.
+  lvl <- rep(NA_real_, n)
+  lvl[1] <- 100
+  for (i in seq.int(2L, n)) {
+    q0 <- labels[i - 1L]; q1 <- labels[i]
+    log_g <- 0; wsum <- 0
+    for (p in names(partner_index)) {
+      v  <- partner_index[[p]]
+      v0 <- v[q0]; v1 <- v[q1]
+      if (!is.na(v0) && !is.na(v1) && v0 > 0 && v1 > 0) {
+        wp <- weights[[p]]
+        log_g <- log_g + wp * log(v1 / v0)
+        wsum  <- wsum + wp
+      }
     }
-    w <- weights[names(partner_index)[keep]]
-    w <- w / sum(w)
-    out[i] <- sum(w * contributions[keep])
+    if (wsum > 0) {
+      g <- exp(log_g / wsum)
+      lvl[i] <- if (is.na(lvl[i - 1L])) 100 else lvl[i - 1L] * g
+    } else {
+      lvl[i] <- NA_real_   # no partner bridges this step; re-anchor when data returns
+    }
   }
 
-  first_q <- all_quarters[1]
-  first_yq <- parse_yyyyQq(first_q)
+  # Rebase so base_quarter == 100 (when it is in range and finite).
+  bpos <- match(qi(base_quarter), full_qi)
+  if (!is.na(bpos) && is.finite(lvl[bpos]) && lvl[bpos] != 0) {
+    lvl <- 100 * lvl / lvl[bpos]
+  }
+
   bimets::TIMESERIES(
-    out,
-    START = c(first_yq$year, first_yq$quarter),
+    lvl,
+    START = c(full_qi[1] %/% 4L, (full_qi[1] %% 4L) + 1L),
     FREQ  = 4
   )
 }
 
 #' Build a trading-partner-weighted CPI index via OECD
 #'
-#' Fetches monthly CPI growth-rate-over-1-year for each partner from
-#' OECD's prices dataflow, aggregates monthly to quarterly, weighted by
-#' [tpw_partner_weights()]. Returns a quarterly bimets ts suitable as a
-#' WP proxy.
+#' Fetches the monthly CPI INDEX level for each partner from OECD's prices
+#' dataflow, aggregates monthly to quarterly, and chain-links them weighted by
+#' [tpw_partner_weights()]. Returns a quarterly bimets ts suitable as a WP
+#' proxy. The `OECD_OTHER` (rest-of-OECD) weight has no single CPI series to
+#' fetch, so it is dropped and its weight redistributed proportionally across
+#' the fetched partners.
 #'
 #' **Status:** working v0 for WP only. GDP (WY) and export-price (WPX)
 #' equivalents need their OECD QNA / trade dataflow keys figured out
@@ -197,7 +215,13 @@ build_tpw_cpi <- function(weights           = tpw_partner_weights(),
   # OECD prices dataflow: monthly CPI INDEX (not growth rate) per
   # partner. Index levels compose under weighted averaging the way a
   # "world price index" intuitively should; growth rates do not.
+  # OECD_OTHER is a rest-of-OECD catch-all with no single CPI series; drop it
+  # and redistribute its weight across the fetchable partners (compute_tpw
+  # renormalises the remaining weights per step). Passing the reduced,
+  # renormalised vector makes that redistribution explicit rather than implicit.
   countries <- setdiff(names(weights), "OECD_OTHER")
+  weights   <- weights[countries]
+  weights   <- weights / sum(weights)
   ids <- sprintf(
     "OECD.SDD.TPS,DSD_PRICES@DF_PRICES_ALL,1.0/%s.M.N.CPI.IX._T.N._Z",
     countries

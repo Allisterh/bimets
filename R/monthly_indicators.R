@@ -61,11 +61,16 @@ nowcast_monthly_indicators <- function(raw,
   for (mv in unique(agg$martin_var)) {
     sub <- agg[agg$martin_var == mv, , drop = FALSE]
     if (nrow(sub) == 0L) next
-    md <- sub$month_date[1]
-    start_year  <- as.integer(format(md, "%Y"))
-    start_month <- as.integer(format(md, "%m"))
+    # Full contiguous monthly axis (NA for any missing month) so a gap in the
+    # release panel does not shift later months earlier in the bridge series.
+    my   <- as.integer(format(sub$month_date, "%Y"))
+    mm   <- as.integer(format(sub$month_date, "%m"))
+    midx <- my * 12L + (mm - 1L)
+    full <- seq.int(min(midx), max(midx))
+    vals <- rep(NA_real_, length(full))
+    vals[match(midx, full)] <- sub$value
     out[[mv]] <- bimets::TIMESERIES(
-      sub$value, START = c(start_year, start_month), FREQ = 12
+      vals, START = c(full[1] %/% 12L, full[1] %% 12L + 1L), FREQ = 12
     )
   }
   out

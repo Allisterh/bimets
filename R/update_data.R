@@ -198,13 +198,19 @@ pivot_quarterly <- function(rows) {
   for (mv in unique(agg$martin_var)) {
     sub <- agg[agg$martin_var == mv, , drop = FALSE]
     if (nrow(sub) == 0L) next
-    qd <- sub$quarter_date[1]
-    start_year    <- as.integer(format(qd, "%Y"))
-    start_quarter <- as.integer(
-      (as.integer(format(qd, "%m")) - 1L) %/% 3L + 1L
-    )
+    # Place each observation on a FULL contiguous quarterly axis (NA for any
+    # wholly-missing quarter). Building the ts straight from `sub$value` would
+    # assume no gaps -- a quarter absent from the panel (e.g. a suspended ABS
+    # collection) would silently shift every later observation one quarter
+    # earlier.
+    qy   <- as.integer(format(sub$quarter_date, "%Y"))
+    qq   <- (as.integer(format(sub$quarter_date, "%m")) - 1L) %/% 3L + 1L
+    qidx <- qy * 4L + (qq - 1L)
+    full <- seq.int(min(qidx), max(qidx))
+    vals <- rep(NA_real_, length(full))
+    vals[match(qidx, full)] <- sub$value
     out[[mv]] <- bimets::TIMESERIES(
-      sub$value, START = c(start_year, start_quarter), FREQ = 4
+      vals, START = c(full[1] %/% 4L, full[1] %% 4L + 1L), FREQ = 4
     )
   }
   out
@@ -225,7 +231,12 @@ pivot_annual <- function(rows) {
   out <- list()
   for (mv in unique(agg$martin_var)) {
     sub <- agg[agg$martin_var == mv, , drop = FALSE]
-    out[[mv]] <- stats::ts(sub$value, start = sub$year[1], frequency = 1)
+    # Full contiguous annual axis (NA for any missing year) so a gap does not
+    # shift later years earlier when disaggregated.
+    full <- seq.int(min(sub$year), max(sub$year))
+    vals <- rep(NA_real_, length(full))
+    vals[match(sub$year, full)] <- sub$value
+    out[[mv]] <- stats::ts(vals, start = full[1], frequency = 1)
   }
   out
 }

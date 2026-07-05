@@ -219,7 +219,10 @@ martin_model_variables <- function(variant = c("af", "identity", "est"),
 detect_period_column <- function(cols) {
   known <- c("dates", "date", "quarter", "period", "time", "obs", "qtr")
   lower <- tolower(trimws(cols))
-  hit <- which(lower %in% known | cols %in% c("", "V1", "X"))
+  # Note: do NOT treat a column literally named "X" as the period column -- "X"
+  # is MARTIN's real-exports variable. (read_csv_database uses
+  # check.names = FALSE, so R never auto-generates an "X" header here anyway.)
+  hit <- which(lower %in% known | cols %in% c("", "V1"))
   if (length(hit) >= 1L) return(cols[hit[1]])
   message("read_csv_database: no obvious period column; ",
           "using the first column '", cols[1], "'.")

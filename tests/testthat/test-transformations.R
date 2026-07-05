@@ -114,18 +114,40 @@ test_that("apply_pim() skips when V is missing", {
 
 # ---- Chow-Lin -------------------------------------------------------------
 
-test_that("apply_chowlin() produces quarterly series from annual input", {
+test_that("apply_chowlin() disaggregates a FLOW via Chow-Lin/Denton (sum)", {
   skip_if_not_installed("tempdisagg")
+  # IBRE (business investment) is a flow: the four quarters sum to the annual
+  # total. With no indicator it falls to a smooth Denton path.
   annual <- stats::ts(c(100, 105, 110, 115, 120),
                       start = 2000, frequency = 1)
   out <- apply_chowlin(
-    list(), list(KID = annual), NULL
+    list(), list(IBRE = annual), NULL
   )
-  expect_true("KID" %in% names(out))
-  expect_s3_class(out$KID, "ts")
-  expect_equal(stats::frequency(out$KID), 4)
+  expect_true("IBRE" %in% names(out))
+  expect_s3_class(out$IBRE, "ts")
+  expect_equal(stats::frequency(out$IBRE), 4)
   # 5 annual obs -> 20 quarterly obs
-  expect_length(as.numeric(out$KID), 20L)
+  expect_length(as.numeric(out$IBRE), 20L)
+  # Flow: the four quarters of a year sum to that year's annual total.
+  q2000 <- as.numeric(stats::window(out$IBRE, start = c(2000, 1), end = c(2000, 4)))
+  expect_equal(sum(q2000), 100, tolerance = 1e-6)
+})
+
+test_that("apply_chowlin() disaggregates a STOCK via Q2-anchored interpolation", {
+  # Net capital stocks are point-in-time levels: each annual (fiscal-year-end)
+  # value is anchored at Q2 and interpolated -- the level is PRESERVED (not
+  # summed to ~1/4, and not spread over calendar Q1-Q4).
+  annual <- stats::ts(c(2000, 2040, 2080, 2118), start = 2016, frequency = 1)
+  seed   <- mk_ts(rep(1, 4), start = c(2015, 1))  # defines the database span
+  out <- apply_chowlin(list(SEED = seed), list(KID = annual), NULL)
+  expect_true("KID" %in% names(out))
+  kid <- out$KID
+  q2 <- function(y) as.numeric(stats::window(kid, start = c(y, 2), end = c(y, 2)))
+  # Annual values land exactly on Q2 of their year.
+  expect_equal(q2(2016), 2000, tolerance = 1e-6)
+  expect_equal(q2(2019), 2118, tolerance = 1e-6)
+  # Level preserved throughout (never ~1/4 of the annual, i.e. ~500).
+  expect_true(all(as.numeric(kid) > 1500))
 })
 
 test_that("apply_chowlin() leaves existing entries alone", {

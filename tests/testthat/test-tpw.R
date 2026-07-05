@@ -36,20 +36,27 @@ test_that("compute_tpw() weights partner indices and rebases to 100", {
   expect_equal(agg_vec[base_idx], 100, tolerance = 1e-6)
 })
 
-test_that("compute_tpw() drops partners missing at base quarter", {
+test_that("compute_tpw() chain-links a partner that enters after the base", {
+  # CHN spans the whole sample; KOR is missing the first two quarters and only
+  # overlaps from 2008Q3. Chain-linking must NOT drop KOR just for lacking a
+  # base-quarter observation -- it contributes growth once it overlaps CHN --
+  # and the index stays continuous with base 2008Q1 = 100 (no level jump when
+  # KOR enters).
   partners <- list(
     CHN = mk_partner_ts(seq(80, 130, length.out = 10), 2008),
     KOR = mk_partner_ts(c(NA, NA, seq(95, 105, length.out = 8)), 2008)
   )
   w <- c(CHN = 0.6, KOR = 0.4)
-  expect_warning(
-    agg <- compute_tpw(partners, w, base_quarter = "2008Q1"),
-    "no usable observation"
-  )
+  agg <- compute_tpw(partners, w, base_quarter = "2008Q1")
   expect_s3_class(agg, "ts")
-  # Only CHN contributes, so the aggregate equals CHN's index.
-  chn_norm <- 100 * seq(80, 130, length.out = 10) / 80
-  expect_equal(as.numeric(agg)[1:4], chn_norm[1:4], tolerance = 1e-6)
+  v <- as.numeric(agg)
+  expect_equal(v[1], 100, tolerance = 1e-6)      # base normalised to 100
+  expect_false(anyNA(v))                          # fully defined (no interior NA)
+  expect_true(all(diff(v) > 0))                   # both partners rising
+  # The first step (2008Q1->Q2) is CHN-only (KOR not yet overlapping), so its
+  # gross growth equals CHN's own.
+  chn <- seq(80, 130, length.out = 10)
+  expect_equal(v[2] / v[1], chn[2] / chn[1], tolerance = 1e-6)
 })
 
 test_that("compute_tpw() renormalises non-summing weights", {

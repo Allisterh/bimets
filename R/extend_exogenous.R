@@ -58,29 +58,40 @@ extend_exogenous <- function(database, end_quarter,
   database
 }
 
-# Extend one ts to `target_dec` per `rule`. Returns ts unchanged if
-# target_dec is already reached.
+# Extend one ts to `target_dec` per `rule`. Returns ts unchanged if the last
+# genuine observation already reaches both the target and the ts span end.
 extend_one <- function(ts, target_dec, rule, mode) {
-  tsp <- stats::tsp(ts)
-  cur_end_dec <- tsp[2]
-  if (target_dec <= cur_end_dec + 1e-9) return(ts)
-
-  n_new <- round((target_dec - cur_end_dec) * 4)
+  tsp  <- stats::tsp(ts)
   vals <- as.numeric(ts)
-  # Use the last non-NA value as the carry / linear seed
+  # Seed from the last GENUINE observation, not the ts span end: a series can
+  # carry trailing NAs inside its declared span (e.g. last print 2025Q2 but tsp
+  # ends 2025Q4). Extending only past the span end would leave those interior
+  # NAs for SIMULATE to hit in-range. Fill every cell after the last non-NA
+  # value, up to the later of the target and the span end (so we never truncate
+  # the original span).
   last_idx <- suppressWarnings(max(which(!is.na(vals))))
-  seed <- if (is.finite(last_idx)) vals[last_idx] else 0
+  if (!is.finite(last_idx)) {
+    last_idx      <- length(vals)
+    last_real_dec <- tsp[2]
+    seed          <- 0
+  } else {
+    last_real_dec <- tsp[1] + (last_idx - 1L) / 4
+    seed          <- vals[last_idx]
+  }
+  fill_to_dec <- max(target_dec, tsp[2])
+  if (fill_to_dec <= last_real_dec + 1e-9) return(ts)
+  n_fill <- round((fill_to_dec - last_real_dec) * 4)
 
   ext <- switch(mode,
-    carry    = rep(seed, n_new),
-    constant = rep(rule$value %||% seed, n_new),
-    linear   = linear_extrapolate(vals, n_new, rule$lookback %||% 4L),
+    carry    = rep(seed, n_fill),
+    constant = rep(rule$value %||% seed, n_fill),
+    linear   = linear_extrapolate(vals, n_fill, rule$lookback %||% 4L),
     stop("Unknown extension mode: ", mode, call. = FALSE)
   )
 
   start_year    <- floor(tsp[1] + 1e-9)
   start_quarter <- round((tsp[1] - start_year) * 4 + 1)
-  bimets::TIMESERIES(c(vals, ext),
+  bimets::TIMESERIES(c(vals[seq_len(last_idx)], ext),
                      START = c(start_year, start_quarter), FREQ = 4)
 }
 

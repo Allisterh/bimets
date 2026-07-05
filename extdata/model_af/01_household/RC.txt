@@ -7,7 +7,7 @@ EQ> TSDELTALOG(RC,1)=c1+c2*(LOG(TSLAG(RC,1))+0.5/100*(TSLAG(RCR,1)))
               +c5*TSDELTALOG(HCOE,1)
               +c6*TSLAG(TSDELTALOG(HOY,1),2)
               +c7*TSLAG(TSDELTALOG(HNW,1),1)
-              +c8*(TSLAG(TDLLA,1) + TSLAG(TDLLPOP,1) + TSLAG(TDLLPOP,1))
+              +c8*(TSLAG(TDLLA,1) + TSLAG(TDLLPOP,1) + TSLAG(TDLLHPP,1))
               +c9*TSDELTA(TSLAG(LUR,2))/100
               +c10*DUM_RC
 COEFF> c1 c2 c3 c4 c5 c6 c7 c8 c9 c10
