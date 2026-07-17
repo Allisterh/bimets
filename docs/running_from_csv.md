@@ -262,6 +262,109 @@ keep it so any column you didn't carry still resolves.)
 
 ---
 
+## 7. Raw data CSV (primitive source series, not final model variables)
+
+Everything above assumes your CSV is already in MARTIN's *final* shape — one
+column per model variable, ready to solve. If instead you have **raw
+upstream source data** (an ABS/RBA/FRED-style export that still needs
+splicing, Chow-Lin disaggregation, cumulation, and formula evaluation — the
+same transformations `update_data()` + `to_martin_database()` apply to a live
+download), use `read_raw_csv_database()` instead:
+
+```r
+db <- read_raw_csv_database("my_raw_primitives.csv",
+                            annual_path = "my_annual_capital.csv",  # optional
+                            fallback    = read_fixture())            # default
+```
+
+This runs the exact same derivation chain the download pipeline uses
+(`derive_model_database()`) — Chow-Lin disaggregation, splicing, PIM
+integration, the depreciation/tax-rate identity chain, catalogue formula
+evaluation, KFAS state-space trends, dummies — on data you supply directly,
+rather than fetching it.
+
+### The two CSVs
+
+**Quarterly primitives CSV** — a period column (same formats as [section
+1](#1-get-your-csv-into-the-right-shape)) plus one column per *primitive*
+MARTIN variable: catalogue rows tagged `direct` (`RC`, `NCR`, `WPCOM`, the
+state-space signal inputs `LA`, `LPOP`, `PI_E_BOND`, `GBUSEXP`, ...),
+`spliced` (`NCR_HIST`, `NBR_SPLICE`, `PH_OLD`), or `level_from_pct` — **`P`,
+`PEX`, `PTM` as percent-change series**, not the cumulated level MARTIN's
+equations use (`apply_level_from_pct()` cumulates them from their registered
+1982Q1 base). Any subset of columns is fine.
+
+**Annual capital CSV** (optional) — a `year` column plus one column per
+annual ABS 5204.0 series: `KTOT`, `KID`, `KOTC`, `KIBRE` (net capital
+stocks), `CFCTOT`, `CFCID`, `CFCOTC`, `CFCIBRE` (consumption of fixed
+capital), `IBRE`, `NIBRE` (mining investment, real/nominal), and `IDA2`
+(dwelling investment — ABS 5204.0's `A2422531C`, a **different** series from
+the quarterly `ID` already in the primitives CSV, ABS 5206.0's
+`A2304098T`; reusing the `ID` name would silently mix a real chain-volume
+quarterly series with a nominal annual capital-stock-consistent one). One row
+per year; any subset of columns is fine. Without this file, everything it
+would drive (Chow-Lin-disaggregated `IBRE`/`NIBRE`/`KIBRE`/`KID`/`KTOT`/
+`KOTC`, plus `KIBN`/`IBREDR`/`IDDR`/`IBNDR` below) falls back to `fallback`.
+
+Generate a starting point for both from the bundled fixture:
+
+```r
+raw_csv_template("my_raw_primitives.csv")
+# writes my_raw_primitives.csv (quarterly) and
+#        my_raw_primitives_annual.csv (annual, header-only -- see below)
+```
+
+### What gets derived
+
+Supplying the primitives above (plus, where used, `fallback`) is enough to
+reproduce every MARTIN variable the download pipeline can, including four
+constructors added for the raw-CSV path specifically (previously available
+only via the bundled fixture):
+
+| variable | needs | port of |
+|---|---|---|
+| `NULCBS` | `NULC` (itself derived from `NHCOE`/`Y`) | `modify_data.prg:255` |
+| `WRR`, `WR2R` | `WP`, `WRCR`, `WN2R` | `modify_data.prg:214-215` |
+| `RMR` | `NMR`, `PTM` | `modify_data.prg:288` |
+| `IAD` | `RC`, `IB`, `GI`, `GC`, `X`, the five `IAD_W_*` weights | `modify_data.prg:300` |
+| `KIBN` | annual `KTOT`, `KID`, `KOTC`, `KIBRE` | `modify_data.prg:478` |
+| `IBREDR` | annual `KIBRE`, `IBRE` | `modify_data.prg:369-371` |
+| `IDDR` | annual `KID`, `IDA2` | `modify_data.prg:436-438` |
+
+`Rscript scripts/11_run_from_raw_csv.R` runs this end to end: it builds a raw
+template from the fixture, reads it back **without** a fallback so the
+result is genuinely re-derived (not silently backfilled), and checks each
+derived variable against the fixture, printing PASS/FAIL/SKIP per variable.
+
+### What still comes from the fallback
+
+* **World-economy raw inputs `WRCR` (US federal funds rate) and `WN2R` (US
+  2yr yield)** are live-only (FRED `FEDFUNDS`/`GS2`) — they're upstream
+  inputs to `WRR`/`WR2R`, not MARTIN model variables themselves, so the
+  bundled fixture never carried them. `raw_csv_template()` therefore can't
+  fill these columns from the fixture; supply them yourself (or rely on
+  `fallback` for `WRR`/`WR2R` directly).
+* **The annual capital-stock/CFC/investment series** (`KTOT`, `KOTC`,
+  `CFCTOT`, `CFCID`, `CFCOTC`, `CFCIBRE`, `IDA2`, ...) are likewise
+  live-only — [`read_fixture()`] is quarterly-only and carries no
+  annual-frequency data, so `raw_csv_template()`'s annual CSV is a
+  header-only template naming exactly what to source from ABS 5204.0.
+  Without it, `KIBN`/`IBREDR`/`IDDR` fall back to `fallback`, and `IBNDR`
+  falls to `apply_ibndr()`'s pre-existing static placeholder (a constant,
+  not a real depreciation-rate path — a known v0 limitation, not introduced
+  by the raw-CSV path).
+
+### Known limitation: PEX
+
+`PEX` (the export price deflator) needs an RBA-vendored adjustment window
+(`PEX_MARTIN`) that has no public source — the EViews MARTIN implementation
+splices in a hand-curated series with no ABS/RBA catalogue equivalent. The
+raw-CSV path treats `PEX` like `P`/`PTM` (a plain percent-change primitive,
+cumulated via `apply_level_from_pct()`), which is correct *except* for this
+adjustment window; there is no live/raw substitute for it in this
+repository. Supply `PEX` from `fallback` (the default) if you need it
+precisely.
+
 ## Things worth knowing
 
 - **Variable names are case-sensitive.** `rc` won't be recognised as `RC`; the

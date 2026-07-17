@@ -64,26 +64,22 @@ update_data <- function(vintage = Sys.Date(),
 
 #' Pivot a raw tidy panel to MARTIN's variable names
 #'
-#' Joins the catalogue (`source_id` → `martin_var`), then routes each row
-#' through the appropriate transformation handler. Returns a named list of
-#' `bimets::TIMESERIES` keyed by MARTIN variable name, ready for
-#' [load_martin()].
+#' Joins the catalogue (`source_id` → `martin_var`), pivots each row to a
+#' quarterly (or annual, for Chow-Lin inputs) `bimets`/`ts` slice, then hands
+#' off to [derive_model_database()] for every downstream transformation.
+#' Returns a named list of `bimets::TIMESERIES` keyed by MARTIN variable
+#' name, ready for [load_martin()].
 #'
-#' The pipeline (in order):
+#' The pipeline:
 #'
 #' 1. **Direct / level_from_pct / spliced rows** → standard quarterly pivot
 #'    via [pivot_quarterly()] (handles monthly→quarterly aggregation per
 #'    each row's `aggregation` rule).
-#' 2. **Chow-Lin rows** → annual pivot, then disaggregated to quarterly
-#'    via [apply_chowlin()] using `tempdisagg::td()`.
-#' 3. **`apply_level_from_pct()`** → replaces PTM, P with cumulated level
-#'    indices from registered bases (1982Q1).
-#' 4. **`apply_splices()`** → forward-extends or backward-fills target
-#'    series from spliced sources (NCR_HIST → NCR; NBR_SPLICE → NBR).
-#' 5. **`apply_pim()`** → integrates V into KV via the perpetual-inventory
-#'    method from a 1980Q1 base.
-#' 6. **`add_derived_series()`** → evaluates catalogue formula expressions
-#'    (PC, PG, PM, TOT, NHA, NHNW, HCOE, etc.) in a fixed-point loop.
+#' 2. **Chow-Lin rows** → annual pivot via [pivot_annual()].
+#' 3. **[derive_model_database()]** → every post-pivot handler (Chow-Lin
+#'    disaggregation, splices, PIM, the identity chain, derived-formula
+#'    evaluation, state-space trends, dummies/scalars). See its own
+#'    documentation for the full ordered list.
 #'
 #' Anything that can't be materialised is reported in the `"skipped"`
 #' attribute, grouped by reason.
@@ -114,31 +110,7 @@ to_martin_database <- function(raw, frequency = "Q") {
   a_rows <- joined[joined$transformation == "chowlin", , drop = FALSE]
   annual_db <- pivot_annual(a_rows)
 
-  # Apply transformations in dependency order. PIM (KV from V) must come
-  # before derived since some formulas reference KV. Chow-Lin must come
-  # before derived since IBN = IB - IBRE references IBRE. Dummies and
-  # scalars are deterministic calendar series independent of the data
-  # slice, so they run last (and consult database_span to size themselves
-  # to the data they accompany).
-  db <- apply_level_from_pct(db, cat)
-  db <- apply_splices(db, cat)
-  db <- apply_chowlin(db, annual_db, cat)
-  db <- apply_pim(db, cat)
-  # IBCTR and IBNDR are deterministic/static inputs needed by the IBCR
-  # identity chain; populate before add_derived_series so the IBNDRA /
-  # RBR / IBCR formulas can evaluate. apply_ibndr_annual computes IBNDR
-  # from the annual CFC/K capital-stock series when available; otherwise
-  # apply_ibndr falls back to a static placeholder.
-  db <- apply_ibctr(db, cat)
-  db <- apply_ibndr_annual(db, annual_db, cat)
-  db <- apply_ibndr(db, cat)
-  db <- apply_iad_weights(db, cat)
-  db <- add_derived_series(db, cat)
-  # State-space trends depend on LHPP being derived (HOURS / LE * 3),
-  # so they run after add_derived_series.
-  db <- apply_state_space_trends(db, cat)
-  db <- apply_dummies(db, cat)
-  db <- apply_scalars(db, cat)
+  db <- derive_model_database(db, annual_db, cat)
 
   derived_added   <- attr(db, "derived_added")
   derived_skipped <- attr(db, "derived_skipped")
@@ -169,6 +141,123 @@ to_martin_database <- function(raw, frequency = "Q") {
   # supply to "fixture_fallback". Additive only -- the database itself is
   # unchanged. See database_provenance() for the accessor.
   attr(db, "provenance")    <- classify_provenance(names(db), cat)
+  db
+}
+
+#' Run every post-pivot transformation handler on a database-shaped input
+#'
+#' Extracted from [to_martin_database()] so a caller who already has a
+#' database-shaped named list of quarterly `bimets::TIMESERIES` (plus,
+#' optionally, an annual `ts` list for the Chow-Lin / capital-stock
+#' identities) can run the full derivation chain without going through the
+#' `update_data()` panel/catalogue-join machinery first. [read_raw_csv_database()]
+#' is the primary caller: it pivots a raw-primitives CSV straight to this
+#' shape and hands it here.
+#'
+#' The ordered handler chain (all idempotent -- a handler that finds its
+#' output already in `database` leaves it alone, so callers may pre-seed any
+#' subset of the chain's outputs):
+#'
+#'  1. [apply_level_from_pct()] -- cumulates PTM/P/PEX percent-change inputs
+#'     to level indices from their registered 1982Q1 bases.
+#'  2. [apply_splices()] -- backward/forward-splices NCR_HIST -> NCR,
+#'     NBR_SPLICE -> NBR, PH_OLD -> PH.
+#'  3. [apply_chowlin()] -- Chow-Lin/Denton disaggregates the annual capital
+#'     stock and investment-flow rows to quarterly.
+#'  4. [apply_pim()] -- perpetual-inventory integration (KV from V).
+#'  5. [apply_ibctr()] -- the piecewise-constant corporate tax rate.
+#'  6. [apply_kibn()], [apply_ibredr_annual()], [apply_iddr_annual()] --
+#'     annual-capital-stock-driven historical constructors for KIBN,
+#'     IBREDR, IDDR (need `annual_db` before the quarterly stocks/flows they
+#'     use are disaggregated away).
+#'  7. [apply_ibndr_annual()] then [apply_ibndr()] -- annual-data-driven
+#'     non-mining depreciation rate, falling back to a static placeholder.
+#'  8. [apply_iad_weights()] -- the five vendored IAD import-adjusted-demand
+#'     weights.
+#'  9. [apply_wrr_wr2r()] and [apply_rmr()] -- pure-algebra world real
+#'     rates and the real mortgage rate (need only direct/level_from_pct
+#'     quarterly primitives, so can run before the derived-formula pass).
+#' 10. [add_derived_series()] -- evaluates catalogue formula expressions
+#'     (PC, PG, PM, TOT, NHA, NHNW, HCOE, NULC, etc.) in a fixed-point loop.
+#' 11. [apply_nulcbs()] and [apply_iad()] -- need NULC (step 10) and RC/IB/
+#'     GI/GC/X plus the IAD weights (step 8) respectively.
+#' 12. [apply_state_space_trends()] -- KFAS trend estimation (needs LHPP,
+#'     derived in step 10).
+#' 13. [apply_dummies()] and [apply_scalars()] -- deterministic calendar
+#'     series, run last so they can size themselves off the data span.
+#'
+#' If `fallback` is supplied, a final [merge_with_fallback()] fills any
+#' quarter/variable the chain above could not derive (e.g. IBREDR/IDDR/KIBN
+#' when the caller's annual CSV omits some of the capital-stock inputs, or
+#' PTM/P/PEX quarters before their cumulation base when the caller's history
+#' doesn't reach back that far). `derived_added`/`derived_skipped`
+#' attributes (set by [add_derived_series()]) are preserved across the
+#' fallback merge.
+#'
+#' @param database Named list of quarterly `bimets::TIMESERIES` (may be
+#'   partially populated; e.g. the direct-slice output of
+#'   [pivot_quarterly()], or a raw-primitives CSV already pivoted to this
+#'   shape).
+#' @param annual_db Named list of annual `ts` (frequency 1), keyed by MARTIN
+#'   variable name -- the same shape [pivot_annual()] produces. Default
+#'   `list()` (no annual inputs; the Chow-Lin/KIBN/IBREDR/IDDR handlers
+#'   simply no-op).
+#' @param catalogue [series_catalogue()].
+#' @param fallback Optional named-list database (e.g. [read_fixture()]).
+#'   When supplied, [merge_with_fallback()] fills any gap the derivation
+#'   chain leaves. `NULL` (default) skips this step entirely -- this is
+#'   what keeps [to_martin_database()]'s download-path behaviour
+#'   byte-identical to before this function was extracted.
+#'
+#' @return The database with every derivable series added. Carries
+#'   `derived_added` / `derived_skipped` attributes (see
+#'   [add_derived_series()]).
+#' @export
+derive_model_database <- function(database, annual_db = list(),
+                                  catalogue = series_catalogue(),
+                                  fallback = NULL) {
+  db <- database
+  db <- apply_level_from_pct(db, catalogue)
+  db <- apply_splices(db, catalogue)
+  db <- apply_chowlin(db, annual_db, catalogue)
+  db <- apply_pim(db, catalogue)
+  # IBCTR and IBNDR are deterministic/static inputs needed by the IBCR
+  # identity chain; populate before add_derived_series so the IBNDRA /
+  # RBR / IBCR formulas can evaluate. apply_ibndr_annual computes IBNDR
+  # from the annual CFC/K capital-stock series when available; otherwise
+  # apply_ibndr falls back to a static placeholder. KIBN/IBREDR/IDDR use
+  # the same annual capital-stock slice and so run alongside them, before
+  # anything downstream might need the quarterly KIBN/IBREDR/IDDR they
+  # produce.
+  db <- apply_ibctr(db, catalogue)
+  db <- apply_kibn(db, annual_db, catalogue)
+  db <- apply_ibredr_annual(db, annual_db, catalogue)
+  db <- apply_iddr_annual(db, annual_db, catalogue)
+  db <- apply_ibndr_annual(db, annual_db, catalogue)
+  db <- apply_ibndr(db, catalogue)
+  db <- apply_iad_weights(db, catalogue)
+  # Pure-algebra constructors on already-pivoted quarterly primitives; no
+  # dependency on add_derived_series(), so they can run before it.
+  db <- apply_wrr_wr2r(db, catalogue)
+  db <- apply_rmr(db, catalogue)
+  db <- add_derived_series(db, catalogue)
+  # NULCBS needs NULC (a derived row); IAD needs nothing derived but is
+  # grouped here for proximity to its sibling identity constructors.
+  db <- apply_nulcbs(db, catalogue)
+  db <- apply_iad(db, catalogue)
+  # State-space trends depend on LHPP being derived (HOURS / LE * 3),
+  # so they run after add_derived_series.
+  db <- apply_state_space_trends(db, catalogue)
+  db <- apply_dummies(db, catalogue)
+  db <- apply_scalars(db, catalogue)
+
+  if (!is.null(fallback)) {
+    derived_added   <- attr(db, "derived_added")
+    derived_skipped <- attr(db, "derived_skipped")
+    db <- merge_with_fallback(db, fallback)
+    attr(db, "derived_added")   <- derived_added
+    attr(db, "derived_skipped") <- derived_skipped
+  }
   db
 }
 

@@ -18,15 +18,33 @@
 #'   * `rer_10pc`       — a ~+10% real-exchange-rate (RTWI) appreciation for one
 #'     quarter, then it mean-reverts under its own equation.
 #'
-#' @section Why add-factors (and not exogenize):
-#'   Every shock is an add-factor on the relevant equation's residual, leaving
-#'   the variable endogenous so its lags carry the shock forward and it
-#'   propagates through the rest of the model. Holding a variable on a shocked
-#'   path with `exogenize` does *not* propagate downstream in this engine (the
-#'   exogenised series is pinned but the equations that read it do not respond),
-#'   so add-factors are the correct mechanism for impulse responses. `exogenize`
-#'   remains the right tool for *holding a variable at baseline* (see
-#'   [solve_martin()] and scripts/04).
+#' @section Add-factor shocks vs. pinned paths:
+#'   Every standard shock here is an add-factor on the relevant equation's
+#'   residual, leaving the variable *endogenous* so its own lags carry the
+#'   shock forward under its own equation from the first post-shock quarter.
+#'   The alternative mechanism — `profiles=` / `exogenize=` in [solve_martin()]
+#'   — instead *pins* the variable to an explicit path over a window and then
+#'   releases it back to its equation. Both mechanisms propagate to every
+#'   downstream equation that reads the shocked variable while it is
+#'   perturbed: an earlier version of this note claimed `exogenize` "does not
+#'   propagate downstream" — that was wrong (found in audit). A pinned RTWI,
+#'   say, still feeds every RTWI-dependent equation (PM, exports, ...) each
+#'   solved quarter exactly as an add-factor-shocked RTWI would. The real
+#'   distinction is mechanical, not about propagation:
+#'     * an add-factor perturbs the equation's *residual*, so the variable's
+#'       own dynamics (lag structure, mean-reversion, interaction with the
+#'       rest of the model) still shape the path even during the shock window
+#'       — the right tool for "what if this equation gets an unexplained
+#'       kick" (a genuine impulse response).
+#'     * a pinned path (`profiles=`/`exogenize=`) *overrides* the variable
+#'       entirely over the window with a value the caller supplies — the
+#'       right tool for "hold this variable at this exact level for N
+#'       quarters", e.g. the RBA IRF convention of holding RSTAR/GC/GI (and,
+#'       in the channel-decomposition variants, RTWI/NTWI/PH) at baseline
+#'       while another variable is shocked (see [rba_irf_specs()] /
+#'       [run_rba_irf()], and scripts/04's plain "hold at baseline").
+#'   Both are legitimate mechanisms; pick the one that matches what you are
+#'   conditioning on.
 #'
 #' @section The "permanent" commodity shock:
 #'   This bimets port models real commodity prices (WPCOM) as a mean-reverting
@@ -321,5 +339,215 @@ standard_irfs <- function(database,
   attr(out, "offsets")     <- offsets
   attr(out, "baseline")    <- baseline
   attr(out, "convergence") <- conv
+  out
+}
+
+#' RBA-convention IRF battery: pinned-path shocks (EViews `exclude`/release)
+#'
+#' A second, additive library of impulse responses that reproduces the
+#' shock-delivery convention of the RBA's own MARTIN IRF programs
+#' (`martin_rdp_irfs_public.prg` plus its `sub1_inputs`/`sub2_solve`
+#' subroutines): the shocked variable is *pinned* to `baseline +/- delta`
+#' over an explicit shock window (the EViews `{model}.exclude(m)
+#' VAR(start end)` idiom), then released back to its own equation for the
+#' rest of the horizon. A small set of variables that would otherwise react
+#' to the shock — RSTAR and GC/GI (the neutral real rate and government
+#' demand) in every scenario, plus RTWI/NTWI/PH in the channel-decomposition
+#' variants — are held at their baseline path over a longer (40-quarter)
+#' window so the IRF isolates one transmission channel at a time.
+#'
+#' This is delivered with the SAME [solve_martin()] primitives used
+#' elsewhere in the package (see the "Add-factor shocks vs. pinned paths"
+#' section above for how this differs from [standard_irf_specs()]):
+#'   * the shocked variable uses `profiles=` — held over the span of its own
+#'     supplied quarters, released after — exactly the `exclude(m)`-then-
+#'     resume behaviour of the source `.prg`;
+#'   * the "switched off" variables use `exogenize=` /
+#'     `baseline_for_exogenize=` — held at the already-solved baseline path
+#'     over a shared window.
+#'
+#' @section Scenarios (see [rba_irf_specs()]):
+#'   * `monetary`          — s1: +1ppt NCR, 4 quarters.
+#'   * `exchange_rate`     — s2: -10% RTWI, 4 quarters.
+#'   * `monetary_no_er`    — s3: s1 + RTWI, NTWI held at baseline, 40
+#'     quarters (isolates the monetary shock with the exchange-rate channel
+#'     shut off).
+#'   * `monetary_no_erap`  — s4: s3 + PH held at baseline, 40 quarters
+#'     (also shuts the house-price / asset-price channel).
+#'   * `monetary_no_erph`  — s9 in the source `.prg`. The `.prg` *labels* this
+#'     "no exchange rate or house price", but its `shock_name_s9` variable
+#'     list is byte-for-byte identical to `s4`'s
+#'     (`ncr rstar gc gi rtwi ntwi ph`); `s9`'s `shock_type`/`shock_length`/
+#'     `shock_size` arrays each carry one extra, unused element (8 entries
+#'     against 7 `shock_num`s consumed) — a copy-paste artifact, not a
+#'     deliberate 4th channel definition. We reproduce the source faithfully:
+#'     `monetary_no_erph` shocks the identical variable set as
+#'     `monetary_no_erap` (a duplicate under the source's separate label),
+#'     not a genuinely distinct "house-price-only" cut.
+#'   * `housing_price`     — s5: PH pinned to a caller-supplied percent-
+#'     deviation path (default a flat -10% for 10 quarters, matching the
+#'     `.prg`'s `Shock_profile.xlsx` "Eviews" import), with NCR and RTWI —
+#'     not RSTAR/GC/GI; the source `s5` scenario omits them — held at
+#'     baseline for 40 quarters.
+#'
+#' @param housing_path Numeric vector of percent deviations from baseline PH,
+#'   one per quarter of the housing shock (recycled to length if length 1).
+#'   Default a flat -10% for `length(housing_path)` quarters (10 by default).
+#' @return A named list of scenario specs; each has `label`, `shock_equation`,
+#'   `shock_type` (`"ppt"`, `"pct"`, or `"pct_path"`), `shock_size` (for
+#'   `"ppt"`/`"pct"`) or `path` (for `"pct_path"`), `shock_length`,
+#'   `hold_vars`, `hold_length`.
+#' @export
+rba_irf_specs <- function(housing_path = rep(-10, 10L)) {
+  list(
+    monetary = list(
+      label          = "RBA IRF: Monetary policy (+1ppt NCR, 4 quarters)",
+      shock_equation = "NCR", shock_type = "ppt", shock_size = 1.0,
+      shock_length   = 4L,
+      hold_vars      = c("RSTAR", "GC", "GI"), hold_length = 40L
+    ),
+    exchange_rate = list(
+      label          = "RBA IRF: Exchange rate (-10% RTWI, 4 quarters)",
+      shock_equation = "RTWI", shock_type = "pct", shock_size = -10,
+      shock_length   = 4L,
+      hold_vars      = c("RSTAR", "GC", "GI"), hold_length = 40L
+    ),
+    monetary_no_er = list(
+      label          = "RBA IRF: Monetary policy, exchange-rate channel off",
+      shock_equation = "NCR", shock_type = "ppt", shock_size = 1.0,
+      shock_length   = 4L,
+      hold_vars      = c("RSTAR", "GC", "GI", "RTWI", "NTWI"),
+      hold_length    = 40L
+    ),
+    monetary_no_erap = list(
+      label          = paste("RBA IRF: Monetary policy, exchange-rate +",
+                             "house-price channel off"),
+      shock_equation = "NCR", shock_type = "ppt", shock_size = 1.0,
+      shock_length   = 4L,
+      hold_vars      = c("RSTAR", "GC", "GI", "RTWI", "NTWI", "PH"),
+      hold_length    = 40L
+    ),
+    monetary_no_erph = list(
+      # See the docstring above: the source `.prg`'s `s9` shock_name list is
+      # identical to `s4`'s, so this reproduces `monetary_no_erap` verbatim
+      # under the source's separate label rather than a distinct channel cut.
+      label          = paste("RBA IRF: Monetary policy, exchange-rate or",
+                             "house-price channel off (s9, duplicate of s4",
+                             "in source)"),
+      shock_equation = "NCR", shock_type = "ppt", shock_size = 1.0,
+      shock_length   = 4L,
+      hold_vars      = c("RSTAR", "GC", "GI", "RTWI", "NTWI", "PH"),
+      hold_length    = 40L
+    ),
+    housing_price = list(
+      label          = "RBA IRF: Housing price path (PH; NCR & RTWI held at baseline)",
+      shock_equation = "PH", shock_type = "pct_path", path = housing_path,
+      shock_length   = length(housing_path),
+      hold_vars      = c("NCR", "RTWI"), hold_length = 40L
+    )
+  )
+}
+
+#' Solve one RBA-convention IRF scenario
+#'
+#' Implements the EViews `exclude(m) VAR(start end)` / release convention:
+#' `spec$shock_equation` is pinned (via [solve_martin()]'s `profiles=`) to
+#' `baseline +/- delta` over `spec$shock_length` quarters starting at
+#' `shock_start`, then released back to its own equation; `spec$hold_vars`
+#' are separately pinned (via `exogenize=`/`baseline_for_exogenize=`) to the
+#' baseline path over `spec$hold_length` quarters from the same start.
+#'
+#' @param database The same database passed to [solve_martin()].
+#' @param horizon Length-2 `c("yyyyQq", "yyyyQq")`. `spec$shock_length` and
+#'   `spec$hold_length` are windows *starting* at `shock_start`; either is
+#'   clipped to `horizon[2]` if the nominal window would run past it (e.g. a
+#'   short in-sample horizon can't fit the full 40-quarter "hold" window —
+#'   the held variable is then simply held for as much of it as the horizon
+#'   covers).
+#' @param shock_start `"yyyyQq"` of the first shocked/held quarter.
+#' @param spec One element of [rba_irf_specs()].
+#' @param baseline Optional pre-solved baseline projection (a tibble from
+#'   [solve_martin()]); solved here if `NULL`.
+#' @param coefficients,estimation_end Passed to [solve_martin()].
+#' @return The scenario projection tibble (`solve_martin()`'s usual shape and
+#'   attributes, including `convergence`); also carries attribute `baseline`.
+#' @export
+run_rba_irf <- function(database, horizon, shock_start, spec,
+                        baseline        = NULL,
+                        coefficients    = c("frozen", "reestimated"),
+                        estimation_end  = NULL) {
+  coefficients <- match.arg(coefficients)
+
+  if (is.null(baseline)) {
+    baseline <- solve_martin(
+      database, horizon = horizon, scenario = "baseline",
+      coefficients = coefficients, estimation_end = estimation_end
+    )
+  }
+  base_lk <- stats::setNames(baseline$value,
+                             paste(baseline$variable, baseline$quarter))
+  get_base <- function(q, var) unname(base_lk[[paste(var, q)]])
+
+  # Clip a window of quarters (starting at shock_start) to horizon[2]: a
+  # short horizon (e.g. an in-sample test window) can't always fit the full
+  # 40-quarter "hold" window, so hold for as much of it as the horizon covers.
+  h_end     <- parse_quarter(horizon[2])
+  h_end_idx <- quarter_index(h_end$year, h_end$quarter)
+  clip_to_horizon <- function(qs) {
+    p <- parse_quarter(qs)
+    qs[quarter_index(p$year, p$quarter) <= h_end_idx]
+  }
+
+  # ---- the shocked variable: pin baseline +/- delta over its own window,
+  # then release. `profiles=` imposes exactly this: held over the span of
+  # the supplied quarters, solved freely again after.
+  shock_qs <- clip_to_horizon(
+    quarter_offsets(shock_start, n_after = spec$shock_length - 1L)
+  )
+  if (length(shock_qs) == 0L) {
+    stop("run_rba_irf: `horizon` ends before `shock_start`.", call. = FALSE)
+  }
+  base_vals <- vapply(shock_qs, get_base, numeric(1), var = spec$shock_equation)
+  if (anyNA(base_vals)) {
+    stop("run_rba_irf: baseline has no value for '", spec$shock_equation,
+         "' over the shock window (extend `horizon`/`database`).",
+         call. = FALSE)
+  }
+  shock_vals <- switch(
+    spec$shock_type,
+    ppt      = base_vals + spec$shock_size,
+    pct      = base_vals * (1 + spec$shock_size / 100),
+    pct_path = base_vals * (1 + rep_len(spec$path, length(shock_qs)) / 100),
+    stop("run_rba_irf: unknown shock_type '", spec$shock_type, "'.",
+         call. = FALSE)
+  )
+  profiles <- data.frame(
+    variable = spec$shock_equation, quarter = shock_qs, value = shock_vals,
+    stringsAsFactors = FALSE
+  )
+
+  # ---- the "switched off" variables: pinned to baseline over a shared
+  # window, then released — the RBA's channel-decomposition convention.
+  exogenize       <- character(0)
+  exogenize_range <- NULL
+  if (length(spec$hold_vars) > 0L) {
+    hold_qs <- clip_to_horizon(
+      quarter_offsets(shock_start, n_after = spec$hold_length - 1L)
+    )
+    if (length(hold_qs) > 0L) {
+      exogenize       <- spec$hold_vars
+      exogenize_range <- c(shock_start, hold_qs[length(hold_qs)])
+    }
+  }
+
+  out <- solve_martin(
+    database, horizon = horizon, profiles = profiles,
+    exogenize = exogenize,
+    baseline_for_exogenize = if (length(exogenize) > 0L) baseline else NULL,
+    exogenize_range = exogenize_range,
+    coefficients = coefficients, estimation_end = estimation_end,
+    scenario = spec$label
+  )
+  attr(out, "baseline") <- baseline
   out
 }

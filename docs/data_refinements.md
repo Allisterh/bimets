@@ -68,3 +68,80 @@ This is logged as the honest scope rather than implemented, because steps (2)/(3
 require data that accrues over time, and step (1) only covers the FRED minority
 of the database. It does not block any current functionality — every feature and
 the frozen reference path are unaffected.
+
+---
+
+## 3. Pre-1978 labour backcast (review rec R2) — investigated, not wired in
+
+`series_catalogue.csv`'s `LUR` row already documents an intended fallback
+("falls back to UR_hist when missing") that was never implemented — the
+Modellers' Database backcast this refers to. The EViews import (`import_data.prg`)
+sources five pre-1978 labour series from the June 2011 ABS "Modellers' Database"
+feature article (catalogue number `1364.0.15.003`):
+
+| ABS series ID | Target MARTIN var | Description |
+|---|---|---|
+| `A2454521V` | `ur_hist` | Unemployment rate backcast |
+| `A2454517C` | `pop_hist` | Population backcast |
+| `A2454568C` | `lhpp_hist` | Hours per person backcast |
+| `A2454516A` | `le_farm_hist` | Farm employment backcast |
+| `A2454518F` | `le_nonfarm_hist` | Non-farm employment backcast |
+
+**Status: not added to `series_catalogue.csv` — the fetch plumbing does not
+tolerate this cat_no failing gracefully, verified offline.**
+
+Two checks, both doable without hitting the network:
+
+1. **`readabs`'s own catalogue directory doesn't know this cat_no.**
+   `read_abs(cat_no = ...)` resolves catalogue numbers against the package's
+   bundled lookup table (`readabs:::abs_lookup_table`, ~300 rows of modern
+   ABS Time Series Directory catalogues). `1364.0.15.003` — the ABS's old
+   pre-2010 "Modellers' Database" feature-article numbering scheme — is not
+   in it:
+   ```r
+   > readabs:::abs_lookup_table |> nrow()
+   [1] 300
+   > any(grepl("1364", readabs:::abs_lookup_table$catalogue))
+   [1] FALSE
+   ```
+   That is strong evidence `read_abs(cat_no = "1364.0.15.003")` cannot
+   resolve at all today (the release predates the modern catalogue-slug
+   system readabs scrapes) and would error rather than return rows.
+
+2. **`R/fetch_abs.R` has no per-catalogue error isolation.** `fetch_abs()`
+   groups the requested rows `by_cat <- split(source_rows, source_rows$source_table)`
+   and loops with `purrr::imap()` — there is no `tryCatch` around the
+   individual `readabs::read_abs(cat_no = cat_no, ...)` call. A single dead
+   `cat_no` throws out of that loop, out of `fetch_abs()`, out of
+   `fetch_source()`, and is only caught by `update_data()`'s *per-source*
+   (not per-catalogue) `tryCatch`. The blast radius is therefore not "the 5
+   new series fall back to the fixture" — it is **the entire `abs` source
+   for that run** (100+ series) silently reverting to
+   [`merge_with_fallback()`](../R/merge.R)'s fixture backstop, because
+   `to_martin_database()` never receives *any* abs-sourced data once
+   `fetch_abs()` has thrown.
+
+   `merge_with_fallback()` does mean the pipeline never crashes and the
+   frozen fixture path is unaffected either way — but "every live ABS
+   series silently goes stale on every run" is not the graceful, contained
+   degradation the R2 recipe calls for, so per the explicit instruction to
+   skip the catalogue change if the plumbing can't isolate the failure,
+   this is documented here instead of wired in.
+
+**The path to do it properly** (either would satisfy the "verify graceful
+tolerance" bar this time):
+
+- Confirm the *modern* ABS Time Series Directory home for these five
+  historical labour series (if the Modellers' Database was folded into a
+  current catalogue, e.g. under 6202.0 or 6291.0.55.001's historical
+  revisions) and catalogue them with a `source_table` `read_abs(cat_no=)`
+  can actually resolve; or
+- Harden `fetch_abs()` to fetch per-catalogue-group inside its own
+  `tryCatch` (mirroring `update_data()`'s per-source tolerance one level
+  down) so one dead `cat_no` degrades only its own rows, then catalogue
+  these five via the existing `readabs::read_abs(series_id = ...)` direct
+  path already used standalone by `fetch_job_vacancies()` (which does not
+  depend on the cat_no catalogue lookup at all).
+
+Either changes `R/fetch_abs.R`, which this lane does not own — noted here
+as the follow-up recipe rather than attempted.

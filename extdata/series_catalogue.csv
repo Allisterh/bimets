@@ -110,6 +110,7 @@ XRE,derived,NA,NA,Q,NA,derived,XRE = sum of resource export sub-categories from 
 XM,derived,NA,NA,Q,NA,derived,XM = sum of manufactured export sub-categories from ABS 5302 (XM_MACH + XM_TRNS + XM_OTHR + XM_BEVO),AUD millions,XM_MACH + XM_TRNS + XM_OTHR + XM_BEVO
 XO,derived,NA,NA,Q,NA,derived,XO = sum of other export sub-categories minus XM_BEVO (avoiding double-count),AUD millions,XO_CARY + XO_NXOM + XO_NONR - XM_BEVO
 XAGEXRAIN,derived,NA,NA,Q,NA,derived,XAGEXRAIN = XAG - RAIN (agricultural exports excluding rain-affected output),AUD millions,NA
+RAIN,derived,NA,NA,Q,NA,derived,RAIN = EViews-vendored agricultural rainfall deviation series (ABS Modellers' Database rain.xlsx via import_data.prg); no live public source; fixture-only history through 2019Q3 (last nonzero print 2008Q2). extend_exogenous() holds RAIN at 0 (long-run rainfall deviation average) past the fixture end -- matching the EViews modify_data.prg 'RAIN=0' extension convention -- so XAG = XAGEXRAIN + RAIN collapses to XAG = XAGEXRAIN beyond history,AUD millions,NA
 PIBN,derived,NA,NA,Q,NA,derived,PIBN = NIBN / IBN * 100 (non-mining business investment deflator); NIBN = NIB - NIBRE,Index,NIBN / IBN * 100
 PIBRE,derived,NA,NA,Q,NA,derived,PIBRE = NIBRE / IBRE * 100 (mining investment deflator),Index,NIBRE / IBRE * 100
 PXM,derived,NA,NA,Q,NA,derived,PXM = NXM / XM * 100 (manufactured export deflator),Index,NXM / XM * 100

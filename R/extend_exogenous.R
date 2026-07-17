@@ -14,6 +14,25 @@
 #   "linear"   — extrapolate the linear trend of the last `n` periods
 #                 (good for time-trend variables like PIBN_TREND_1).
 
+# Series where the generic "hold the last observed value" (carry) rule is
+# not the right long-run assumption, so "carry_all" layers these overrides
+# on top rather than leaving them to whatever the last historical print
+# happened to be.
+#
+#   RAIN — the EViews-vendored rainfall deviation series (see
+#   series_catalogue.csv) has no live public source and is fixture-only.
+#   Rainfall deviations average zero over the long run, so XAG =
+#   XAGEXRAIN + RAIN should collapse to XAG = XAGEXRAIN beyond history —
+#   held at a constant 0, not carried from the last historical deviation.
+#   This mirrors the EViews reference (`modify_data.prg`: `RAIN=0` for
+#   every quarter past the last real print). RAIN's own fixture history
+#   already happens to end at 0 (last nonzero print 2008Q2), so carry and
+#   constant-0 coincide today, but the explicit rule keeps that guaranteed
+#   rather than incidental.
+DEFAULT_RULE_OVERRIDES <- list(
+  RAIN = list(mode = "constant", value = 0)
+)
+
 #' Extend variables in a database forward to a target quarter
 #'
 #' For each named entry in `rules`, extends the matching series in
@@ -28,7 +47,8 @@
 #'   at least `mode` ∈ \{`"carry"`, `"constant"`, `"linear"`\}; mode
 #'   `"constant"` also takes `value`; mode `"linear"` takes optional
 #'   `lookback` (default 4 quarters). If `rules = "carry_all"`, every
-#'   series in `database` is carried forward.
+#'   series in `database` is carried forward, except for the known
+#'   overrides in `DEFAULT_RULE_OVERRIDES` (currently just `RAIN`).
 #' @return The database with extended series.
 #' @export
 extend_exogenous <- function(database, end_quarter,
@@ -42,6 +62,9 @@ extend_exogenous <- function(database, end_quarter,
       lapply(names(database), function(.) list(mode = "carry")),
       names(database)
     )
+    overrides <- DEFAULT_RULE_OVERRIDES[intersect(names(DEFAULT_RULE_OVERRIDES),
+                                                    names(database))]
+    rules[names(overrides)] <- overrides
   }
   if (!is.list(rules) || is.null(names(rules))) {
     stop("`rules` must be 'carry_all' or a named list keyed by martin_var.",

@@ -88,6 +88,48 @@ test_that("rewrite_tsrange_end rejects malformed estimation_end", {
                "yyyyQq")
 })
 
+test_that("rewrite_tsrange_end errors when estimation_end predates an equation's start", {
+  lines <- c(
+    "BEHAVIORAL> PTM",
+    "TSRANGE 1993 1 2019 3",
+    "EQ> ...",
+    "BEHAVIORAL> PI_E",
+    "TSRANGE 2000 1 2019 3",
+    "EQ> ..."
+  )
+  err <- expect_error(
+    rewrite_tsrange_end(lines, "1995Q1"),
+    "predates the TSRANGE start"
+  )
+  expect_match(conditionMessage(err), "PI_E", fixed = TRUE)
+  expect_match(conditionMessage(err), "Minimum viable", fixed = TRUE)
+  expect_match(conditionMessage(err), "2000Q1", fixed = TRUE)
+  # PTM starts before 1995Q1, so it must NOT be named as offending.
+  expect_false(grepl("PTM", conditionMessage(err)))
+})
+
+test_that("rewrite_tsrange_end on the real af model errors below the model's minimum viable estimation_end", {
+  lines <- read_model_lines("af")
+  err <- expect_error(
+    rewrite_tsrange_end(lines, "1990Q1"),
+    "predates the TSRANGE start"
+  )
+  expect_match(conditionMessage(err), "Minimum viable `estimation_end` .* '2000Q1'")
+})
+
+test_that("rewrite_tsrange_end warns (not silently skips) a malformed TSRANGE line", {
+  lines <- c(
+    "BEHAVIORAL> PTM",
+    "TSRANGE 1993 1 2019",  # missing end quarter -> 4 tokens, not 5
+    "EQ> ..."
+  )
+  expect_warning(
+    out <- rewrite_tsrange_end(lines, "2025Q2"),
+    "does not split into 5"
+  )
+  expect_equal(out[2], lines[2])  # left unchanged
+})
+
 test_that("solve_martin() rejects malformed horizon", {
   expect_error(
     solve_martin(

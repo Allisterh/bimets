@@ -152,6 +152,13 @@ load_martin <- function(database,
 # preserving each equation's per-line start date. Used by load_martin's
 # `estimation_end` option to re-estimate behavioural coefficients on a
 # longer sample than the model file's frozen 2019Q3 default.
+#
+# Guarded: if `estimation_end` predates a given equation's own TSRANGE start,
+# that equation's estimation window would be empty/inverted (end < start),
+# which bimets fails on deep inside ESTIMATE with an opaque error. We check
+# every equation's start up front and stop() with the offending equation
+# names plus the minimum viable `estimation_end` (the latest start across all
+# equations), rather than letting that surface as a confusing bimets error.
 rewrite_tsrange_end <- function(lines, end_quarter) {
   if (!grepl("^[0-9]{4}Q[1-4]$", end_quarter)) {
     stop("`estimation_end` must be a 'yyyyQq' string (e.g. '2025Q2').",
@@ -159,12 +166,147 @@ rewrite_tsrange_end <- function(lines, end_quarter) {
   }
   new_year    <- substr(end_quarter, 1, 4)
   new_quarter <- substr(end_quarter, 6, 6)
+  end_idx     <- quarter_index(as.integer(new_year), as.integer(new_quarter))
+
   is_tsrange <- grepl("^TSRANGE ", lines)
+  is_decl    <- grepl("^(BEHAVIORAL>|IDENTITY>)", lines)
+
+  # Name of the equation each TSRANGE line belongs to: the nearest preceding
+  # BEHAVIORAL>/IDENTITY> declaration (equation files are `<decl>` then
+  # `TSRANGE` then `EQ>`, so this is always the line's own equation).
+  decl_name <- character(length(lines))
+  cur <- NA_character_
+  for (i in seq_along(lines)) {
+    if (is_decl[i]) cur <- sub("^(BEHAVIORAL>|IDENTITY>)\\s*", "", lines[i])
+    decl_name[i] <- cur
+  }
+
+  offending     <- character(0)
+  max_start_idx <- -Inf
+  for (i in which(is_tsrange)) {
+    parts <- strsplit(lines[i], " ")[[1]]
+    # Expected: TSRANGE start_year start_q end_year end_q  (5 tokens)
+    if (length(parts) != 5L) {
+      warning("rewrite_tsrange_end(): TSRANGE line does not split into 5 ",
+              "space-separated tokens; left unchanged: '", lines[i], "'",
+              call. = FALSE)
+      next
+    }
+    start_idx <- quarter_index(as.integer(parts[2]), as.integer(parts[3]))
+    if (start_idx > max_start_idx) max_start_idx <- start_idx
+    if (start_idx > end_idx) offending <- c(offending, decl_name[i])
+  }
+
+  if (length(offending) > 0L) {
+    min_viable <- format_quarter(max_start_idx %/% 4L, max_start_idx %% 4L + 1L)
+    stop(
+      "`estimation_end` = '", end_quarter, "' predates the TSRANGE start of ",
+      length(unique(offending)), " equation(s): ",
+      paste(unique(offending), collapse = ", "),
+      ". Minimum viable `estimation_end` (>= every equation's own start) is '",
+      min_viable, "'.", call. = FALSE
+    )
+  }
+
   lines[is_tsrange] <- vapply(lines[is_tsrange], function(ln) {
     parts <- strsplit(ln, " ")[[1]]
-    # Expected: TSRANGE start_year start_q end_year end_q  (5 tokens)
     if (length(parts) != 5L) return(ln)
     paste("TSRANGE", parts[2], parts[3], new_year, new_quarter)
   }, character(1))
   lines
+}
+
+#' Save a fitted MARTIN bimets model to disk
+#'
+#' Persists the object [load_martin()] returns (class `"BIMETS_MODEL"`) via
+#' `saveRDS()`, so the expensive `ESTIMATE()` step -- 95 behavioural
+#' regressions on every load -- can be paid once and the fitted coefficients
+#' + residuals reused across many [solve_martin()] calls. Records the bimets
+#' version and a few structural counts as an attribute for later inspection;
+#' does not itself change anything about the model object's behaviour when
+#' passed back into `bimets::SIMULATE()`.
+#'
+#' @param model A bimets model object (class `"BIMETS_MODEL"`), typically
+#'   from [load_martin()].
+#' @param path File path to write the `.rds` to.
+#' @return `path`, invisibly.
+#' @export
+save_martin_model <- function(model, path) {
+  if (!inherits(model, "BIMETS_MODEL")) {
+    stop("`model` must be a bimets model object (class 'BIMETS_MODEL'); got: ",
+         paste(class(model), collapse = ", "), call. = FALSE)
+  }
+  attr(model, "martin_persisted") <- list(
+    bimets_version = if (!is.null(model$bimets_version)) {
+      model$bimets_version
+    } else {
+      as.character(utils::packageVersion("bimets"))
+    },
+    saved_at      = format(Sys.time(), tz = "UTC", usetz = TRUE),
+    n_behaviorals = length(model$behaviorals),
+    n_identities  = length(model$identities)
+  )
+  saveRDS(model, path)
+  invisible(path)
+}
+
+#' Load a previously saved MARTIN bimets model
+#'
+#' Reads back a model [save_martin_model()] wrote, optionally re-attaching a
+#' fresh `database` via `bimets::LOAD_MODEL_DATA()` -- WITHOUT re-running
+#' `ESTIMATE()`, so the persisted (possibly frozen) coefficients are never
+#' refit. This is the pattern for reusing a fitted model against later data
+#' (a new data build, or a database [solve_martin()] has spliced for
+#' `exogenize=`/`profiles=`) without paying the ESTIMATE cost again.
+#'
+#' @param path File path a prior [save_martin_model()] call wrote.
+#' @param database Optional named list of `bimets::TIMESERIES` (same shape
+#'   [load_martin()] takes) to re-attach. Omit to get the model exactly as
+#'   saved.
+#' @return The loaded bimets model object.
+#' @export
+load_martin_model <- function(path, database = NULL) {
+  if (!file.exists(path)) {
+    stop("No saved model at: ", path, call. = FALSE)
+  }
+  model <- readRDS(path)
+  if (!inherits(model, "BIMETS_MODEL")) {
+    stop("File at '", path, "' is not a saved bimets model (class ",
+         "'BIMETS_MODEL'); got: ", paste(class(model), collapse = ", "),
+         call. = FALSE)
+  }
+  if (!is.null(database)) {
+    model <- reattach_model_data(model, database)
+  }
+  model
+}
+
+# Re-attach `database` to an already-loaded/ESTIMATEd bimets `model` via
+# bimets::LOAD_MODEL_DATA(), without re-running ESTIMATE (which would refit
+# every behavioural coefficient). Shared by load_martin_model()'s `database`
+# argument and by solve_martin(model = ...) when the caller's `database` was
+# further modified (exogenize/profiles/feature splicing) after the model was
+# built or persisted.
+#
+# Empirically verified (see tests/testthat/test-model-persistence.R):
+# bimets::LOAD_MODEL_DATA() does not touch `$behaviorals` at all -- calling
+# it again, even with materially different data, leaves `$coefficients` and
+# `$residuals` `identical()` to what they were pre-call, because those slots
+# are populated only by ESTIMATE(), which LOAD_MODEL_DATA() never invokes; it
+# only refreshes the raw data SIMULATE() reads from. We still defensively
+# restore `$behaviorals` from the pre-call object afterwards, so a future
+# bimets version that starts touching that slot on LOAD_MODEL_DATA() cannot
+# silently reset a persisted model's frozen coefficients/residuals out from
+# under this package.
+reattach_model_data <- function(model, database) {
+  if (!is.list(database) || length(database) == 0L) {
+    stop("`database` must be a non-empty named list of bimets TIMESERIES.",
+         call. = FALSE)
+  }
+  pre_behaviorals <- model$behaviorals
+  .suppress_bimets_version_warning({
+    model <- bimets::LOAD_MODEL_DATA(model, database)
+  })
+  model$behaviorals <- pre_behaviorals
+  model
 }

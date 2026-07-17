@@ -62,6 +62,22 @@
 #'   baseline tibble — the supplied values *are* the path.
 #' @param sim_convergence Bimets simulation convergence tolerance.
 #' @param sim_iter_limit  Bimets simulation iteration limit.
+#' @param model Optional prebuilt bimets model (class `"BIMETS_MODEL"`),
+#'   typically from [load_martin_model()] or a prior [load_martin()] call.
+#'   When supplied, `solve_martin()` skips [load_martin()] entirely (no
+#'   `ESTIMATE()` re-run — the persisted coefficients/residuals are used
+#'   as-is); `database` (after any `exogenize`/`profiles`/`features`
+#'   splicing) is still always re-attached to `model` via
+#'   [load_martin_model()]'s data-reattachment path
+#'   (`bimets::LOAD_MODEL_DATA()`, still without re-estimating), so the solve
+#'   reflects the `database` actually passed in, not whatever data `model`
+#'   happened to be built/persisted with. Default (`model = NULL`) is
+#'   unchanged: `solve_martin()` calls [load_martin()] as before, and the
+#'   solve is byte-identical to prior versions. Incompatible with `features`
+#'   (which rewrite the model TEXT at load time — a prebuilt `model` has
+#'   already baked those in or not; see [load_martin()]) and with
+#'   `coefficients = "reestimated"` (a prebuilt model is not re-estimated
+#'   here).
 #'
 #' @return A long tidy tibble of `(variable, quarter, value, scenario)`,
 #'   with attributes `horizon`, `adjustments`, and `scenario`.
@@ -78,12 +94,35 @@ solve_martin <- function(database,
                          profiles        = NULL,
                          features        = character(0),
                          feature_params  = list(),
+                         model           = NULL,
                          sim_convergence = 1e-6,
                          sim_iter_limit  = 100) {
   coefficients <- match.arg(coefficients)
   if (coefficients == "reestimated" && is.null(estimation_end)) {
     stop("`coefficients = 'reestimated'` requires `estimation_end` ",
          "(e.g. '2025Q2').", call. = FALSE)
+  }
+  if (!is.null(model)) {
+    if (!inherits(model, "BIMETS_MODEL")) {
+      stop("`model` must be a bimets model object (class 'BIMETS_MODEL'), ",
+           "e.g. from load_martin_model() or load_martin(). Got: ",
+           paste(class(model), collapse = ", "), call. = FALSE)
+    }
+    if (length(features) > 0L) {
+      stop("`model` and `features` cannot both be supplied: model features ",
+           "rewrite the model TEXT at load time (apply_model_features()), ",
+           "and a prebuilt `model` has already baked those in or not -- ",
+           "solve_martin() cannot retrofit them onto it via data ",
+           "re-attachment alone. Build the model with load_martin(features ",
+           "= ...) first, or drop `model =`.", call. = FALSE)
+    }
+    if (coefficients == "reestimated") {
+      stop("`model` and `coefficients = 'reestimated'` cannot both be ",
+           "supplied: a prebuilt `model` is not re-estimated by ",
+           "solve_martin(). Re-estimate up front via load_martin(... , ",
+           "estimation_end = ...) and pass the result as `model`, or drop ",
+           "`model =`.", call. = FALSE)
+    }
   }
   if (length(horizon) != 2L || !is.character(horizon)) {
     stop("`horizon` must be a length-2 character vector of `yyyyQq`.",
@@ -142,11 +181,23 @@ solve_martin <- function(database,
     database <- seed_feature_data(database, features, feature_params)
   }
 
-  model <- load_martin(
-    database, variant = "af", estimate = TRUE,
-    estimation_end = if (coefficients == "reestimated") estimation_end else NULL,
-    features = features, feature_params = feature_params
-  )
+  # A prebuilt `model` skips load_martin() (and its ESTIMATE() call)
+  # entirely. `database` is still the caller's data-of-record -- by now
+  # possibly spliced for exogenize/profiles/features above -- so it is always
+  # (re-)attached to `model` via the same LOAD_MODEL_DATA path
+  # load_martin_model() uses (never re-estimating). This is what lets
+  # solve_martin(model = <persisted>) solve over fresh/spliced data without
+  # silently keeping whatever data the model happened to be built/persisted
+  # with.
+  if (!is.null(model)) {
+    model <- reattach_model_data(model, database)
+  } else {
+    model <- load_martin(
+      database, variant = "af", estimate = TRUE,
+      estimation_end = if (coefficients == "reestimated") estimation_end else NULL,
+      features = features, feature_params = feature_params
+    )
+  }
 
   start <- parse_quarter(horizon[1])
   end   <- parse_quarter(horizon[2])
@@ -494,6 +545,7 @@ solve_martin_stochastic <- function(database,
                                     scenario       = "baseline",
                                     n_draws        = 200L,
                                     band_start     = NULL,
+                                    model          = NULL,
                                     ...) {
   coefficients <- match.arg(coefficients)
   if (length(horizon) != 2L || !is.character(horizon)) {
@@ -503,6 +555,11 @@ solve_martin_stochastic <- function(database,
   n_draws <- as.integer(n_draws)
   if (is.na(n_draws) || n_draws < 2L) {
     stop("`n_draws` must be an integer >= 2.", call. = FALSE)
+  }
+  if (!is.null(model) && !inherits(model, "BIMETS_MODEL")) {
+    stop("`model` must be a bimets model object (class 'BIMETS_MODEL'), ",
+         "e.g. from load_martin_model() or load_martin(). Got: ",
+         paste(class(model), collapse = ", "), call. = FALSE)
   }
 
   has_stoch <- exists("STOCHSIMULATE", where = asNamespace("bimets"),
@@ -515,7 +572,7 @@ solve_martin_stochastic <- function(database,
     out <- tryCatch({
       res <- solve_martin_stochastic_bimets(
         database, adjustments, horizon, coefficients, estimation_end,
-        scenario, n_draws, band_start, ...
+        scenario, n_draws, band_start, model = model, ...
       )
       attr(res, "band_method") <- "stochsimulate"
       res
@@ -525,7 +582,7 @@ solve_martin_stochastic <- function(database,
               call. = FALSE)
       res <- solve_martin_stochastic_fallback(
         database, adjustments, horizon, coefficients, estimation_end,
-        scenario, min(n_draws, 60L), ...
+        scenario, min(n_draws, 60L), model = model, ...
       )
       attr(res, "band_method") <- "af_perturbation (stochsimulate failed)"
       res
@@ -533,7 +590,7 @@ solve_martin_stochastic <- function(database,
   } else {
     out <- solve_martin_stochastic_fallback(
       database, adjustments, horizon, coefficients, estimation_end,
-      scenario, n_draws, ...
+      scenario, n_draws, model = model, ...
     )
     attr(out, "band_method") <- "af_perturbation"
   }
@@ -551,17 +608,34 @@ solve_martin_stochastic_bimets <- function(database, adjustments, horizon,
                                            scenario, n_draws,
                                            band_start = NULL,
                                            features       = character(0),
-                                           feature_params = list(), ...) {
+                                           feature_params = list(),
+                                           model          = NULL, ...) {
   if (is.null(adjustments)) adjustments <- adjustment_list()
 
   if (length(features)) {
     database <- seed_feature_data(database, features, feature_params)
   }
-  model <- load_martin(
-    database, variant = "af", estimate = TRUE,
-    estimation_end = if (coefficients == "reestimated") estimation_end else NULL,
-    features = features, feature_params = feature_params
-  )
+  # A prebuilt `model` skips load_martin()/ESTIMATE(); `database` (possibly
+  # feature-seeded above) is always re-attached, mirroring solve_martin()'s
+  # model= handling. features + model together are rejected in
+  # solve_martin_stochastic() before reaching here only when going through
+  # that entry point; guard directly too since this helper is also callable
+  # on its own.
+  if (!is.null(model)) {
+    if (length(features) > 0L) {
+      stop("`model` and `features` cannot both be supplied to ",
+           "solve_martin_stochastic(): model features rewrite the model ",
+           "TEXT at load time, which a prebuilt `model` has already baked ",
+           "in or not.", call. = FALSE)
+    }
+    model <- reattach_model_data(model, database)
+  } else {
+    model <- load_martin(
+      database, variant = "af", estimate = TRUE,
+      estimation_end = if (coefficients == "reestimated") estimation_end else NULL,
+      features = features, feature_params = feature_params
+    )
+  }
 
   start <- parse_quarter(horizon[1])
   end   <- parse_quarter(horizon[2])
@@ -676,20 +750,27 @@ stochastic_simulation_to_tibble <- function(model, tsrange, scenario) {
 # solve_martin(); bands are empirical quantiles across the perturbed draws.
 solve_martin_stochastic_fallback <- function(database, adjustments, horizon,
                                              coefficients, estimation_end,
-                                             scenario, n_draws, ...) {
+                                             scenario, n_draws,
+                                             model = NULL, ...) {
   if (is.null(adjustments)) adjustments <- adjustment_list()
 
   central <- solve_martin(
     database, adjustments = adjustments, horizon = horizon,
     coefficients = coefficients, estimation_end = estimation_end,
-    scenario = scenario, ...
+    scenario = scenario, model = model, ...
   )
 
-  # Estimate each equation's residual sd once, from a frozen load.
-  model0 <- load_martin(
-    database, variant = "af", estimate = TRUE,
-    estimation_end = if (coefficients == "reestimated") estimation_end else NULL
-  )
+  # Estimate each equation's residual sd once, from a frozen load. Reuse the
+  # caller's prebuilt `model` (re-attaching `database`) rather than paying a
+  # second ESTIMATE() when one is supplied.
+  model0 <- if (!is.null(model)) {
+    reattach_model_data(model, database)
+  } else {
+    load_martin(
+      database, variant = "af", estimate = TRUE,
+      estimation_end = if (coefficients == "reestimated") estimation_end else NULL
+    )
+  }
   res_sd <- vapply(names(model0$behaviorals), function(eq) {
     r <- as.numeric(model0$behaviorals[[eq]]$residuals)
     r <- r[is.finite(r)]
@@ -718,7 +799,7 @@ solve_martin_stochastic_fallback <- function(database, adjustments, horizon,
       solve_martin(
         database, adjustments = al, horizon = horizon,
         coefficients = coefficients, estimation_end = estimation_end,
-        scenario = scenario, ...
+        scenario = scenario, model = model, ...
       )[, c("variable", "quarter", "value")],
       error = function(e) NULL
     )
