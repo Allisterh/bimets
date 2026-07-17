@@ -1,0 +1,3571 @@
+Outlook EconomicsOutlook Economics
+Outlook Economics
+Outlook Economics
+Australian Macroeconomic (AUS-M) Model Database Listing
+Outlook Economics
+Canberra, Australia 
+12 August 2014
+Outlook Economics is an Australian based economic consultancy, established in 2009, that specializes in economic modelling, policy analysis and forecasting. We develop and maintain economic models and use them to provide analysis and advice on the economic outlook, events and policies.  Outlook Economics is independent and non-partisan – funded only by subscriptions to its models and forecasts, and by commissioned research and analysis.
+© Outlook Economics 2014
+This work is copyright. Persons wishing to reproduce this material should contact Outlook Economics at the following address.
+Canberra
+Outlook Economics
+11 Bailey Place,
+Yarralumla, 
+Canberra ACT 2600
+Telephone+61 2 6282 9747
+EmailInfo@OutlookEconomics.com 
+Websitewww.OutlookEconomics.com
+Disclaimer
+While Outlook Economics endeavours to provide reliable analysis and believes the material it presents is accurate, it will not be liable for any party acting on such information.
+Contents:
+Australian Macroeconomic (AUS-M) Model Database Documentation
+Data Conventions5
+Mnemonic conventions5
+1. National Accounts – Main Aggregates8
+2. National Accounts Deflators9
+3. Industry Output at Basic Prices (Chain Volume Measures):10
+4. Input-Output Weighted Demand Terms12
+5. Effective Indirect Tax Rates (taxes less subsidies on products)13
+6. Structural change terms for deflators14
+7. Aggregate Consumption15
+8. Consumption Components:16
+9. Dwelling Sector17
+10. Exchange Rates19
+11. World Variables19
+12. Exports21
+13. Imports22
+14. Implicit Price of Chain Linked Value Added:23
+15. Industry Investment and Capital Stocks25
+16. Industry Employment, Labour Efficiency, Hours Worked and Vacancies30
+17: Industry Wages and Wage Aggregates32
+18. Consumption Deflators34
+19. Labour Market Variables35
+20. Financial Market Variables40
+21. International Investment Position, Borrowing and Income Flows41
+22. Public Sector, Expenditure, Taxation, Net Lending and Debt43
+Australian Macroeconomic (AUS-M) Model Database Documentation
+Data Conventions
+Unless otherwise stated all data have a quarterly frequency and are seasonally adjusted.
+Constant price / volume data is untagged and has the same base year as the latest Australian Bureau of Statistics (ABS) Australian National Accounts (presently 2009-10).
+All indexes are equal to one in the base year with the base year being the same as that in the national accounts unless otherwise noted.
+Mnemonic conventions
+The model uses mnemonics rather than code to identify series. Each series has a unique mnemonic. The conventions followed are the same as those used by the Commonwealth Treasury in its forecasting spreadsheets and modelling. They originally derive from the 1970’s NIF (National Income Forecasting) model. The OECD’s Economic Outlook Database follows similar conventions derived from the OECD Interlink Model (which in turn were influenced by the NIF conventions). The following provides a guide to the intended meaning of the letters used as suffixes in individual mnemonics:
+B – Borrowing: used in overseas net lending identities. (The model has a full set of stock flow identities - for the overseas net lending identities there is a corresponding V for each B.)  For example the current account balance is BCAZ, the Public Sector Borrowing Requirement is BPSBRZ. The corresponding stocks are VNFLZ (net foreign liabilities) and VDGZ (general government net debt) respectively. 
+C – Consumption
+I – Investment
+E – Input output weighted demand item (variables that feed into the industry and import demand systems). EGi variables are input output weighted demand terms for industry value added at constant prices, while EMi variables are input output weighted demand terms for imports at constant prices.
+G – Output, industry chain linked value added, aggregate expenditure items (e.g. GNE)
+M – Imports
+N – Number – used for labour force and population variables and hours worked, e.g. NLF labour force, NEi employment, NHi hours worked, NPi population.
+P – Prices and national accounts deflators.
+Q – Theoretical ratios (e.g. investment q ratios), dummy variables, structural change terms and time trends.
+R – Rate or ratio – used for financial market interest rates (RI) and exchange rates (RE), depreciation rates (RD) and taxes (RT).
+S – Stock-building / Inventory Investment
+V – Value – used for wealth, borrowing and lending, for example the market value of private sector wealth is VMZ, the value of overseas net foreign liabilities VNFLZ.
+W – World variable
+X – Exports
+As a rule nominal (current price) variables are tagged with a Z. For example the mnemonic/identifier for constant price and current price GDP (average measure) are GDPA and GDPAZ respectively. Often the current price variable is not separately identified but can be derived by multiplying the constant price variable by its respective deflator. For example current price dwelling investment IDWZ is not identified but can be derived as IDW*PIDW.
+The broad industry expenditure and trade classification in AUS-M are shown in Table 1 below:
+1Supply and demand variables in AUS-M
+Notes: The table shows the main variables. Note that business investment is modelled on an industry basis so that there are investment volume and price variables plus variables for sub-components by asset class for each individual industry. These are aggregated up to produce the investment variables shown. 
+Data source: Outlook Economics, AUS-M Model Database.
+Mnemonic
+Variable Description
+Units
+Notes, Formula/Identity
+Source
+1. National Accounts – Main Aggregates
+CONG
+Government Consumption Expenditure
+cvm $m
+ABS Cat No 5206.0
+CON
+Household Consumption Expenditure
+cvm $m
+ABS Cat No 5206.0
+CNR
+Non-rental Consumption
+cvm $m
+ CON-CRE
+ABS Cat No 5206.0
+CRE
+Rental Consumption
+cvm $m
+ABS Cat No 5206.0
+IDW
+Dwelling Investment
+cvm $m
+ABS Cat No 5206.0
+IBP
+Private Business Investment
+cvm $m
+ABS Cat No 5206.0
+IBPU
+Underlying Private Business Investment
+cvm $m
+IBPU=IBP-(IPES+IOBS)
+ABS Cat No 5206.0 and Outlook Economics (OE) calculations
+IOB
+Other Building and Structures
+cvm $m
+ABS Cat No 5206.0
+IOBU
+Underlying Other Building and Structures Investment
+cvm $m
+IOBU=IOB-IOBS
+ABS Cat No 5206.0 and OE calculations
+IPE
+Machinery and Equipment
+cvm $m
+ABS Cat No 5206.0
+IPEU
+Underlying Machinery and Equipment Investment
+cvm $m
+IPEU=IPE-IPES
+ABS Cat No 5206.0 and OE calculations
+IIP
+Investment in Intellectual Property
+cvm $m
+ABS Cat No 5206.0
+IBIO
+Investment in Biological Assets
+cvm $m
+ABS Cat No 5206.0
+IBS
+Second-hand asset sales - total
+cvm $m
+ABS Cat No 5206.0
+IPES
+Second-hand asset sales - machinery and equipment
+cvm $m
+ABS Cat No 5206.0
+IOBS
+Second-hand asset sales - other buildings and structures
+cvm $m
+ABS Cat No 5206.0
+DISIBP
+Additive discrepancy - IBP
+cvm $m
+ABS Cat No 5206.0
+IOTC
+Ownership Transfer Costs
+cvm $m
+ABS Cat No 5206.0
+DPF
+Private Final Demand
+cvm $m
+ABS Cat No 5206.0
+IGE
+Government Enterprise Investment
+cvm $m
+ABS Cat No 5206.0
+IGG
+General Government Investment
+cvm $m
+ABS Cat No 5206.0
+DGF
+Government Final Demand
+cvm $m
+ABS Cat No 5206.0
+DFD
+Domestic Final Demand
+cvm $m
+ABS Cat No 5206.0
+SNN
+Private Non-Farm Stock Building
+cvm $m
+ABS Cat No 5206.0
+SFM
+Farm Stock Building
+cvm $m
+ABS Cat No 5206.0
+DISE
+Statistical Discrepancy (A-E)
+cvm $m
+ABS Cat No 5206.0
+GNEA
+Gross National Expenditure (A)
+cvm $m
+ GNE consistent with GDPA (GDPA-XGS+MGS)
+ABS Cat No 5206.0
+XGS
+Exports of Goods and Services
+cvm $m
+ABS Cat No 5206.0
+MGS
+Imports of Goods and Services
+cvm $m
+ABS Cat No 5206.0
+NETX
+Net Exports
+cvm $m
+ABS Cat No 5206.0
+DFT
+Total Final Demand
+cvm $m
+ABS Cat No 5206.0
+DISEAD
+Additive Discrepancy - GDPE
+cvm $m
+ABS Cat No 5206.0
+GDPE
+Gross Domestic Product (Expenditure)
+cvm $m
+ABS Cat No 5206.0
+GDPI
+Gross Domestic Product (Income)
+cvm $m
+ABS Cat No 5206.0
+GDPP
+Gross Domestic Product (Production)
+cvm $m
+ABS Cat No 5206.0
+GDPA
+Gross Domestic Product (Average)
+cvm $m
+ABS Cat No 5206.0
+GDPAZ
+Nominal Gross Domestic Product 
+$m
+ABS Cat No 5206.0
+GNFP
+Gross Non-Farm Product
+cvm $m
+GNFP=GDPA-GAG
+ABS Cat No 5206.0 and OE calculations
+GGAP
+Output Gap
+%
+Gap between actual and potential GDP. GGAP=(GDPA/GDPAT-1)*100
+OE Calculation
+GDPAT
+Potential GDP (HP Filter Based)
+cvm $m
+OE Calculation
+BCAZ
+Current Account Balance
+$m
+ABS Cat No 5302.0
+BCA
+Current Account Balance as a % of GDP
+% of GDP
+ABS Cat No 5302.0,  52062.0 and OEcalculations
+RTRDB
+Trade Balance as a % of GDP
+% of GDP
+ABS Cat No 5302.0,  52062.0 and OE calculations
+2. National Accounts Deflators 
+PCONG
+Government Consumption - deflator
+Index
+Derived as the nominal divided by the chain-linked volume measure.
+ABS Cat No 5206.0 & OE Calculations.
+PCON
+Household Consumption - deflator
+Index
+Derived as the nominal divided by the chain-linked volume measure.
+ABS Cat No 5206.0 & OE Calculations.
+PCONU
+  Underlying PCON
+Index
+Derived as the nominal divided by the chain-linked volume measure.
+ABS Cat No 5206.0 & OE Calculations.
+PCNR
+  Non-rental consumption - deflator
+Index
+Derived as the nominal divided by the chain-linked volume measure.
+ABS Cat No 5206.0 & OE Calculations.
+PCRE
+  Rental consumption - deflator
+Index
+Derived as the nominal divided by the chain-linked volume measure.
+ABS Cat No 5206.0 & OE Calculations.
+PIDW
+Dwelling Investment  - deflator
+Index
+Derived as the nominal divided by the chain-linked volume measure.
+ABS Cat No 5206.0 & OE Calculations.
+PIBP
+Private Business Investment - deflator
+Index
+Derived as the nominal divided by the chain-linked volume measure.
+ABS Cat No 5206.0 & OE Calculations.
+PIOB
+  Other Building and Structures - deflator
+Index
+Derived as the nominal divided by the chain-linked volume measure.
+ABS Cat No 5206.0 & OE Calculations.
+PIPE
+  Machinery and Equipment - deflator
+Index
+Derived as the nominal divided by the chain-linked volume measure.
+ABS Cat No 5206.0 & OE Calculations.
+PIIP
+  Intangible Fixed Assets - deflator
+Index
+Derived as the nominal divided by the chain-linked volume measure.
+ABS Cat No 5206.0 & OE Calculations.
+PIBIO
+  Livestock - defltor
+Index
+Derived as the nominal divided by the chain-linked volume measure.
+ABS Cat No 5206.0 & OE Calculations.
+PIOTC
+Ownership Transfer Costs - deflator
+Index
+Derived as the nominal divided by the chain-linked volume measure.
+ABS Cat No 5206.0 & OE Calculations.
+PIGE
+Government Enterprise Investment - deflator
+Index
+Derived as the nominal divided by the chain-linked volume measure.
+ABS Cat No 5206.0 & OE Calculations.
+PIGG
+General Government Investment - deflator
+Index
+Derived as the nominal divided by the chain-linked volume measure.
+ABS Cat No 5206.0 & OE Calculations.
+PDGF
+Government Final Demand - deflator
+Index
+Derived as the nominal divided by the chain-linked volume measure.
+ABS Cat No 5206.0 & OE Calculations.
+PGNEA
+Gross National Expenditure (A) - deflator
+Index
+Derived as the nominal divided by the chain-linked volume measure.
+ABS Cat No 5206.0 & OE Calculations.
+PXGS
+Exports of Goods and Services - deflator
+Index
+Derived as the nominal divided by the chain-linked volume measure.
+ABS Cat No 5206.0 & OE Calculations.
+TOT
+Terms of Trade
+Index
+Derived as the nominal divided by the chain-linked volume measure.
+ABS Cat No 5206.0 & OE Calculations.
+PMGS
+Imports of Goods and Services - deflator
+Index
+Derived as the nominal divided by the chain-linked volume measure.
+ABS Cat No 5206.0 & OE Calculations.
+PGDPA
+Gross Domestic Product (A) - deflator
+Index
+Derived as the nominal divided by the chain-linked volume measure.
+ABS Cat No 5206.0 & OE Calculations.
+PGDPE
+Gross Domestic Product (E) - deflator
+Index
+Derived as the nominal divided by the chain-linked volume measure.
+ABS Cat No 5206.0 & OE Calculations.
+PPCONG
+Supply price - government consumption
+Index
+Input-output weighted supply price for individual demand components. See equation listing for identities
+ABS Cat No 5206.0, 5204.0 and OE calculations
+PPCNR
+Supply price - non rental consumption
+Index
+Input-output weighted supply price for individual demand components. See equation listing for identities
+ABS Cat No 5206.0, 5204.0 and OE calculations
+PPIDW
+Supply price - dwelling investment
+Index
+Input-output weighted supply price for individual demand components. See equation listing for identities
+ABS Cat No 5206.0, 5204.0 and OE calculations
+PPIOB
+Supply price - other dwellings and structures
+Index
+Input-output weighted supply price for individual demand components. See equation listing for identities
+ABS Cat No 5206.0, 5204.0 and OE calculations
+PPIPE
+Supply price - machinery and equipment
+Index
+Input-output weighted supply price for individual demand components. See equation listing for identities
+ABS Cat No 5206.0, 5204.0 and OE calculations
+PPIIP
+Supply price - intangible fixed assets
+Index
+Input-output weighted supply price for individual demand components. See equation listing for identities
+ABS Cat No 5206.0, 5204.0 and OE calculations
+PPIBIO
+Supply price - investment in livestock
+Index
+Input-output weighted supply price for individual demand components. See equation listing for identities
+ABS Cat No 5206.0, 5204.0 and OE calculations
+PPIOTC
+Supply price - ownership transfer expenses
+Index
+Input-output weighted supply price for individual demand components. See equation listing for identities
+ABS Cat No 5206.0, 5204.0 and OE calculations
+PPIGE
+Supply price - government enterprise investment
+Index
+Input-output weighted supply price for individual demand components. See equation listing for identities
+ABS Cat No 5206.0, 5204.0 and OE calculations
+PPIGG
+Supply price - general government investment
+Index
+Input-output weighted supply price for individual demand components. See equation listing for identities
+ABS Cat No 5206.0, 5204.0 and OE calculations
+3. Industry Output at Basic Prices (Chain Volume Measures):
+GAG
+Seas adj: GVA: Agriculture, forestry & fishing: Total (A):
+$m cvm
+Series direct from the quarterly national accounts linked back to historical series where necessary
+ABS Cat No 5206.0
+GMIN
+Seas adj: GVA: Mining: Total (B):
+$m cvm
+Series direct from the quarterly national accounts linked back to historical series where necessary
+ABS Cat No 5206.0
+GMAN
+Seas adj: GVA: Manufacturing: Total (C):
+$m cvm
+Series direct from the quarterly national accounts linked back to historical series where necessary
+ABS Cat No 5206.0
+GEGW
+Seas adj: GVA: Electricity, gas & water: Total (D):
+$m cvm
+Series direct from the quarterly national accounts linked back to historical series where necessary
+ABS Cat No 5206.0
+GCST
+Seas adj: GVA: Construction (E):
+$m cvm
+Series direct from the quarterly national accounts linked back to historical series where necessary
+ABS Cat No 5206.0
+GWST
+Seas adj: GVA: Wholesale trade (F):
+$m cvm
+Series direct from the quarterly national accounts linked back to historical series where necessary
+ABS Cat No 5206.0
+GRET
+Seas adj: GVA: Retail trade (G): 
+$m cvm
+Series direct from the quarterly national accounts linked back to historical series where necessary
+ABS Cat No 5206.0
+GACC
+Seas adj: GVA: Accommodation & food services (H):
+$m cvm
+Series direct from the quarterly national accounts linked back to historical series where necessary
+ABS Cat No 5206.0
+GTRN
+Seas adj: GVA: Transport, postal & warehousing: Total (I):
+$m cvm
+Series direct from the quarterly national accounts linked back to historical series where necessary
+ABS Cat No 5206.0
+GCOM
+Seas adj: GVA: Communication services (J):
+$m cvm
+Series direct from the quarterly national accounts linked back to historical series where necessary
+ABS Cat No 5206.0
+GFIN
+Seas adj: GVA: Finance & insurance (K):
+$m cvm
+Series direct from the quarterly national accounts linked back to historical series where necessary
+ABS Cat No 5206.0
+GRE
+Seas adj: GVA: Rental, hiring & real estate services (L):
+$m cvm
+Series direct from the quarterly national accounts linked back to historical series where necessary
+ABS Cat No 5206.0
+GPRO
+Seas adj: GVA: Professional, scientific & technical services (M):
+$m cvm
+Series direct from the quarterly national accounts linked back to historical series where necessary
+ABS Cat No 5206.0
+GADS
+Seas adj: GVA: Administrative & support services (N):
+$m cvm
+Series direct from the quarterly national accounts linked back to historical series where necessary
+ABS Cat No 5206.0
+GPAD
+Seas adj: GVA: Public administration & safety (O):
+$m cvm
+Series direct from the quarterly national accounts linked back to historical series where necessary
+ABS Cat No 5206.0
+GED
+Seas adj: GVA: Education & training (P):
+$m cvm
+Series direct from the quarterly national accounts linked back to historical series where necessary
+ABS Cat No 5206.0
+GHLC
+Seas adj: GVA: Health care & social assistance (Q):
+$m cvm
+Series direct from the quarterly national accounts linked back to historical series where necessary
+ABS Cat No 5206.0
+GREC
+Seas adj: GVA: Arts & recreation services (R):
+$m cvm
+Series direct from the quarterly national accounts linked back to historical series where necessary
+ABS Cat No 5206.0
+GOTS
+Seas adj: GVA: Other services (S):
+$m cvm
+Series direct from the quarterly national accounts linked back to historical series where necessary
+ABS Cat No 5206.0
+GDWT
+Seas adj: GVA: Ownership of dwellings:
+$m cvm
+Series direct from the quarterly national accounts linked back to historical series where necessary
+ABS Cat No 5206.0
+GDPBP
+Seas adj: Gross value added at basic prices:
+$m cvm
+Series direct from the quarterly national accounts linked back to historical series where necessary
+ABS Cat No 5206.0
+GITS
+Seas adj: Taxes less subsidies on products
+$m cvm
+Series direct from the quarterly national accounts linked back to historical series where necessary
+ABS Cat No 5206.0
+GDPP
+Seas adj: CVM: Gross domestic product: Production Measure
+$m cvm
+Series direct from the quarterly national accounts linked back to historical series where necessary
+ABS Cat No 5206.0
+DISPAD
+Seas adj: CVM: Additive discrepancy - Production
+$m cvm
+Series direct from the quarterly national accounts linked back to historical series where necessary
+ABS Cat No 5206.0
+DISP
+Seas adj: Statistical discrepancy (P): * 1
+$m cvm
+Series direct from the quarterly national accounts linked back to historical series where necessary
+ABS Cat No 5206.0
+GSD
+Seas adj: GVA: Distributional Services
+$m 2007/08 sa
+Margin industries in input-output analysis, wholesale trade (F), retail trade (G) and transport, postal and warehousing (H). GSC=GWST+GRET+GTRN
+ABS Cat No 5206.0 and OE calculations
+GSC
+Seas adj: GVA: Consumer Services
+$m 2007/08 sa
+Accommodation and food services (H), arts and recreation services (R) and other (mainly personal) services (S).  GSC=GACC+GREC+GOTS
+ABS Cat No 5206.0 and OE calculations
+GPBS
+Seas adj: GVA: Property and Business Services
+$m 2007/08 sa
+Rental, hiring and real estate services (L), professional, scientific and technical services (M), administrative and support services (N). GPBS=GRE+GPRO+GADS
+ABS Cat No 5206.0 and OE calculations
+GHUC
+Seas adj: GVA: Human Capital Services
+$m 2007/08 sa
+Public administration and safety (O), education and training (P) and health care and social assistance (Q). 
+ABS Cat No 5206.0 and OE calculations
+4. Input-Output Weighted Demand Terms
+EGAG
+I-O Weighted Demand for Agriculture
+$m cvm
+Input output weighted demand for individual industrial outputs. See equation listing for identities.
+Outlook Economics AUS-M model database construction
+EGMIN
+I-O Weighted Demand for Mining
+$m cvm
+Input output weighted demand for individual industrial outputs. See equation listing for identities.
+Outlook Economics AUS-M model database construction
+EGMAN
+I-O Weighted Demand for Manufacturing
+$m cvm
+Input output weighted demand for individual industrial outputs. See equation listing for identities.
+Outlook Economics AUS-M model database construction
+EGCST
+I-O Weighted Demand for Construction
+$m cvm
+Input output weighted demand for individual industrial outputs. See equation listing for identities.
+Outlook Economics AUS-M model database construction
+EGSD
+I-O Weighted Demand for Distributional Services
+$m cvm
+Input output weighted demand for individual industrial outputs. See equation listing for identities.
+Outlook Economics AUS-M model database construction
+EGFIN
+I-O Weighted Demand for Finance and Insurance
+$m cvm
+Input output weighted demand for individual industrial outputs. See equation listing for identities.
+Outlook Economics AUS-M model database construction
+EGPBS
+I-O Weighted Demand for Property and Business Services
+$m cvm
+Input output weighted demand for individual industrial outputs. See equation listing for identities.
+Outlook Economics AUS-M model database construction
+EGSC
+I-O Weighted Demand for Consumer Services
+$m cvm
+Input output weighted demand for individual industrial outputs. See equation listing for identities.
+Outlook Economics AUS-M model database construction
+EGEGW
+I-O Weighted Demand for Electricity, Gas and Water
+$m cvm
+Input output weighted demand for individual industrial outputs. See equation listing for identities.
+Outlook Economics AUS-M model database construction
+EGCOM
+I-O Weighted Demand for Communication Services
+$m cvm
+Input output weighted demand for individual industrial outputs. See equation listing for identities.
+Outlook Economics AUS-M model database construction
+EGHUC
+I-O Weighted Demand for Human Capital and Administration
+$m cvm
+Input output weighted demand for individual industrial outputs. See equation listing for identities.
+Outlook Economics AUS-M model database construction
+EGDWT
+I-O Weighted Demand for Dwelling Output
+$m cvm
+Input output weighted demand for individual industrial outputs. See equation listing for identities.
+Outlook Economics AUS-M model database construction
+EGITS
+I-O Weighted Indicator for Indirect Taxes less Subsidies
+$m cvm
+Input output weighted demand for individual industrial outputs. See equation listing for identities.
+Outlook Economics AUS-M model database construction
+EGTOT
+I-O Weighted Demand for Domestic Output at Market Prices
+$m cvm
+Input output weighted demand for individual industrial outputs. See equation listing for identities.
+Outlook Economics AUS-M model database construction
+5. Effective Indirect Tax Rates (taxes less subsidies on products)
+RTCONG
+Indirect tax rate - government consumption
+Rate
+Implicit tax rate derived via the input-output tables, allocating national accounts tax revenue on products to expenditure items
+ABS Cat No 5206.0
+AUS-M Model database construction
+RTCFD
+Rate of tax: Food
+Rate
+Implicit tax rate derived via the input-output tables, allocating national accounts tax revenue on products to expenditure items
+ABS Cat No 5206.0
+AUS-M Model database construction
+RTCCAL
+Rate of tax: Cigarettes and Alcohol
+Rate
+Implicit tax rate derived via the input-output tables, allocating national accounts tax revenue on products to expenditure items
+ABS Cat No 5206.0
+AUS-M Model database construction
+RTCDOG
+Rate of tax: Durables and Other Goods
+Rate
+Implicit tax rate derived via the input-output tables, allocating national accounts tax revenue on products to expenditure items
+ABS Cat No 5206.0
+AUS-M Model database construction
+RTCMV
+RTCMV
+Rate
+Implicit tax rate derived via the input-output tables, allocating national accounts tax revenue on products to expenditure items
+ABS Cat No 5206.0
+AUS-M Model database construction
+RTCOMT
+RTCOMT
+Rate
+Implicit tax rate derived via the input-output tables, allocating national accounts tax revenue on products to expenditure items
+ABS Cat No 5206.0
+AUS-M Model database construction
+RTCEGW
+RTCEGW
+Rate
+Implicit tax rate derived via the input-output tables, allocating national accounts tax revenue on products to expenditure items
+ABS Cat No 5206.0
+AUS-M Model database construction
+RTCCOM
+RTCCOM
+Rate
+Implicit tax rate derived via the input-output tables, allocating national accounts tax revenue on products to expenditure items
+ABS Cat No 5206.0
+AUS-M Model database construction
+RTCHUC
+RTCHUC
+Rate
+Implicit tax rate derived via the input-output tables, allocating national accounts tax revenue on products to expenditure items
+ABS Cat No 5206.0
+AUS-M Model database construction
+RTCNRT
+Indirect tax rate (total) - non-rental consumption (includes GST)
+Rate
+Implicit tax rate derived via the input-output tables, allocating national accounts tax revenue on products to expenditure items 
+ABS Cat No 5206.0
+AUS-M Model database construction
+RTIDW
+Indirect tax rate - dwelling investment
+Rate
+Implicit tax rate derived via the input-output tables, allocating national accounts tax revenue on products to expenditure items
+ABS Cat No 5206.0
+AUS-M Model database construction
+RTIBP
+Indirect tax rate - private business investment
+Rate
+Implicit tax rate derived via the input-output tables, allocating national accounts tax revenue on products to expenditure items
+ABS Cat No 5206.0
+AUS-M Model database construction
+RTIOB
+Indirect tax rate - other buildings and structures
+Rate
+Implicit tax rate derived via the input-output tables, allocating national accounts tax revenue on products to expenditure items
+ABS Cat No 5206.0
+AUS-M Model database construction
+RTIPE
+Indirect tax rate - machinery and equipment
+Rate
+Implicit tax rate derived via the input-output tables, allocating national accounts tax revenue on products to expenditure items
+ABS Cat No 5206.0
+AUS-M Model database construction
+RTIIP
+Indirect tax rate - intangible fixed assets
+Rate
+Implicit tax rate derived via the input-output tables, allocating national accounts tax revenue on products to expenditure items
+ABS Cat No 5206.0
+AUS-M Model database construction
+RTIBIO
+Indirect tax rate - investment in livestock
+Rate
+Implicit tax rate derived via the input-output tables, allocating national accounts tax revenue on products to expenditure items
+ABS Cat No 5206.0
+AUS-M Model database construction
+RTIOTC
+Indirect tax rate - ownership transfer costs
+Rate
+Implicit tax rate derived via the input-output tables, allocating national accounts tax revenue on products to expenditure items
+ABS Cat No 5206.0
+AUS-M Model database construction
+RTIGE
+Indirect tax rate - government enterprise investment
+Rate
+Implicit tax rate derived via the input-output tables, allocating national accounts tax revenue on products to expenditure items
+ABS Cat No 5206.0
+AUS-M Model database construction
+RTIGG
+Indirect tax rate - general government investment
+Rate
+Implicit tax rate derived via the input-output tables, allocating national accounts tax revenue on products to expenditure items
+ABS Cat No 5206.0
+AUS-M Model database construction
+RTGST
+Indirect tax rate - goods and services tax (GST)
+Rate
+Statutory rate of goods and services taxation
+ABS Cat No 5206.0
+AUS-M Model database construction
+6. Structural change terms for deflators 
+QPCONG
+Shifting supply structure - government consumption
+Index
+Stochastic trend to capture unexplained medium term movement of expenditure deflators relative to aggregated supply price plus indirect taxes
+AUS-M model price system estimation
+QPCNR
+Shifting supply structure  - non rental consumption
+Index
+Stochastic trend to capture unexplained medium term movement of expenditure deflators relative to aggregated supply price plus indirect taxes
+AUS-M model price system estimation
+QPIDW
+Shifting supply structure - dwelling investment
+Index
+Stochastic trend to capture unexplained medium term movement of expenditure deflators relative to aggregated supply price plus indirect taxes
+AUS-M model price system estimation
+QPIOB
+Shifting supply structure - other buildings and structures
+Index
+Stochastic trend to capture unexplained medium term movement of expenditure deflators relative to aggregated supply price plus indirect taxes
+AUS-M model price system estimation
+QPIPE
+Shifting supply structure - machinery and equipment
+Index
+Stochastic trend to capture unexplained medium term movement of expenditure deflators relative to aggregated supply price plus indirect taxes
+AUS-M model price system estimation
+QPIIP
+Shifting supply structure - intangilbe fixed assets
+Index
+Stochastic trend to capture unexplained medium term movement of expenditure deflators relative to aggregated supply price plus indirect taxes
+AUS-M model price system estimation
+QPIBIO
+Shifting supply structure - investment in livestock
+Index
+Stochastic trend to capture unexplained medium term movement of expenditure deflators relative to aggregated supply price plus indirect taxes
+AUS-M model price system estimation
+QPIOTC
+Shifting supply structure - ownership transfer costs
+Index
+Stochastic trend to capture unexplained medium term movement of expenditure deflators relative to aggregated supply price plus indirect taxes
+AUS-M model price system estimation
+QPIGE
+Shifting supply structure - government enterprise investment
+Index
+Stochastic trend to capture unexplained medium term movement of expenditure deflators relative to aggregated supply price plus indirect taxes
+AUS-M model price system estimation
+QPIGG
+Shifting supply structure - general government investment
+Index
+Stochastic trend to capture unexplained medium term movement of expenditure deflators relative to aggregated supply price plus indirect taxes
+AUS-M model price system estimation
+UPCONG
+Equation residual - Price of  government consumption
+Rate
+Equation estimation
+UPCNR
+Equation residual - Price of non rental consumption
+Rate
+Equation estimation
+UPIDW
+Equation residual - Price of  dwelling investment
+Rate
+Equation estimation
+UPIOB
+Equation residual - Price of  other buildings and structures
+Rate
+Equation estimation
+UPIPE
+Equation residual - Price of  machinery and equipment
+Rate
+Equation estimation
+UPIIP
+Equation residual - Price of  investment in intellectual property
+Rate
+Equation estimation
+UPIBIO
+Equation residual - Price of  investment in biological assets
+Rate
+Equation estimation
+UPIOTC
+Equation residual - Price of  ownership transfer costs
+Rate
+Equation estimation
+UPIGE
+Equation residual - Price of  government enterprise investment
+Rate
+Equation estimation
+UPIGG
+Equation residual - Price of  general government investment
+Rate
+Equation estimation
+7. Aggregate Consumption
+CON
+Household Consumption:
+cvm $m
+ABS Cat No 5206.0
+CONZ
+Household Consumption (current prices)
+$m
+ABS Cat No 5206.0
+CNR
+  Non-rental Consumption:
+cvm $m
+CNR=CON-CRE
+ABS Cat No 5206.0
+CRE
+  Rental Consumption:
+cvm $m
+ABS Cat No 5206.0
+YNZ
+Household labour and benefit income (current prices)
+$m
+ABS Cat No 5206.0
+VMZ
+Private Sector Wealth (current prices)
+$m
+Financial and physical wealth, including government bonds but not human capital. Financial and physical wealth is measured at market prices where possible except for the valuation of the stock of consumer durables and motor vehicles which are valued at replacement cost. 
+ABS Cat No 5204.0 and OE calculations
+PKDWE
+House price index: Australia-wide (ABS Capitals adjusted for regional): 
+Index
+ABS capital city established house price index adjusted for regional urban differential in each state from HIA/CBA. ABS series is spliced back to earler REIA and HIA series pre 1989. REIA and HIA series are quality adjusted using KDW/KDWN as an indicator of average quality.
+ABS Cat No 6416.0, HIA/CBA Established House Price data, Historical REIA data, OE calculations
+RTN
+Average income tax rate on labour income
+rate
+ABS Cat No 5206.0 and OE calculations
+QDEMC
+Demographic effects on total consumption
+Index
+Derived by applying imputed savings ratios by age in the base year, in turn derived from estimated consumption and income by age group, to projections of income by age group. Resulting series is indexed to 1 in the base year.
+ABS Cat No 5206.0, 6535.0, 6306.0
+XRVMZ
+Exogenous ratio for wealth (relative to theoretical level)
+Derived from model wealth identity
+8. Consumption Components:
+CSNR
+Non-rental consumption adjusted for services
+cvm $m
+Consumption less rents (CRE) and imputing a service flow to ownership of motor vehicles and durables.
+CSNR=CON-CRE-CMV-CDOG+CSMV+CSDOG.
+ABS Cat No 5206.0 and AUS-M model database construction
+CFD
+Food
+cvm $m
+ABS Cat No 5206.0
+CCAL
+Cigarettes, tobacco and alcohol
+cvm $m
+ABS Cat No 5206.0 and AUS-M model database construction
+CDOG
+Durables and other goods
+cvm $m
+Household durables, clothing and footwear and recreational goods
+ABS Cat No 5206.0
+CSDOG
+Services from durables and other goods
+cvm $m
+Imputed as a rental flow from the stock of durables KDOG
+ABS Cat No 5206.0 and OE calculations
+CMV
+Motor vehicles
+cvm $m
+ABS Cat No 5206.0
+CSMV
+Services from motor vehicles
+cvm $m
+Imputed as a rental flow from the stock of motor vehicles KMV
+ABS Cat No 5206.0 and OE calculations
+COMT
+Operation of motor vehicles and transport
+cvm $m
+Operation of motor vehicles plus consumption of transport services
+ABS Cat No 5206.0 and OE calculations
+CEGW
+Electricity gas and water
+cvm $m
+ABS Cat No 5206.0
+CCOM
+Communitcations
+cvm $m
+ABS Cat No 5206.0
+CHUC
+Private health and education
+cvm $m
+ABS Cat No 5206.0 and OE calculations
+CSRV
+Other Services
+cvm $m
+Includes finance and insurance and services nec.
+ABS Cat No 5206.0 and OE calculations
+KDOG
+Stock of Durable Goods
+cvm $m
+Perpetual inventory methodology
+OE calculations
+KMV
+Stock of Motor Vehicles
+cvm $m
+PIM 
+OE calculations
+CGOOD
+Consumption of Goods
+cvm $m
+CFD+CCAL+CDOG
+OE calculations
+CSRVT
+Consumption of Services (excluding rents)
+cvm $m
+CON-CGOOD-CRE
+OE calculations
+Stochastic Trends (capturing changing tastes, product innovation, demographic effects and changing income) 
+QCFDT
+Trend for food
+Index
+Derived using simple state space techniques. Trends sum to zero
+Consumption demand system estimation
+QCCALT
+Trend for cigarettes and alcohol
+Index
+Derived using simple state space techniques. Trends sum to zero
+Consumption demand system estimation
+QCSDOGT
+Trend for services from durables and other goods
+Index
+Derived using simple state space techniques. Trends sum to zero
+Consumption demand system estimation
+QCSMVT
+Trend for services from motor vehicles
+Index
+Derived using simple state space techniques. Trends sum to zero
+Consumption demand system estimation
+QCOMTT
+Trend for operation of motor vehicles and transport
+Index
+Derived using simple state space techniques. Trends sum to zero
+Consumption demand system estimation
+QCEGWT
+Trend for electricity gas and water
+Index
+Derived using simple state space techniques. Trends sum to zero
+Consumption demand system estimation
+QCCOMT
+Trend for communications
+Index
+Derived using simple state space techniques. Trends sum to zero
+Consumption demand system estimation
+QCHUCT
+Trend for private health and education services
+Index
+Derived using simple state space techniques. Trends sum to zero
+Consumption demand system estimation
+Equation Residuals:
+UCON
+Aggregate Consumption
+Ln Rate
+Dependant variable is log change in household consumption adjusted for service flows of stocks of motor vehicles and durables (CONS)
+Equation Estimation
+UCFD
+Food
+Rate
+Share of non-rental consumption
+Consumption demand system estimation
+UCCAL
+Cigarettes and alcohol
+Rate
+Share of non-rental consumption
+Consumption demand system estimation
+UCSDOG
+Services from durables and other goods
+Rate
+Share of non-rental consumption
+Consumption demand system estimation
+UCSMV
+Services from motor vehicles
+Rate
+Share of non-rental consumption
+Consumption demand system estimation
+UCOMT
+Operation of motor vehicles and transport
+Rate
+Share of non-rental consumption
+Consumption demand system estimation
+UCEGW
+Electricity gas and water
+Rate
+Share of non-rental consumption
+Consumption demand system estimation
+UCCOM
+Communications
+Rate
+Share of non-rental consumption
+Consumption demand system estimation
+UCHUC
+Private health and education services
+Rate
+Share of non-rental consumption
+Consumption demand system estimation
+9. Dwelling Sector
+IDW_
+Dwelling Investment
+cvm $m
+ABS Cat No 5206.0
+RIDW
+Dwelling Investment over trend GDP
+%
+OE Calculation
+QDW
+Dwelling Valuation Q Ratio
+Ratio
+For private sector wealth. After tax rental return over required rate of return
+Equation estimation
+QDWI
+Dwelling Investment Q Ratio
+Ratio
+For dwelling investment equation. After tax rental rate of return adjusted for upward trend in land values over required rate of return
+Equation estimation
+QDWM
+Market Q Ratio (PKDWE/PIDW) (Includes land component)
+Ratio
+For illustration. PIDW is a deflator for the construction component of established dwellings. Assuming construction productivity runs at around average levels, the deflator will rise at around the same rate as consumer prices.  PKDWE on the other hand includes a land component (which currently accounts for a around two thirds of the value of established dwellings on average). As land is in part a fixed resource its value should rise according to Hotellings principle at a rate approximating the expected rate of return on capital.  Hence the deflator should rise at a faster rate than consumer prices leading to a gradual increase in the ratio over time. 
+OE Calculation
+QDEMD
+Demographic effects on consumption of rents
+Index
+Imputed by applying imputed savings rates by age group to times series of estimated income by age group
+OE Calculation
+NPADB
+Household Forming Copmponent of Population (20-45)
+,000
+OE Calculation
+KDWN
+Number of Dwellings
+,000
+Derived from Census data updated by completions less demolitions
+ABS Cat No 8752.0, ABS Census data and OE calculations
+KDW
+Dwelling Capital Stock
+cvm $m
+Perpetual inventory method. Deprection rates are derived in a way that ensures the quarterly dwelling capital stock is consistent with ABS ANA dwelling capital stock data in history.
+ABS Cat No 5206.0, 5204.0 and OE calculations
+KVACD
+Rental Vacancies
+%
+Population weighted average of seasonally adjusted capital city rental vacancy rates
+REIA Market Facts and OE calculations
+PKDWE 
+Established House Prices (Australia-wide including regionals)
+Index
+ABS capital city established house price index adjusted for regional urban differential in each state from HIA/CBA. ABS series is spliced back to earler REIA and HIA series pre 1989. REIA and HIA series are quality adjusted using KDW/KDWN as an indicator of average quality.
+ABS Cat No 6416.0, CBA/HIA Housing Affordability Reports, Historical REIA data, OE calculations
+RPKDWE
+Real Established House Prices:
+Index
+PKDWE/PCON
+OE calculation
+RRENT1
+Rental return (Simple Method)
+%
+Ilustrative. Price of rents over the established house price times scaling factor
+OE calculation
+RRENT
+Rental return
+%
+After tax rental income expressed as a percentage of the market value of the dwelling capital stock
+OE calculation
+RRENTM
+Rental margin over real 10 year bond
+% points
+OE calculation
+RRENTT
+Rental return (inclusive of normal capital gain)
+%
+OE calculation
+RIMORT
+Banks Standard Mortgage Rate: 
+%
+RBA Statistics
+RMWDG
+Bank Mortgage Wedge
+% points
+RIMORT – RI90
+OE Calculation
+QAFFORD
+Housing Affordability
+Index
+After tax labour income adjusted for the incidence of unemployment over mortgage servicing costs
+Model Identity
+RKDDW
+Dwelling capital stock: Rate of of depreciation
+Rate
+Derived by inverting PIM given ANA capital stock and QNA investment.
+OE calculation
+RTCRE
+Indirect tax rate on rental consumptions (includes local government rates and charges)
+Rate
+Expressed as a proportion of rental consumption CREZ. Estimated as (CREZ-GDWZ)/CREZ
+ABS Cat No 5206.0 and OE calculation
+UIDW
+Dwelling investment - equation residual
+Rate
+Expressed as a proportion of the dwellin capital stock.  (Equation dependant variable is IDW/KDW(-1))
+Equation estimation
+UKVACD
+Rental vacancy rate – equartion residual
+%
+Equation estimation
+UQDW
+Dwelling Q ratio - residual
+Rate
+Set to zero – variable to allow shocks to be introduced
+XRPKDWE
+Ratio of established house price to theoretical level
+Equation estimation
+XRQORD
+Ratio of All Ords Index to theoretical level
+Equation estimation
+10. Exchange Rates
+RETWI
+Exchange Rate : Trade Weighted Index
+Index
+Chain-weighted index based on mechandise trade weights by country
+ABS Cat No 5432.0, 5439.0, OECD MEI Database and RBA Statistics and OE calculations
+RRETWI
+Exchange Rate : Real Trade Weighted Index (Consumer Prices)
+Index
+Real exchange rate based on consumer prices. RRETWI=RETWI*PCON/WPCON. 
+OECD MEI Database and RBA Statistics and OE calculations.
+RETWIM
+Exchange Rate : Trade (Import) Weighted Index
+Index
+Chain weighted geometric index of exchange rates weighted by current price share of merchandise imports.  Based on 25 countries covering approximately 94 per cent of total imports. Excludes OPEC countries except Indonesia and adjusts down the weight for Singapore so that the index reflects non-oil manufacturing import sources, to be consistent with WPMGS.  (The price of oil imports PMPE depends on the world (Tapis) price in SDRs WPMPE and RESDR.) (The same adjusted weights are used for WPMGS.) Linked back to the historical TRYM series with calender year splice with historical series to Dec 1990.
+ABS Cat No 5439.0,  OECD MEI Database EMED Database, IMF IFS Database, RBA Statistics, TRYM Model Database and OE calculations
+RESDR
+Exchange Rate : Special Drawing Rights (Index)
+Index
+IMF Special Drawing Rights are a global trade weighted average of the $US, Yen, euro and pound
+OECD MEI Database and RBA Statistics
+REUSD
+Exchange Rate : United States Dollar /$A (Index)
+Index
+OECD MEI Database and RBA Statistics
+RETWXG
+Exchange Rate : Trade (Exports of Goods) Weighted Index
+Index
+Chain weighted index based on destination of exports by country
+ABS Cat No 5432.0, OECD MEI Database and RBA Statistics and OE calculations
+RETWXS
+Exchange Rate : Trade (Exports of Services) Weighted Index
+Index
+Index based on destination of service exports
+ABS Cat No 5302.0
+OECD MEI Database and RBA Statistics and OE calculations
+Exchange Rate Exogenous Ratios (Relative to RETWI)
+XRRETWIM
+Ratio RETWIM to RETWI
+Ratio
+Exogenous ratio for projections
+OE calculation
+XRSDR
+Ratio RESDR to RETWI
+Ratio
+Exogenous ratio for projections
+OE calculation
+XRREUSD
+Ratio REUSD to RETWI
+Ratio
+Exogenous ratio for projections
+OE calculation
+XRRETWXG
+Ratio RETWXG to RETWI
+Ratio
+Exogenous ratio for projections
+OE calculation
+XRRETWXS
+Ratio RETWXS to RETWI
+Ratio
+Exogenous ratio for projections
+OE calculation
+11. World Variables
+WPXC
+Commodity Price Index
+Index
+RBA commodity price index in SDRs rebased
+RBA Statistics
+RWPXC
+Commodity Price Index: / WPCON
+Index
+WPXC divided by the G7 consumption deflator
+RBA Statistice, OECD MEI, OE calculation
+WPXMIN
+Non-Rural Commodity Price Index (Mining Exports) SDRs
+Index
+RBA non-rural commodity price index in SDRs idexed to base year
+RBA Statistics
+RWPXMIN
+Non-Rural Commodity Price Index (Mining Exports) SDRs: / WPCON
+Index
+WPXMIN  divided by the G7 consumption deflator
+RBA Statistice, OECD MEI, OE calculation
+WTOTMIN
+Non-Rural Commodity Price Index (Mining Exports) SDRs: / WPMGS
+Index
+WPXMIN/ WPMGS
+OE calculation
+WPXAG
+Rural Commodity Price Index (Agricultural Exports) SDRs
+Index
+RBA rural commodity price index in SDRs indexed to base year 
+RBA Statistics
+RWPXAG
+Real Rural Commodity Price Index (Agricultural Exports) SDRs
+Index
+WPXAG/WPCON
+OE calculation
+WNPOP
+Population of Australia's Major Trading Partners ('000)
+Index
+Used for estimating BOP urequited income transfers
+TRYM model database, UN Population Prospects 2010 Update
+WMTP
+Gross Domestic Product of Major Trading Partners (index)
+Index
+OECD EO Database, IMF WEO Database, OE China Model Database
+WMTPG
+Major Trading Partners for Manufactures: Imports
+Index
+MTP merchandise imports for export volume equations (XMAN, and XAG)
+WMTPS
+Major Trading Partners Services: Exports
+Index
+MTP service imports for export service volume equation (XSRV)
+WIP
+World Industrial Production
+Index
+OECD plus major emerging and developing country manufacturing production aggregated at US dollars in baseyear
+OECD MEI database, CPB Trade Monitor, World Bank WDI Database, IMF IFS Database
+WPMTP
+Major Trading Partners' GDP Deflator
+Index
+OECD MEI Database, OECD EO Database, IMF IFS Database and OE calculation
+WPMTPG
+Prices in major trading partners weighted by exports of goods
+Index
+OECD MEI Database, OECD EO Database, IMF IFS and WEO Databases and OE calculation
+WPMTPS
+Prices in major trading partners weighted by exports of services
+Index
+OECD MEI Database, OECD EO Database, IMF IFS Databases and OE calculation
+WPMGS
+World Price of Imports at Manufactured Producer Prices
+Index
+Chain weighted geometric average of manufacturing producer price indexes from import source countries. Weights are current price shares of total imports consistent with weights for RETWIM (see listing under Exchange Rates.) Covers 25 countries and roughly 94 per cent of non-oil imports. Values before 1998 based on historic TRYM series.
+OECD MEI Database, EMED Developing Asia Database, IMF IFS Database, TRYM Model Database and OE calculation
+WPMPE
+World Price of Petroleum Products
+Index
+Index of SDR world price.  Malaysian Tapis spot price from 1996, linked back to IMF reference price converted to SDRs and indexed to base year.
+US EIA historical data, Bloomberg, IMF IFS database
+WRPMPE
+World Real Price of Petroleum Products
+Index
+WPMPE/WPCON
+WRIGL_
+Long Term Interest Rates of Australia's Major Trading
+%
+GDP weighted average of  10 year bond yields in the US, Euro area, Japan, UK, Canada and Korea
+OECD MEI Database, OECD EO Database
+WRRIGL
+Real Long Term Interest Rates of Australia's Major Trading:
+%
+(WRIGL-WFIE)/(1+WFIE/100)
+OE calculation
+WRI90
+Short Term Interest Rates of Australia's Major Trading
+%
+GDP weighted average of  90 day bill rates in the US, Euro area, Japan, UK, Canada and Korea
+WFIE_
+World Inflationary Expectations (Percent)
+%
+GDP weighted average of 10 year inflation expectations consistent with WRIGL derived from CPI indexed bonds where available and  a centered weighted moving average of inflation included OECD forecasts where not.
+OECD EO database Blomberg and Financial Times
+WPCON
+Consumption Deflator of Australia's Major Trading Partners
+Index
+G7 consumption deflator
+OECD EO database
+12. Exports
+XC
+Exports: Commodities
+$m cvm
+ABS  Cat No 5302.0 and OE calculations
+XAG
+Exports: Agricultural goods (cvm $m)
+$m cvm
+Includes sugar and wine exports, (the BOP export categories: “Rural credits” plus “Other non-rural including sugar and beverages”).
+ABS  Cat No 5302.0 and OE calculations
+XMIN
+Exports: Mining goods
+$m cvm
+Includes exports of processed metals
+ABS  Cat No 5302.0 and OE calculations
+XMINU
+Exports: Mining goods (Underlying)
+XMIN adjusted for RBA gold sales
+ABS  Cat No 5302.0 and OE calculations
+XMAN
+Exports: Manufactured goods (cvm $m)
+$m cvm
+ABS  Cat No 5302.0 and OE calculations
+XSRV
+Exports: Services (cvm $m)
+$m cvm
+ABS  Cat No 5302.0 and OE calculations
+XNC
+Exports: Non Commodities
+$m cvm
+ABS  Cat No 5302.0 and OE calculations
+XRBA
+Exports: RBA gold sales
+ABS  Cat No 5302.0 and OE calculations
+XGS
+Exports: Goods & services
+$m cvm
+ABS  Cat No 5204.0 and OE calculations
+PXC
+Price of Commodity Exports
+Index
+Nominal value divided by cvm 
+ABS  Cat No 5302.0 and OE calculations
+PXMIN
+Price of Mining Exports
+Index
+Nominal value divided by cvm
+ABS  Cat No 5302.0 and OE calculations
+PXAG
+Price of Agricultural Imports
+Index
+Nominal value divided by cvm
+ABS  Cat No 5302.0 and OE calculations
+PXNC
+Price of Non-Commodity Exports
+Index
+Nominal value divided by cvm
+ABS  Cat No 5302.0 and OE calculations
+PXGS
+Price of Exports
+Index
+Nominal value divided by cvm
+ABS  Cat No 5302.0 and OE calculations
+PXMAN
+Price of Manufacturing Exports
+Index
+Nominal value divided by cvm
+ABS  Cat No 5302.0 and OE calculations
+PXSRV
+Price of Service Exports
+Index
+Nominal value divided by cvm
+ABS  Cat No 5302.0 and OE calculations
+PPXMAN
+Supply Prices: Exports:  Manufacturing
+Index
+Input output weighted supply price
+ABS Cat No 5209.0 and model identity
+PPXSRV
+Supply Prices: Exports:  Services
+Index
+Input output weighted supply price
+ABS Cat No 5209.0 and model identity
+13. Imports
+MCON
+Imports: Consumption Goods
+$m cvm
+ABS  Cat No 5302.0 and OE calculations
+MCAP
+Imports: Capital Goods
+$m cvm
+ABS  Cat No 5302.0 and OE calculations
+MINT
+Imports: Intermediate Goods
+$m cvm
+ABS  Cat No 5302.0 and OE calculations
+MPE
+Imports: Petroleum Products
+$m cvm
+ABS  Cat No 5302.0 and OE calculations
+MSRV
+Imports: Services
+$m cvm
+ABS  Cat No 5302.0 and OE calculations
+MNMG
+Imports: Non-monetary gold
+$m cvm
+ABS  Cat No 5302.0 and OE calculations
+MGS_
+Imports: Goods and services: Total
+$m cvm
+ABS  Cat No 5204.0 and OE calculations
+MGIT
+Imports: IT Imports
+$m cvm
+ABS  Cat No 5302.0 and OE calculations
+EMCON
+I-O Weighted Demand for Imports: Consumption Goods
+$m cvm
+Input output weighted demand for imports outputs. Input output identities allocate demand across supply items. See equation listing for identities.
+ABS Cat No 5209.0 and model identity
+EMCAP
+I-O Weighted Demand for Imports: Capital Goods
+$m cvm
+Input output weighted demand for imports outputs. Input output identities allocate demand across supply items. See equation listing for identities.
+ABS Cat No 5209.0 and model identity
+EMINT
+I-O Weighted Demand for Imports: Intermediate Goods
+$m cvm
+Input output weighted demand for imports outputs. Input output identities allocate demand across supply items. See equation listing for identities.
+ABS Cat No 5209.0 and model identity
+EMPE
+I-O Weighted Demand for Imports: Petroleum Products
+$m cvm
+Input output weighted demand for imports outputs. Input output identities allocate demand across supply items. See equation listing for identities.
+ABS Cat No 5209.0 and model identity
+EMSRV
+I-O Weighted Demand for Imports: Services
+$m cvm
+Input output weighted demand for imports outputs. Input output identities allocate demand across supply items. See equation listing for identities.
+ABS Cat No 5209.0 and model identity
+PMCON
+Price of Imports: Consumer Goods
+Index
+Nominal value divided by chain volume measure (cvm)
+ABS  Cat No 5302.0 and OE calculations
+PMCAP
+Price of Imports: Capital Goods
+Index
+Nominal value divided by chain volume measure (cvm)
+ABS  Cat No 5302.0 and OE calculations
+PMINT
+Price of Imports: Intermediate Goods
+Index
+Nominal value divided by chain volume measure (cvm)
+ABS  Cat No 5302.0 and OE calculations
+PMPE
+Price of Import: Petroleum Products
+Index
+Nominal value divided by chain volume measure (cvm)
+ABS  Cat No 5302.0 and OE calculations
+PMSRV
+Price of Imports: Services
+Index
+Nominal value divided by chain volume measure (cvm)
+ABS  Cat No 5302.0 and OE calculations
+PMGIT
+Price of IT Imports
+Index
+Nominal value divided by chain volume measure (cvm)
+ABS  Cat No 5302.0 and OE calculations
+PMNMG
+Price of Imports: Non-Monetary Gold
+Index
+Nominal value divided by chain volume measure (cvm)
+ABS  Cat No 5302.0 and OE calculations
+PMGS_
+Price of Imports: Goods and Services Total
+Index
+Nominal value divided by chain volume measure (cvm)
+ABS  Cat No 5302.0 and OE calculations
+RPMCON
+Relative Price of Imports of Consumer Goods 
+Ln
+Ln(PMCON/PSUPNC)
+OE calculation
+RPMCAP
+Relative Price of Imports of Capital Goods
+Ln
+Ln(PMCAP/PSUPNC)
+OE calculation
+RPMINT
+Relative Price of Imports of Intermediate Goods
+Ln
+Ln(PMINT/PSUPNC)
+OE calculation
+RPMPE
+Relative Price of Imports of Petroleum Products
+Ln
+Ln(PMPE/PSUPNC)
+OE calculation
+RPMSRV
+Relative Price of Imports of Services
+Ln
+Ln(PMSRV/PSUPNC)
+OE calculation
+RPMGIT
+Relative Price of IT Imports
+Ln
+Ln(PMGIT/PSUPNC)
+OE calculation
+UPMCON
+Equation residual - PMCON
+Ln
+Equation estimation
+UPMCAP
+Equation residual - PMCAP
+Ln
+Equation estimation
+UPMINT
+Equation residual - PMINT
+Ln
+Equation estimation
+UPMPE
+Equation residual - PMPE
+Ln
+Equation estimation
+UPMSRV
+Equation residual - PMSRV
+Ln
+Equation estimation
+UPMGS
+Equation residual - PMGS
+Ln
+Equation estimation
+UPMGIT
+Equation residual - PMGIT
+Ln
+Equation estimation
+14. Implicit Price of Chain Linked Value Added:
+PGAG
+Output Price - Agriculture
+Index
+Derived by interpolating ABS ANA estimates of gross value added at basic prices and dividing by equivalent QNA quarterly CVM measure. Internpolation uses a combination of Denton and Chow ans Lin procedures (i.e annual constraint plus indicator series).
+ABS Cat No 5204.0, 5206.0 and OE estimates
+PGMIN
+Output Price - Mining
+Index
+Derived by interpolating ABS ANA estimates of gross value added at basic prices and dividing by equivalent QNA quarterly CVM measure. Internpolation uses a combination of Denton and Chow ans Lin procedures (i.e annual constraint plus indicator series).
+ABS Cat No 5204.0, 5206.0 and OE estimates
+PGMAN
+Output Price - Manufacturing
+Index
+Derived by interpolating ABS ANA estimates of gross value added at basic prices and dividing by equivalent QNA quarterly CVM measure. Internpolation uses a combination of Denton and Chow ans Lin procedures (i.e annual constraint plus indicator series).
+ABS Cat No 5204.0, 5206.0 and OE estimates
+PGCST
+Output Price - Construction
+Index
+Derived by interpolating ABS ANA estimates of gross value added at basic prices and dividing by equivalent QNA quarterly CVM measure. Internpolation uses a combination of Denton and Chow ans Lin procedures (i.e annual constraint plus indicator series).
+ABS Cat No 5204.0, 5206.0 and OE estimates
+PGSD
+Output Price - Distributional Services
+Index
+Derived by interpolating ABS ANA estimates of gross value added at basic prices and dividing by equivalent QNA quarterly CVM measure. Internpolation uses a combination of Denton and Chow ans Lin procedures (i.e annual constraint plus indicator series).
+ABS Cat No 5204.0, 5206.0 and OE estimates
+PGK
+Output Price - Property and Business Services
+Index
+Derived by interpolating ABS ANA estimates of gross value added at basic prices and dividing by equivalent QNA quarterly CVM measure. Internpolation uses a combination of Denton and Chow ans Lin procedures (i.e annual constraint plus indicator series).
+ABS Cat No 5204.0, 5206.0 and OE estimates
+PGL
+Output Price - Finance
+Index
+Derived by interpolating ABS ANA estimates of gross value added at basic prices and dividing by equivalent QNA quarterly CVM measure. Internpolation uses a combination of Denton and Chow ans Lin procedures (i.e annual constraint plus indicator series).
+ABS Cat No 5204.0, 5206.0 and OE estimates
+PGSC
+Output Price - Consumer Services
+Index
+Derived by interpolating ABS ANA estimates of gross value added at basic prices and dividing by equivalent QNA quarterly CVM measure. Internpolation uses a combination of Denton and Chow ans Lin procedures (i.e annual constraint plus indicator series).
+ABS Cat No 5204.0, 5206.0 and OE estimates
+PGEGW
+Output Price - Electricity gas and water
+Index
+Derived by interpolating ABS ANA estimates of gross value added at basic prices and dividing by equivalent QNA quarterly CVM measure. Internpolation uses a combination of Denton and Chow ans Lin procedures (i.e annual constraint plus indicator series).
+ABS Cat No 5204.0, 5206.0 and OE estimates
+PGCOM
+Output Price - Communications
+Index
+Derived by interpolating ABS ANA estimates of gross value added at basic prices and dividing by equivalent QNA quarterly CVM measure. Internpolation uses a combination of Denton and Chow ans Lin procedures (i.e annual constraint plus indicator series).
+ABS Cat No 5204.0, 5206.0 and OE estimates
+PGHUC
+Output Price - Human capital services
+Index
+Derived by interpolating ABS ANA estimates of gross value added at basic prices and dividing by equivalent QNA quarterly CVM measure. Internpolation uses a combination of Denton and Chow ans Lin procedures (i.e annual constraint plus indicator series).
+ABS Cat No 5204.0, 5206.0 and OE estimates
+PGDW
+Output Price - Dwellings owned by persons
+Index
+Derived by interpolating ABS ANA estimates of gross value added at basic prices and dividing by equivalent QNA quarterly CVM measure. Internpolation uses a combination of Denton and Chow ans Lin procedures (i.e annual constraint plus indicator series).
+ABS Cat No 5204.0, 5206.0 and OE estimates
+PGDWT
+Output Price - Total dwellings
+Index
+Derived by interpolating ABS ANA estimates of gross value added at basic prices and dividing by equivalent QNA quarterly CVM measure. Internpolation uses a combination of Denton and Chow ans Lin procedures (i.e annual constraint plus indicator series).
+ABS Cat No 5204.0, 5206.0 and OE estimates
+PGITS
+Implicit price - Indirect taxes and subsidies
+Index
+Derived by interpolating ABS ANA estimates of gross value added at basic prices and dividing by equivalent QNA quarterly CVM measure. Internpolation uses a combination of Denton and Chow ans Lin procedures (i.e annual constraint plus indicator series).
+ABS Cat No 5204.0, 5206.0 and OE estimates
+PMCON_
+Price of Imports: Consumer Goods
+Index
+ABS Cat No 5302.0
+PMCAP_
+Price of Imports: Capital Goods
+Index
+ABS Cat No 5302.0
+PMINT_
+Price of Imports: Intermediate Goods
+Index
+ABS Cat No 5302.0
+PMPE_
+Price of Import: Petroleum Products
+Index
+ABS Cat No 5302.0
+PMSRV_
+Price of Imports: Services
+Index
+ABS Cat No 5302.0
+PMNMG_
+Price of Imports: Non-Monetary Gold
+Index
+ABS Cat No 5302.0
+PMGS_
+Price of Imports: Total Goods and Services
+ABS Cat No 5206.0
+PSUPNC
+Price of non-commodity supply (domestic plus imports)
+Index
+Reference price for industry and import demand system.
+ABS Cat No 5206.0, 5302.0 and model identity
+15. Industry Investment and Capital Stocks
+IAG
+Investment: Agriculture, Forestry & Fishing
+$m cvm
+Interpolated from ANA series using a combination of the Denton and Chow and Lin procedures (with CAPEX quarterly data as indicator series)
+ABS Cat No 5206.0, 5204.0 and 5625.0 and OE calculations
+IMIN
+Investment: Mining
+$m cvm
+Interpolated from ANA series using a combination of the Denton and Chow and Lin procedures (with CAPEX quarterly data as indicator series)
+ABS Cat No 5206.0, 5204.0 and 5625.0 and OE calculations
+IMAN
+Investment: Manufacturing
+$m cvm
+Interpolated from ANA series using a combination of the Denton and Chow and Lin procedures (with CAPEX quarterly data as indicator series)
+ABS Cat No 5206.0, 5204.0 and 5625.0 and OE calculations
+ICST
+Investment: Construction
+$m cvm
+Interpolated from ANA series using a combination of the Denton and Chow and Lin procedures (with CAPEX quarterly data as indicator series)
+ABS Cat No 5206.0, 5204.0 and 5625.0 and OE calculations
+ISD
+Investment: Distributional Services
+$m cvm
+Interpolated from ANA series using a combination of the Denton and Chow and Lin procedures (with CAPEX quarterly data as indicator series)
+ABS Cat No 5206.0, 5204.0 and 5625.0 and OE calculations
+IFIN
+Investment: Finance and Insurance
+$m cvm
+Interpolated from ANA series using a combination of the Denton and Chow and Lin procedures (with CAPEX quarterly data as indicator series)
+ABS Cat No 5206.0, 5204.0 and 5625.0 and OE calculations
+IPBS
+Investment: Property and Business Services
+$m cvm
+Interpolated from ANA series using a combination of the Denton and Chow and Lin procedures (with CAPEX quarterly data as indicator series)
+ABS Cat No 5206.0, 5204.0 and 5625.0 and OE calculations
+ISC
+Investment: Consumer Services
+$m cvm
+Interpolated from ANA series using a combination of the Denton and Chow and Lin procedures (with CAPEX quarterly data as indicator series)
+ABS Cat No 5206.0, 5204.0 and 5625.0 and OE calculations
+IEGW
+Investment: Electricity, Gas & Water
+$m cvm
+Interpolated from ANA series using a combination of the Denton and Chow and Lin procedures (with CAPEX quarterly data as indicator series)
+ABS Cat No 5206.0, 5204.0 and 5625.0 and OE calculations
+ICOM
+Investment: Communications
+$m cvm
+Interpolated from ANA series using a combination of the Denton and Chow and Lin procedures (with CAPEX quarterly data as indicator series)
+ABS Cat No 5206.0, 5204.0 and 5625.0 and OE calculations
+IHUC
+Investment: Human Capital and Administration
+$m cvm
+Interpolated from ANA series using a combination of the Denton and Chow and Lin procedures (with CAPEX quarterly data as indicator series)
+ABS Cat No 5206.0, 5204.0 and 5625.0 and OE calculations
+KAG
+Agriculture (ANZSIC division A)
+$m cvm
+Estimated using a perpetual inventory methodology with depreciation rates derived so that quarterly series are consistent with ABS ANA net capital stock estimates estimates.
+ABS Cat No 5204.0, 5206.0 and OE estimates
+KMIN
+Mining (ANZSIC division B)
+$m cvm
+Estimated using a perpetual inventory methodology with depreciation rates derived so that quarterly series are consistent with ABS ANA net capital stock estimates estimates.
+ABS Cat No 5204.0, 5206.0 and OE estimates
+KMAN
+Manufacturing (ANZSIC division C)
+$m cvm
+Estimated using a perpetual inventory methodology with depreciation rates derived so that quarterly series are consistent with ABS ANA net capital stock estimates estimates.
+ABS Cat No 5204.0, 5206.0 and OE estimates
+KCST
+Construction (ANZSIC division E)
+$m cvm
+Estimated using a perpetual inventory methodology with depreciation rates derived so that quarterly series are consistent with ABS ANA net capital stock estimates estimates.
+ABS Cat No 5204.0, 5206.0 and OE estimates
+KSD
+Distributional Services (ANZSIC division F,G,I)
+$m cvm
+Estimated using a perpetual inventory methodology with depreciation rates derived so that quarterly series are consistent with ABS ANA net capital stock estimates estimates.
+ABS Cat No 5204.0, 5206.0 and OE estimates
+KFIN
+Finance and Insurance (ANZSIC division K)
+$m cvm
+Estimated using a perpetual inventory methodology with depreciation rates derived so that quarterly series are consistent with ABS ANA net capital stock estimates estimates.
+ABS Cat No 5204.0, 5206.0 and OE estimates
+KPBS
+Property and Business Services (ANZSIC division L)
+$m cvm
+Estimated using a perpetual inventory methodology with depreciation rates derived so that quarterly series are consistent with ABS ANA net capital stock estimates estimates.
+ABS Cat No 5204.0, 5206.0 and OE estimates
+KSC
+Consumer Services (ANZSIC division P,H,Q)
+$m cvm
+Estimated using a perpetual inventory methodology with depreciation rates derived so that quarterly series are consistent with ABS ANA net capital stock estimates estimates.
+ABS Cat No 5204.0, 5206.0 and OE estimates
+KEGW
+Electricity, Gas & Water (ANZSIC division D)
+$m cvm
+Estimated using a perpetual inventory methodology with depreciation rates derived so that quarterly series are consistent with ABS ANA net capital stock estimates estimates.
+ABS Cat No 5204.0, 5206.0 and OE estimates
+KCOM
+Communications (ANZSIC division J)
+$m cvm
+Estimated using a perpetual inventory methodology with depreciation rates derived so that quarterly series are consistent with ABS ANA net capital stock estimates estimates.
+ABS Cat No 5204.0, 5206.0 and OE estimates
+KHUC
+Human Capital and Administration (ANZSIC division M,N,O)
+$m cvm
+Estimated using a perpetual inventory methodology with depreciation rates derived so that quarterly series are consistent with ABS ANA net capital stock estimates estimates.
+ABS Cat No 5204.0, 5206.0 and OE estimates
+EFFAGC
+Capital Productivity Agriculture
+Index
+Stochastic trend of capital productivity abstracting from substitution and cyclical effects
+Production function equation joint estimation
+EFFMINC
+Capital Productivity Mining
+Index
+Stochastic trend of capital productivity abstracting from substitution and cyclical effects
+Production function equation joint estimation
+EFFMANC
+Capital Productivity Manufacturing
+Index
+Stochastic trend of capital productivity abstracting from substitution and cyclical effects
+Production function equation joint estimation
+EFFCSTC
+Capital Productivity Construction
+Index
+Stochastic trend of capital productivity abstracting from substitution and cyclical effects
+Production function equation joint estimation
+EFFSDC
+Capital Productivity Distributional Services
+Index
+Stochastic trend of capital productivity abstracting from substitution and cyclical effects
+Production function equation joint estimation
+EFFFINC
+Capital Productivity Financial Services
+Index
+Stochastic trend of capital productivity abstracting from substitution and cyclical effects
+Production function equation joint estimation
+EFFSCC
+Capital Productivity Consumer Services
+Index
+Stochastic trend of capital productivity abstracting from substitution and cyclical effects
+Production function equation joint estimation
+EFFEGWC
+Capital Productivity Electricity Gas and Water
+Index
+Stochastic trend of capital productivity abstracting from substitution and cyclical effects
+Production function equation joint estimation
+EFFCOMC
+Capital Productivity Communication Services
+Index
+Stochastic trend of capital productivity abstracting from substitution and cyclical effects
+Production function equation joint estimation
+PIAG
+Price of Investment: Agriculture
+Index
+Nominal ANA investment divided by equivalent cvm measure and interpolated to quarterly frequency using indicator series and adding up constraint
+ABS 5206.0, 5204.0, 5625.0 and OE calculations
+PIMIN
+Price of Investment; Mining
+Index
+Nominal ANA investment divided by equivalent cvm measure and interpolated to quarterly frequency using indicator series and adding up constraint
+ABS 5206.0, 5204.0, 5625.0 and OE calculations
+PIMAN
+Price of Investment: Manufacturing
+Index
+Nominal ANA investment divided by equivalent cvm measure and interpolated to quarterly frequency using indicator series and adding up constraint
+ABS 5206.0, 5204.0, 5625.0 and OE calculations
+PICST
+Price of Investment: Construction
+Index
+Nominal ANA investment divided by equivalent cvm measure and interpolated to quarterly frequency using indicator series and adding up constraint
+ABS 5206.0, 5204.0, 5625.0 and OE calculations
+PISD
+Price of Investment: Distributional Services
+Index
+Nominal ANA investment divided by equivalent cvm measure and interpolated to quarterly frequency using indicator series and adding up constraint
+ABS 5206.0, 5204.0, 5625.0 and OE calculations
+PIFIN
+Price of Investment: Finance and Insurance
+Index
+Nominal ANA investment divided by equivalent cvm measure and interpolated to quarterly frequency using indicator series and adding up constraint
+ABS 5206.0, 5204.0, 5625.0 and OE calculations
+PIPBS
+Price of Investment: Property and Business Services
+Index
+Nominal ANA investment divided by equivalent cvm measure and interpolated to quarterly frequency using indicator series and adding up constraint
+ABS 5206.0, 5204.0, 5625.0 and OE calculations
+PISC
+Price of Investment: Consumer Services
+Index
+Nominal ANA investment divided by equivalent cvm measure and interpolated to quarterly frequency using indicator series and adding up constraint
+ABS 5206.0, 5204.0, 5625.0 and OE calculations
+PIEGW
+Price of Investment: Electricity, Gas & Water
+Index
+Nominal ANA investment divided by equivalent cvm measure and interpolated to quarterly frequency using indicator series and adding up constraint
+ABS 5206.0, 5204.0, 5625.0 and OE calculations
+PICOM
+Price of Investment: Communications
+Index
+Nominal ANA investment divided by equivalent cvm measure and interpolated to quarterly frequency using indicator series and adding up constraint
+ABS 5206.0, 5204.0, 5625.0 and OE calculations
+PIHUC
+Price of Investment: Human Capital and Administration
+Index
+Nominal ANA investment divided by equivalent cvm measure and interpolated to quarterly frequency using indicator series and adding up constraint
+ABS 5206.0, 5204.0, 5625.0 and OE calculations
+QAG
+Investment Q Ratio: Agriculture, Forestry & Fishing
+Ratio
+Equilibrium marginal product of capital given wages, prices and productivity over user cost of capital incuding margin for risk.  Form derived from the marginal product condition. Should equal one in equilibrium.
+Production function equation joint estimation
+QMIN
+Investment Q Ratio: Mining
+Ratio
+Equilibrium marginal product of capital given wages, prices and productivity over user cost of capital incuding margin for risk.  Form derived from the marginal product condition. Should equal one in equilibrium.
+Production function equation joint estimation
+QMAN
+Investment Q Ratio: Manufacturing
+Ratio
+Equilibrium marginal product of capital given wages, prices and productivity over user cost of capital incuding margin for risk.  Form derived from the marginal product condition. Should equal one in equilibrium.
+Production function equation joint estimation
+QCST
+Investment Q Ratio: Construction
+Ratio
+Equilibrium marginal product of capital given wages, prices and productivity over user cost of capital incuding margin for risk.  Form derived from the marginal product condition. Should equal one in equilibrium.
+Production function equation joint estimation
+QSD
+Investment Q Ratio: Distributional Services
+Ratio
+Equilibrium marginal product of capital given wages, prices and productivity over user cost of capital incuding margin for risk.  Form derived from the marginal product condition. Should equal one in equilibrium.
+Production function equation joint estimation
+QFIN
+Investment Q Ratio: Finance and Insurance
+Ratio
+Equilibrium marginal product of capital given wages, prices and productivity over user cost of capital incuding margin for risk.  Form derived from the marginal product condition. Should equal one in equilibrium.
+Production function equation joint estimation
+QPBSS
+Investment Q Ratio: Property and Business Services
+Ratio
+Equilibrium marginal product of capital given wages, prices and productivity over user cost of capital incuding margin for risk.  Form derived from the marginal product condition. Should equal one in equilibrium.
+Production function equation joint estimation
+QSC
+Investment Q Ratio: Consumer Services
+Ratio
+Equilibrium marginal product of capital given wages, prices and productivity over user cost of capital incuding margin for risk.  Form derived from the marginal product condition. Should equal one in equilibrium.
+Production function equation joint estimation
+QEGW
+Investment Q Ratio: Electricity, Gas & Water
+Ratio
+Equilibrium marginal product of capital given wages, prices and productivity over user cost of capital incuding margin for risk.  Form derived from the marginal product condition. Should equal one in equilibrium.
+Production function equation joint estimation
+QCOM
+Investment Q Ratio: Communications
+Ratio
+Equilibrium marginal product of capital given wages, prices and productivity over user cost of capital incuding margin for risk.  Form derived from the marginal product condition. Should equal one in equilibrium.
+Production function equation joint estimation
+IOBFIN
+Investment in Other Buildings and Structures: Finance and Insurance
+$m cvm
+Derived by interpolating ANA investment data.
+ABS 5206.0, 5204.0, 5625.0 and OE calculations
+IOBPBS
+Investment in Other Buildings and Structures: Property and Business Services
+$m cvm
+Derived by interpolating ANA investment data
+ABS 5206.0, 5204.0, 5625.0 and OE calculations
+IOBSC
+Investment in Other Buildings and Structures: Consumer Services
+$m cvm
+Derived by interpolating ANA investment data
+ABS 5206.0, 5204.0, 5625.0 and OE calculations
+KOBFIN
+Capital Stock: Other Buildings and Structures: Finance and Insurance
+$m cvm
+Derived by interpolating ANA investment data
+ABS 5206.0, 5204.0, 5625.0 and OE calculations
+KOBPBS
+Capital Stock: Other Buildings and Structures: Property and Business Ser
+$m cvm
+Derived by interpolating ANA investment data
+ABS 5206.0, 5204.0, 5625.0 and OE calculations
+KOBSC
+Capital Stock: Other Buildings and Structures: Consumer Services
+$m cvm
+Derived by interpolating ANA investment data
+ABS 5206.0, 5204.0, 5625.0 and OE calculations
+RVACKFIN
+Imputed Vacancy Rate: Finance and Insurance
+ratio
+Derived by detrending capital to employment ratios for each sector
+ABS 5206.0, 5204.0, 5625.0 and OE calculations
+RVACKPBS
+Imputed Vacancy Rate: Property and Business Services
+ratio
+Derived by detrending capital to employment ratios for each sector
+ABS 5206.0, 5204.0, 5625.0 and OE calculations
+RVACKSC
+Imputed Vacancy Rate: Consumer Services
+ratio
+Derived by detrending capital to employment ratios for each sector
+ABS 5206.0, 5204.0, 5625.0 and OE calculations
+IOBMIN
+Investment in Other Buildings and Structures: Mining
+$m cvm
+Derived by interpolating ANA investment data
+ABS 5206.0, 5204.0, 5625.0 and OE calculations
+IOBSD
+Investment in Other Buildings and Structures: Distributional Services
+$m cvm
+Derived by interpolating ANA investment data
+ABS 5206.0, 5204.0, 5625.0 and OE calculations
+IIPMIN
+Intangible Fixed Asset Investment: Mining
+$m cvm
+Derived by interpolating ANA investment data
+ABS 5206.0, 5204.0, 5625.0 and OE calculations
+IIPSD
+Intangible Fised Asset Investment: Distributional Services
+$m cvm
+Derived by interpolating ANA investment data
+ABS 5206.0, 5204.0, 5625.0 and OE calculations
+IIPFIN
+Intangible Fised Asset Investment: Finance and Insurance
+$m cvm
+Derived by interpolating ANA investment data
+ABS 5206.0, 5204.0, 5625.0 and OE calculations
+IIPPBS
+Intangible Fised Asset Investment: Property and Business Services
+$m cvm
+Derived by interpolating ANA investment data
+ABS 5206.0, 5204.0, 5625.0 and OE calculations
+IIPSC
+Intangible Fised Asset Investment: Consumer Services
+$m cvm
+Derived by interpolating ANA investment data
+ABS 5206.0, 5204.0, 5625.0 and OE calculations
+16. Industry Employment, Labour Efficiency, Hours Worked and Vacancies
+NEAG
+Employment: Agriculture, Forestry & Fishing
+,000
+ABS Cat No 6203.0
+NEMIN
+Employment: Mining
+,000
+ABS Cat No 6203.0
+NEMAN
+Employment: Manufacturing
+,000
+ABS Cat No 6203.0
+NECST
+Employment: Construction
+,000
+ABS Cat No 6203.0
+NESD
+Employment: Distributional Services
+,000
+ABS Cat No 6203.0
+NEFIN
+Employment: Finance and Insurance
+,000
+ABS Cat No 6203.0
+NEPBS
+Employment: Property and Business Services
+,000
+ABS Cat No 6203.0
+NESC
+Employment: Consumer Services
+,000
+ABS Cat No 6203.0
+NEEGW
+Employment: Electricity, Gas & Water
+,000
+ABS Cat No 6203.0
+NECOM
+Employment: Communications
+,000
+ABS Cat No 6203.0
+NEHUC
+Employment: Human Capital and Administration
+,000
+ABS Cat No 6203.0
+EFFAG
+Labour Efficiency: Agriculture
+Index
+Stochastic trend capturing labour productivity on an hours worked basis controlling for cyclical and substitution effects.
+Production function equations joint estimation
+EFFMIN
+Labour Efficiency: Mining
+Index
+Stochastic trend capturing labour productivity on an hours worked basis controlling for cyclical and substitution effects.
+Production function equations joint estimation
+EFFMAN
+Labour Efficiency: Manufacturing
+Index
+Stochastic trend capturing labour productivity on an hours worked basis controlling for cyclical and substitution effects.
+Production function equations joint estimation
+EFFCST
+Labour Efficiency: Construction
+Index
+Stochastic trend capturing labour productivity on an hours worked basis controlling for cyclical and substitution effects.
+Production function equations joint estimation
+EFFSD
+Labour Efficiency: Distributional Services
+Index
+Stochastic trend capturing labour productivity on an hours worked basis controlling for cyclical and substitution effects.
+Production function equations joint estimation
+EFFFIN
+Labour Efficiency: Finance and Insurance
+Index
+Stochastic trend capturing labour productivity on an hours worked basis controlling for cyclical and substitution effects.
+Production function equations joint estimation
+EFFSC
+Labour Efficiency: Consumer Services
+Index
+Stochastic trend capturing labour productivity on an hours worked basis controlling for cyclical and substitution effects.
+Production function equations joint estimation
+EFFEGW
+Labour Efficiency: Electricity, Gas & Water
+Index
+Stochastic trend capturing labour productivity on an hours worked basis controlling for cyclical and substitution effects.
+Production function equations joint estimation
+EFFCOM
+Labour Efficiency: Communications
+Index
+Stochastic trend capturing labour productivity on an hours worked basis controlling for cyclical and substitution effects.
+Production function equations joint estimation
+NHAGT
+Average Hours (Trend): Agriculture, Forestry & Fishing
+Index
+ABS Cat No 6203.0 and OE calculation
+NHMINT
+Average Hours (Trend): Mining
+Index
+ABS Cat No 6203.0 and OE calculation
+NHMANT
+Average Hours (Trend): Manufacture
+Index
+ABS Cat No 6203.0 and OE calculation
+NHCSTT
+Average Hours (Trend): Construction
+Index
+ABS Cat No 6203.0 and OE calculation
+NHSDT
+Average Hours (Trend): Distributional Services
+Index
+ABS Cat No 6203.0 and OE calculation
+NHFINT
+Average Hours (Trend): Finance and Insurance
+Index
+ABS Cat No 6203.0 and OE calculation
+NHPBST
+Average Hours (Trend): Property and Business Services
+Index
+ABS Cat No 6203.0 and OE calculation
+NHSCT
+Average Hours (Trend): Consumer Services
+Index
+ABS Cat No 6203.0 and OE calculation
+NHEGWT
+Average Hours (Trend): Electricity, Gas & Water
+Index
+ABS Cat No 6203.0 and OE calculation
+NHCOMT
+Average Hours (Trend): Communications
+Index
+ABS Cat No 6203.0 and OE calculation
+NHHUCT
+Average Hours (Trend): Human Capital and Administration
+Index
+ABS Cat No 6203.0 and OE calculation
+NVAGA
+Job Vacancies (Adj): Agriculture, Forestry & Fishing
+,000
+Job vacancies normalised to equal zero in equilibrium (used for production function employment demand estimation)
+ABS Cat No 6345.0 and equation estimation
+NVMINA
+Job Vacancies (Adj): Mining
+,000
+Job vacancies normalised to equal zero in equilibrium (used for production function employment demand estimation)
+ABS Cat No 6345.0 and equation estimation
+NVMANA
+Job Vacancies (Adj): Manufacture
+,000
+Job vacancies normalised to equal zero in equilibrium (used for production function employment demand estimation)
+ABS Cat No 6345.0 and equation estimation
+NVCSTA
+Job Vacancies (Adj): Construction
+,000
+Job vacancies normalised to equal zero in equilibrium (used for production function employment demand estimation)
+ABS Cat No 6345.0 and equation estimation
+NVSDA
+Job Vacancies (Adj): Distributional Services
+,000
+Job vacancies normalised to equal zero in equilibrium (used for production function employment demand estimation)
+ABS Cat No 6345.0 and equation estimation
+NVFINA
+Job Vacancies (Adj): Finance and Insurance
+,000
+Job vacancies normalised to equal zero in equilibrium (used for production function employment demand estimation)
+ABS Cat No 6345.0 and equation estimation
+NVPBSA
+Job Vacancies (Adj): Property and Business Services
+,000
+Job vacancies normalised to equal zero in equilibrium (used for production function employment demand estimation)
+ABS Cat No 6345.0 and equation estimation
+NVSCA
+Job Vacancies (Adj): Consumer Services
+,000
+Job vacancies normalised to equal zero in equilibrium (used for production function employment demand estimation)
+ABS Cat No 6345.0 and equation estimation
+NVEGWA
+Job Vacancies (Adj): Electricity, Gas & Water
+,000
+Job vacancies normalised to equal zero in equilibrium (used for production function employment demand estimation)
+ABS Cat No 6345.0 and equation estimation
+NVCOMA
+Job Vacancies (Adj): Communications
+,000
+Job vacancies normalised to equal zero in equilibrium (used for production function employment demand estimation)
+ABS Cat No 6345.0 and equation estimation
+NVHUCA
+Job Vacancies (Adj): Human Capital and Administration
+,000
+Job vacancies normalised to equal zero in equilibrium (used for production function employment demand estimation)
+ABS Cat No 6345.0 and equation estimation
+Equation Residuals:
+UNEAG
+Employment residual: Agriculture
+Ln Rate
+Equation estimation
+UNEMIN
+Employment residual: Mining
+Ln Rate
+Equation estimation
+UNEMAN
+Employment residual: Manufacturing
+Ln Rate
+Equation estimation
+UNECST
+Employment residual: Construction
+Ln Rate
+Equation estimation
+UNESD
+Employment residual: Distributional Services
+Ln Rate
+Equation estimation
+UNEFIN
+Employment residual: Finance and Insurance
+Ln Rate
+Equation estimation
+UNEPBS
+Employment residual: Property and Business Services
+Ln Rate
+Equation estimation
+UNESC
+Employment residual: Consumer Services
+Ln Rate
+Equation estimation
+UNEEGW
+Employment residual: Electricity, Gas and Water
+Ln Rate
+Equation estimation
+UNECOM
+Employment residual: Communications
+Ln Rate
+Equation estimation
+UNEHUC
+Employment residual: Human Capital Services
+Ln Rate
+Equation estimation
+17: Industry Wages and Wage Aggregates
+RWHAG
+Agriculture - hourly wage
+$000/qtr 
+WSSAG/(NEAG*NHAGT)
+ABS Cat No 5206.0, 5204.0, 6203.0 and OE calculations
+RWHMIN
+Mining - hourly wage
+$000/qtr
+WSSMIN/(NEMIN*NHAGT)
+ABS Cat No 5206.0, 5204.0, 6203.0 and OE calculations
+RWHMAN
+Manufacturing - hourly wage
+$000/qtr
+WSSMAN/(NEMAN*NHMANT)
+ABS Cat No 5206.0, 5204.0, 6203.0 and OE calculations
+RWHCST
+Construction - hourly wage
+$000/qtr
+WSSCST/(NECST*NHCSTT)
+ABS Cat No 5206.0, 5204.0, 6203.0 and OE calculations
+RWHSD
+Distributional Services - hourly wage
+$000/qtr
+WSSSD/(NESD*NHSDT)
+ABS Cat No 5206.0, 5204.0, 6203.0 and OE calculations
+RWHFIN
+Financial Services - hourly wage 
+$000/qtr
+WSSFIN/(NEFIN*NHFINT)
+ABS Cat No 5206.0, 5204.0, 6203.0 and OE calculations
+RWHPBS
+Property and Business Services - hourly wage
+$000/qtr
+WSSPBS/(NEPBS*NHPBST)
+ABS Cat No 5206.0, 5204.0, 6203.0 and OE calculations
+RWHSC
+Consumer Services - hourly wage
+$000/qtr
+WSSSC/(NESC*NHSCT)
+ABS Cat No 5206.0, 5204.0, 6203.0 and OE calculations
+RWHEGW
+Electricity Gas and Water - hourly wage
+$000/qtr
+WSSEGW/(NEEGW*NHEGWT)
+ABS Cat No 5206.0, 5204.0, 6203.0 and OE calculations
+RWHCOM
+Communications - hourly wage
+$000/qtr
+WSSCOM/(NECOM*NHCOMT)
+ABS Cat No 5206.0, 5204.0, 6203.0 and OE calculations
+RWHHUC
+Human Capital Services - hourly wage
+$000/qtr
+WSSHUC/(NEHUC*NHHUCT)
+ABS Cat No 5206.0, 5204.0, 6203.0 and OE calculations
+RWT
+Average Weekly Earnings  (National Accounts Basis)
+$000/qtr
+Derived in the national accounts as wages salaries and supplements largely derived from business surveys divided by the number of employees in turn largely derived from the labour force survey.  The estimate therefore includes any difference between the business register based surveys and the household survey.
+ABS Cat No 5206.0
+RWH
+Average Hourly Earnings
+$000/qtr
+RWT/NH.  Equals RWT in the base year as NH is indexed to 1 in the base year
+ABS Cat No 5206.0, 6203.0 and OE calculations
+RWHA
+Average if three available wage measures – no adjustment for labour quality.
+$000/qtr
+RWHQA/QLQL
+RWHQA
+Average of three available ABS wage measures adjusted for labour quality
+$000/qtr
+From three series: average ordinary time earning for full time adult employees from the average weekly earnings survey; RWH from the national accounts; and the wage price index (total hourly rate excluding bonuses).  An average is taken of the three series converted to indexes, with the first two series being first adjusted for changes in labour quality (see QLQL below) to be consistent with the WPI.  Prior to the September quarter 1997 the series is based on an average of the quality adjusted AWOTEFTA and RWH measures.
+ABS Cat No 5206.0, 6203.0, 6302.0, 6345.0 and OE calculations
+QLQL
+Quality of Labour Index
+Index
+Adjusts for labour quality changes due to changing age and occupational composition of employment.  Relative hourly wages by age and occupation are used as an indicator of relative productivity.
+ABS Cat No 6291.0, 6306.0, 6310.0 and OE calculations
+RWPI
+Wage Price Index
+Index
+Total hourly rate excluding bonuses
+ABS Cat No 6345.0
+18. Consumption Deflators
+PCON_
+Household Consumption - deflator:
+index
+Derived as nominal divided by chain-linked volume  measure (cvm)
+ABS Cat No 5206.0 and OE calculation
+PCONU
+  Underlying PCON:
+index
+Derived as nominal divided by chain-linked volume  measure (cvm)
+ABS Cat No 5206.0 and OE calculation
+PCNR_
+  Non-rental consumption - deflator:
+index
+Derived as nominal divided by chain-linked volume  measure (cvm)
+ABS Cat No 5206.0 and OE calculation
+PCRE_
+  Rental consumption - deflator:
+index
+Derived as nominal divided by chain-linked volume  measure (cvm)
+ABS Cat No 5206.0 and OE calculation
+PCFD
+Food - deflator
+index
+Derived as nominal divided by chain-linked volume  measure (cvm)
+ABS Cat No 5206.0 and OE calculation
+PCCAL
+Cigarettes tobacco and alcohol - deflator
+index
+Derived as nominal divided by chain-linked volume  measure (cvm)
+ABS Cat No 5206.0 and OE calculation
+PCDOG
+Durables and other goods - deflator
+index
+Derived as nominal divided by chain-linked volume  measure (cvm)
+ABS Cat No 5206.0 and OE calculation
+PCMV
+Motor Vehicles - deflator
+index
+Derived as nominal divided by chain-linked volume  measure (cvm)
+ABS Cat No 5206.0 and OE calculation
+PCOMT
+Operation of motor vehicles and transport - deflator
+index
+Derived as nominal divided by chain-linked volume  measure (cvm)
+ABS Cat No 5206.0 and OE calculation
+PCEGW
+Electricity, gas and water - deflator
+index
+Derived as nominal divided by chain-linked volume  measure (cvm)
+ABS Cat No 5206.0 and OE calculation
+PCCOM
+Communication services - deflator
+index
+Derived as nominal divided by chain-linked volume  measure (cvm)
+ABS Cat No 5206.0 and OE calculation
+PCHUC
+Private health and education services - deflator
+index
+Derived as nominal divided by chain-linked volume  measure (cvm)
+ABS Cat No 5206.0 and OE calculation
+PCSRV
+Other services  - deflator
+index
+Derived as nominal divided by chain-linked volume  measure (cvm)
+ABS Cat No 5206.0 and OE calculation
+Consumer Price Equation Residuals:
+UPCFD
+Food
+Rate
+Equation estimation
+UPCCAL
+Cigarettes tobacco and alcohol
+Rate
+Equation estimation
+UPCDOG
+Durables and other goods
+Rate
+Equation estimation
+UPCMV
+Motor vehicles
+Rate
+Equation estimation
+UPCOMT
+Operation of motor vehicles and transport
+Rate
+Equation estimation
+UPCEGW
+Electrictiy gas and water
+Rate
+Equation estimation
+UPCCOM
+Communication services
+Rate
+Equation estimation
+UPCHUC
+Private health and education services
+Rate
+Equation estimation
+Input-Output Weighted Supply Prices (before indirect tax)
+PPCFD
+Supply Price of Food
+Index
+Input-output weighted aggregation of supply (industry output and import) prices for the item.
+Model identity, ABS Cat No 5209.0 and OE calculations
+PPCCAL
+Supply Price of Cigarettes and Alcohol
+Index
+Input-output weighted aggregation of supply (industry output and import) prices for the item.
+Model identity, ABS Cat No 5209.0 and OE calculations
+PPCDOG
+Supply Price of Durables and Other Goods
+Index
+Input-output weighted aggregation of supply (industry output and import) prices for the item.
+Model identity, ABS Cat No 5209.0 and OE calculations
+PPCMV
+Supply Price of Motor Vehicles
+Index
+Input-output weighted aggregation of supply (industry output and import) prices for the item.
+Model identity, ABS Cat No 5209.0 and OE calculations
+PPCOMT
+Supply Price, Operation of Motor Vehicles and Transport
+Index
+Input-output weighted aggregation of supply (industry output and import) prices for the item.
+Model identity, ABS Cat No 5209.0 and OE calculations
+PPCEGW
+Supply Price of Electricity Gas and Water
+Index
+Input-output weighted aggregation of supply (industry output and import) prices for the item.
+Model identity, ABS Cat No 5209.0 and OE calculations
+PPCCOM
+Supply Price of Communications
+Index
+Input-output weighted aggregation of supply (industry output and import) prices for the item.
+Model identity, ABS Cat No 5209.0 and OE calculations
+PPCHUC
+Supply Price of Private Health and Education Services
+Index
+Input-output weighted aggregation of supply (industry output and import) prices for the item.
+Model identity, ABS Cat No 5209.0 and OE calculations
+PPCSRV
+Supply Price of Other Services
+Index
+Input-output weighted aggregation of supply (industry output and import) prices for the item.
+Model identity, ABS Cat No 5209.0 and OE calculations
+PPCNR
+Supply Price of Non-Rental Consumption
+Index
+Input-output weighted aggregation of supply (industry output and import) prices for the item.
+Model identity, ABS Cat No 5209.0 and OE calculations
+19. Labour Market Variables
+NET
+Total Employment
+,000
+ABS Cat No 6202.0
+NETD
+Total Employment Demand
+,000
+Includes unmet demand as measured by job vancances. NETD=NET+NV
+ABS Cat No 6202.0, 6345.0
+RNET
+Employment to Population Ratio
+%
+Employment as a percentage of the working age population 15-64, NPADA
+ABS Cat No 6202.0
+WSE
+  Wage and Salary Earners
+,000
+ABS Cat No 6203.0
+NESE
+  Employers and Self Employed
+,000
+ABS Cat No 6203.0
+RNETD
+Employment Demand to Population Ratio
+%
+OE Calculation
+NEGG
+General government employees
+,000
+TRYM model database updated from ABS Cat No 6203.0 and 6248.0
+NLF
+Labour Force (persons)
+,000
+ABS Cat No 6202.0
+NLFH
+Labour Supply (Hours)
+ 000 adj
+Labour supply adjusted for average hours worked index. 
+ABS Cat No 6203.0 and OE calculation
+RNLFH
+Labour Force:  Labour supply: hrs per working age adult
+Index
+NLFH/NPADA
+ABS Cat No 6203.0 and OE calculation
+RNLFA
+Labour Force Participation Rate (15-64)
+%
+(NLF/NPADA-1)*100
+ABS Cat No 6203.0 and OE calculation
+RNLF
+Labour Force Participation Rate (15 plus)
+%
+(NLF/NPAD-1)*100
+ABS Cat No 6203.0 and OE calculation
+NH
+Average Hours Worked
+Index
+LFS total hours worked divided by total employment. Average of the quarter, s.a..
+ABS Cat No 6203.0 and OE calculation
+NHiT
+Trend average hours worked by industry
+Index
+HP trend of mid month of quarter data with individual industries scaled so that the sum of industry hours worked equals total hours worked (NH*NET)
+ABS Cat No 6203.0 and OE calculation
+RNU
+Unemployment Rate:
+%
+ABS Cat No 6202.0
+NV
+Job Vacancies
+,000
+ABS series with equation values for period 2008Q3 to 2009Q3, adjusted for 1983Q4 break in series. Data prior to 1984 are based on a survey drawn from the ABS payroll tax  based business register (1979Q2 to 1983Q4), in turn linked back to a series based on Commonwealth Employment Service registered  job vacancies 1966Q3 to 1979Q1
+ABS Cat No 6345.0, TRYM Model Database and RBA Australian Economic Statistics
+RNV
+Job Vacancy Rate
+%
+NV/(NET+NV)*100
+ABS Cat No 6345.0 and OE calculation
+NPi
+Civilian Population by 5 year age groups.  
+,000
+Historical data from 1978q2to the current quarter for the 15 to 69 year old population is sourced from the LFS (seasonally adjusted by OE).  (Series for age groups from 70 onwards are drawn from the residential population data and scaled to equal the LFS benchmark.)  Projections for each age group are from the OE Demographic Model based on residential population by age, updated for the latest OE net migration projections (see NPIM).  Data prior to 1978q2 is similarly backcast based on the residential population data. 
+ABS Cat No 3101.0 , 3201.0, 3222.0  and 6203.0 and OE Demographic Model
+NPMi
+Male Civilian Population by Age Group
+,000
+See above
+See above
+NPFi
+Female Cvilian Population by Age Group
+,000
+See above
+See above
+NPOP
+Total Resident Population
+,000
+ABS Cat No 3101.0 and OE Demographic Model
+NPOP15
+Civilian population - under 15
+,000
+ABS Cat No 6202.0, 3201.0,  3222.0 and OE Demographic Model
+NPAD
+Adult civilian population  15 and over
+,000
+ABS Cat No 6202.0, 3201.0,  3222.0 and OE Demographic Model
+NPAD65
+Civilian population - 65 and over
+’000
+ABS Cat No 6202.0, 3201.0,  3222.0 and OE Demographic Model
+NPADA
+Adult working age population - 15-64
+’000
+ABS Cat No 6202.0, 3201.0,  3222.0 and OE Demographic Model
+NPADB
+Population - 20-34
+’000
+ABS Cat No 6202.0, 3201.0,  3222.0 and OE Demographic Model
+QDEMD
+Population 20-44/total population
+Ratio
+ABS Cat No 6202.0, 3201.0,  3222.0 and OE Demographic Model
+NEDF
+Defence force personell
+,000
+TRYM Model database and Budget Papers
+NPIM
+Immigration level
+,000
+Most recent quarters are imputed from permanent and long-term arrivals and departures data
+ABS Cat No 3101.0 and 3401.0
+NUBR
+Number of Unemployment Benefit Recipients
+,000
+DEEWR
+RNUBR
+Unemployment Benefit Receipients as a percentage of the labour force
+%
+NUBR/NLF*100
+OE Calculation
+NAIRU
+Non increasing inflation rate of unemployment (NAIRU)
+ %
+The NAIRU is derived as the equilibrium unemployment rate in the wage equation. It has two components: RNUST which is derived in turn from the unemployment vacancy  or Beveridge curve relationship and represents mismatch and frictional unemployment, and WSU which represents unemployment arising from wage setting / price setting interactions
+Equation estimation
+NAIRUS
+NAIRU expressed in terms of Short-Term Unemployment
+%
+NAIRU adjusted for searh effectiveness of the unemployed
+OE calculation
+RNUST
+Full Employment Unemployment Rate
+%
+Equilibrium unemployment rate derived from the unemployment vacancy relationship.  The point where the unemployment rate would equal the vacancy rate.
+Equation estimation and OE calculation
+RUM
+Union membership rate (per cent of employees)
+%
+Data from 1988 are from the Employee Earnings and Trade Union Membership Survey (a supplement to the LFS) with data interpolated between observations from August of each year.  The series is spliced back to an earlier series from the TRYM model database with a point splice at the September quarter 1988.
+ABS Cat No 6310.0, TRYM Model database and OE calculations
+QDEML
+Demograhic Effects on Labour Force Participation
+Index
+Derived by applying trend participation rates by age group in the base year to projections for the civilian population by age 
+ABS Cat No 6203.0 and 3222.0 and OE estimation
+QTNH
+Trend in hours worked
+Index
+Stochastic trend
+Equation estimation
+QTNLF
+Social and other effects on Labour Force Participation
+Index
+Stochastic trend to capture effects separate from the changing age composition of the population
+Equation estimation
+QTNLFT
+Combined Labour Participation Trend
+Index
+Combines QDEML and QTNLF
+OE calculation
+QTLSUP
+Combined Labour Supply Trend (Hours Basis)
+Index
+Expresses underlying trends in terms of hours supplied per head of working age population.  (Rising participation in most countries tends to be offset by declining average hours worked.)
+OE calculation
+Unemployment by Duration:
+NUN1
+Unemployed 0-3 months
+,000
+Note break in series 2001q2 due to revised ABS treatment. Data prior to 1978 is imputed. 
+ABS Cat No 6203.0 and OE calculations
+NUN2
+Unemployed 3-6 months
+,000
+Note break in series 2001q2 due to revised ABS treatment. Data prior to 1978 is imputed.
+ABS Cat No 6203.0 and OE calculations
+NUN3
+Unemployed 6-9 months
+,000
+Note break in series 2001q2 due to revised ABS treatment. Data prior to 1978 is imputed. Since 2011 the ABS has increased the aggregation of its published duration data. Splits have been updated based on model forecasts with the sub-components scaled to equal the new aggregates.
+ABS Cat No 6203.0 and OE calculations
+NUN4
+Unemployed 9-12 months
+,000
+Note break in series 2001q2 due to revised ABS treatment. Data prior to 1978 is imputed. Since 2011 the ABS has increased the aggregation of its published duration data. Splits have been updated based on model forecasts with the sub-components scaled to equal the new aggregates.
+ABS Cat No 6203.0 and OE calculations
+NUN5
+Unemployed 12-15 months
+,000
+Note break in series 2001q2 due to revised ABS treatment. Data prior to 1978 is imputed. Since 2011 the ABS has increased the aggregation of its published duration data. Splits have been updated based on model forecasts with the sub-components scaled to equal the
+ABS Cat No 6203.0 and OE calculations
+NUN6
+Unemployed 15-24 months
+,000
+Note break in series 2001q2 due to revised ABS treatment. Data prior to 1978 is imputed. Since 2011 the ABS has increased the aggregation of its published duration data. Splits have been updated based on model forecasts with the sub-components scaled to equal the
+ABS Cat No 6203.0 and OE calculations
+NUN7
+Unemployed Over 2 Years
+,000
+Note break in series 2001q2 due to revised ABS treatment. Data prior to 1978 is imputed.
+ABS Cat No 6203.0 and OE calculations
+RNUS
+Short-Term Uemployment Rate - UE < 9 months
+%
+(NUN1+NUN2+NUN3)/NLF*100
+ABS Cat No 6203.0 and OE calculations
+PRNUS
+Proportion Short-Term Unemployed / Total Unemployed
+%
+(NUN1+NUN2+NUN3)/NUN*100
+OE calculation
+RNUL
+Long-Term Unemployment Rate
+%
+(NUN5+NUN6+NUN7)/NLF*100
+OE calculation
+Unemployment Rate by Duration Category:
+RNUN1
+Unemployed 0-3 months: * 100 / NLF
+%
+See notes for NUN1
+ABS Cat No 6203.0 and OE calculations
+RNUN2
+Unemployed 3-6 months: * 100 / NLF
+%
+See notes for NUN2
+ABS Cat No 6203.0 and OE calculations
+RNUN3
+Unemployed 6-9 months: * 100 / NLF
+%
+See notes for NUN3
+ABS Cat No 6203.0 and OE calculations
+RNUN4
+Unemployed 9-12 months: * 100 / NLF
+%
+See notes for NUN4
+ABS Cat No 6203.0 and OE calculations
+RNUN5
+Unemployed 12-15 months: * 100 / NLF
+%
+See notes for NUN5
+ABS Cat No 6203.0 and OE calculations
+RNUN6
+Unemployed 15-24 months: * 100 / NLF
+%
+See notes for NUN6
+ABS Cat No 6203.0 and OE calculations
+RNUN7
+Unemployed Over 2 Years: * 100 / NLF
+%
+See notes for NUN7
+ABS Cat No 6203.0 and OE calculations
+Exit Rates for UE Cohort Model:
+EXIT1
+Exit rate for unemployed 0-3 months (proportion of cohort exiting)
+rate
+Derived by comparing cohorts  eg: EXIT1=(NUN1(-1)-NUN2))/NUN1(-1).  Note that the resulting exit rates are much lower than implied by LFS gross flows data.
+ABS Cat No 6203.0 and OE calculations
+EXIT2
+Exit rate for unemployed 3-6 months
+rate
+Derived by comparing cohorts  eg: EXIT1=(NUN1(-1)-NUN2))/NUN1(-1).  Note that the resulting exit rates are much lower than implied by LFS gross flows data.
+ABS Cat No 6203.0 and OE calculations
+EXIT3
+Exit rate for unemployed 6-9 months
+rate
+Derived by comparing cohorts  eg: EXIT1=(NUN1(-1)-NUN2))/NUN1(-1).  Note that the resulting exit rates are much lower than implied by LFS gross flows data.
+ABS Cat No 6203.0 and OE calculations
+EXIT4
+Exit rate for unemployed 9-12 months
+rate
+Derived by comparing cohorts  eg: EXIT1=(NUN1(-1)-NUN2))/NUN1(-1).  Note that the resulting exit rates are much lower than implied by LFS gross flows data.
+ABS Cat No 6203.0 and OE calculations
+EXIT345
+Exit rate for unemployed 6-15 months
+rate
+Derived by comparing cohorts  eg: EXIT1=(NUN1(-1)-NUN2))/NUN1(-1).  Note that the resulting exit rates are much lower than implied by LFS gross flows data.
+ABS Cat No 6203.0 and OE calculations
+EXIT67
+Exit rate for unemployed 15 months and over
+rate
+Derived by comparing cohorts  eg: EXIT1=(NUN1(-1)-NUN2))/NUN1(-1).  Note that the resulting exit rates are much lower than implied by LFS gross flows data.
+ABS Cat No 6203.0 and OE calculations
+NETY
+Total Employment: YEARLY
+,000
+Financial year average
+OE calculation
+NETDY
+Total Employment Demand: YEARLY
+,000
+Financial year average
+OE calculation
+RNUY
+Unemployment Rate: YEARLY
+%
+Financial year average
+OE calculation
+RNLFAY
+Labour Force Participation Rate (15-64): YEARLY
+%
+Financial year average
+OE calculation
+RNLFY
+Labour Force Participation Rate (15 plus): YEARLY
+%
+Financial year average
+OE calculation
+EQUATION RESIDUALS:
+UNLF
+Labour force
+Rate
+Equation estimation
+UNH
+Average hours worked
+Rate
+Equation estimation
+UNV
+Job vacancies
+Rate
+Equation estimation
+URWT
+Average weekly earnings
+Ln Rate
+Equation estimation
+UNET
+Employment (aggregated)
+Ln Rate
+Equation estimation
+20. Financial Market Variables 
+RI90
+90 Day Bill Rate
+%
+RBA Statistics
+RRI90
+Real 90 Day Bill Rate
+%
+(RI90-RINF)/(1+RINF/100)
+RBA Statistics and OE calculation
+FIE
+10 Year Inflation Expectations
+%
+From break even analysis of CPI indexed 10 year bonds
+RBA Statistics
+RIGL
+10 Year bond Rrate
+%
+RBA Statistics
+RRIGL
+Real 10 Year Bond Rate
+%
+(RIGL-FIE)/(1+FIE/100)
+RBA Statistics and OE calculation
+QVAL
+Valuation ratio for 10 year bonds
+ratio
+Approximate valuation ratio (issue price relative to market price) for public debt (VDGPZ) used for calculating the interest servicing cost on public debt.  (Public debt interest payments reflect interest rates at the time of issue rather than the current interest rate.)
+Model identity and OE calculation 
+RETWI
+Exchange Rate : Trade Weighted Index
+Index
+Chain-weighted index based on mechandise trade weights by country
+ABS Cat No 5432.0, 5439.0, OECD MEI Database and RBA Statistics and OE calculations
+RRETWI
+Exchange Rate : Real Trade Weighted Index (Consumer Prices)
+Index
+Real exchange rate based on consumer prices. RRETWI=RETWI*PCON/WPCON. 
+OECD MEI Database and RBA Statistics and OE calculations.
+RETWIM
+Exchange Rate : Trade (Import) Weighted Index
+Index
+Chain weighted index based on source of imports by country. See listing under Exchange Rates.
+ABS Cat No 5439.0,  OECD MEI Database,  RBA Statistics and OE calculations
+RESDR
+Exchange Rate : Special Drawing Rights (Index)
+Index
+IMF Special Drawing Rights are a global trade weighted average of the $US, Yen, euro and pound
+OECD MEI Database and RBA Statistics
+REUSD
+Exchange Rate : United States Dollar /$A (Index)
+Index
+OECD MEI Database and RBA Statistics
+RETWXG
+Exchange Rate : Trade (Exports of Goods) Weighted Index
+Index
+Chain weighted index based on destination of exports by country
+ABS Cat No 5432.0, OECD MEI Database and RBA Statistics and OE calculations
+RETWXS
+Exchange Rate : Trade (Exports of Services) Weighted Index
+Index
+Index based on destination of service exports
+ABS Cat No 5302.0
+OECD MEI Database and RBA Statistics and OE calculations
+WRIGL
+Long Term Interest Rates of Australia's Major Trading
+%
+GDP weighted average of  10 year bond yields in the US, Euro area, Japan, UK, Canada and Korea
+OECD MEI Database, OECD EO Database
+WRI90
+Short Term Interest Rates of Australia's Major Trading
+%
+GDP weighted average of  90 day bill rates in the US, Euro area, Japan, UK, Canada and Korea
+WFIE
+World Inflationary Expectations (Percent)
+%
+GDP weighted average of 10 year inflation expectations consistent with WRIGL derived from CPI indexed bonds where available and  a centered weighted moving average of inflation included OECD forecasts where not.
+OECD EO database Blomberg and Financial Times
+WPCON_
+Consumption Deflator of Australia's Major Trading Partners
+Index
+G7 consumption deflator
+OECD EO database
+RISKP
+Risk Premium on Australian 10 Year Bonds
+% points
+Equation estimation
+RIMARG
+Interest rate margin (historical)
+% points
+Adjustment for 10 year bond yield pre financial deregulation intended to capture the effect of debt management policies designed to maintain the price attractiveness of Treasury bonds. Measured as the margin between a debenture yield and the yield on an equivalent maturity Treasury bond.
+TRYM model database
+FM1Z
+Money Supply (M1)
+$m
+RBA Statistics
+21. International Investment Position, Borrowing and Income Flows
+VNFLZ
+Net Foreign Liabilities
+$m
+ABS Cat No 5302.0
+YDGPZ
+Interest Payments : Government on Private Sector Debt
+$m
+TRYM Model Database, RBA Statistics and ABS Cat No 5204.0, 5206.0
+YDGOZ
+Interest Payments : Government Net
+$m
+TRYM Model Database, RBA Statistics and ABS Cat No 5204.0, 5206.0
+YDORAZ
+Interest Received : Government on Official Reserve Assets
+$m
+ABS Cat No 5302.0
+YEPOZ
+Dividends & Remitted Profits : Paid to Overseas
+$m
+ABS Cat No 5302.0 and OE calculations
+YEOPZ
+Dividends & Remitted Profits : Received from Overseas
+$m
+ABS Cat No 5302.0 and OE calculations
+YDPOZ
+Interest Payments : Private on Overseas Debt
+$m
+ABS Cat No 5302.0 and OE calculations
+BGPZ
+Borrowing from Private Sector : Government
+$m
+ABS Cat No 5206.0 TRYM Model Database and OE calculations
+BGOFZ
+Foreign Currency Borrowing from Overseas : Government
+$m
+ABS Cat No 5302.0 TRYM Model Database, RBA Statistics and OE calculations
+BGOAZ
+Australian Dollar Borrowing from Overseas : Government
+$m
+ABS Cat No 5302.0 TRYM Model Database, RBA Statistics and OE calculations
+BORAZ
+Change in Official Reserve Assets & Lending
+$m
+ABS Cat No 5302.0 and OE calculations
+BEPOZ
+Overseas Equity Financing : Total
+$m
+ABS Cat No 5302.0 and OE calculations
+BEOPZ
+Overseas Equity Financing : Private Sector
+$m
+ABS Cat No 5302.0 and OE calculations
+BPOFZ
+Foreign Currency Borrowing from Overseas : Private
+$m
+ABS Cat No 5302.0 TRYM Model Database, RBA Statistics and OE calculations
+BPOAZ
+Australian Dollar Borrowing from Overseas : Private
+$m
+ABS Cat No 5302.0 TRYM Model Database, RBA Statistics and OE calculations
+VDGPZ
+Government Debt : Held by Private Sector
+$m
+ABS Cat No 5302.0, TRYM Model Database, RBA Statistics and OE calculations
+VDGOAZ
+Australian Dollar Debt held Overseas : Government
+$m
+Net debt from ABS IIP data.  Defined as General Government and Central Borrowing Authority liabilities domiciled in Australia.  Data pre 1988-89 is derived from the TRYM Model Database. 
+ABS Cat No 5302.0, TRYM Model Database, and OE calculations.
+VDGOFZ
+Foreign Currency Debt held Overseas : Government
+$m
+Net debt from ABS IIP data.  Defined as General Government and Central Borrowing Authority liabilities domiciled abroad, less General Government and Central Borrowing Authority foreign assets.  (Assumes that $A denominated foreign assets e.g. lending in $A is due to private financial institutions).  Data pre 1988-89 is derived from the TRYM Model Database.  
+ABS Cat No 5302.0 , TRYM Model Database, and OE calculations
+VDORAZ
+Government Debt : Official Reserve Assets & Lending
+$m
+International reserve assets, less RBA borrowing from overseas (line of credit during the GFC). Pre September quarter 1988 data is from the TRYM Model database
+ABS Cat No 5302.0 and OE calculations
+VDORAFZ
+Government Debt: Official Reserve Assets
+$m
+RBA international reserve assets. Pre September quarter 1988 data is from the TRYM Model database
+ABS Cat No 5302.0 and OE calculations
+VEPOZ
+Overseas Holdings of Australian Equity
+$m
+Pre September quarter 1988 data is from the TRYM Model database
+ABS Cat No 5302.0 and OE calculations
+VEOPZ
+Australian Holdings of Overseas Equity
+$m
+Pre September quarter 1988 data is from the TRYM Model database
+ABS Cat No 5302.0 and OE calculations
+VDPOFZ
+Private sector Debt : Denominated in Foreign Currency
+$m
+Derived as total net foreign currency denominated debt excluding official reserve assets (VDORAFZ) and less government foreign currency denominated net debt (VDGOFZ).   Data pre 1988-89 is from the TRYM Model Database.
+ABS Cat No 5302.0, TRYM Model Database, OE calculations
+VDPOAZ
+Private sector Debt : Denominated in Australian Dollars
+$m
+Derived as total net $A denominated net debt less government net $A denominated debt (VDGOAZ).   Data pre 1988-89 is from the TRYM Model Database
+ABS Cat No 5302.0, TRYM Model Database, OE calculations
+GDPAZ_
+Gross Domestic Product ($ million)
+$m
+ABS Cat No 5206.0
+AS A PERCENTAGE OF GDP:
+RVNFLZ
+Net Foreign Liabilities: * 25 / GDPAZ
+%
+OE calculation
+RYDGPZ
+Interest Payments : Government on Private Sector Debt: * 25 / GDPAZ
+%
+OE calculation
+RYDOGZ
+Interest Payments : Government Net: * 25 / GDPAZ
+%
+OE calculation
+RYDORAZ
+Interest Received : Government on Official Reserve Assets: *25 / GDPAZ
+%
+OE calculation
+RYEPOZ
+Dividends & Remitted Profits : Paid to Overseas: * 25 / GDPAZ
+%
+OE calculation
+RYEOPZ
+Dividends & Remitted Profits : Received from Overseas: * 25 / GDPAZ
+%
+OE calculation
+RYDPOZ
+Interest Payments : Private on Overseas Debt: * 25 / GDPAZ
+%
+OE calculation
+OE calculation
+RBGPZ
+Borrowing from Private Sector : Government: * 25 / GDPAZ
+%
+OE calculation
+RBGOFZ
+Foreign Currency Borrowing from Overseas : Government: * 25 / GDPAZ
+%
+OE calculation
+RBGOAZ
+Australian Dollar Borrowing from Overseas : Government: * 25 / GDPAZ
+%
+OE calculation
+RBORAZ
+Change in Official Reserve Assets & Lending: * 25 / GDPAZ
+%
+OE calculation
+RBEPOZ
+Overseas Equity Financing : Total: * 25 / GDPAZ
+%
+OE calculation
+RBEOPZ
+Overseas Equity Financing : Private Sector: * 25 / GDPAZ
+%
+OE calculation
+RBPOFZ
+Foreign Currency Borrowing from Overseas : Private: * 25 / GDPAZ
+%
+OE calculation
+RBPOAZ
+Australian Dollar Borrowing from Overseas : Private: * 25 / GDPAZ
+%
+OE calculation
+RVDGPZ
+Government Debt : Held by Private Sector: * 25 / GDPAZ
+%
+OE calculation
+RVDGOAZ
+Australian Dollar Debt held Overseas : Government: * 25 / GDPAZ
+%
+OE calculation
+RVDGOFZ
+Foreign Currency Debt held Overseas : Government: * 25 / GDPAZ
+%
+OE calculation
+RVDORAZ
+Government Debt : Official Reserve Assets & Lending: * 25 / GDPAZ
+%
+OE calculation
+RVEPOZ
+Overseas Holdings of Australian Equity: * 25 / GDPAZ
+%
+OE calculation
+RVEOPZ
+Australian Holdings of Overseas Equity: * 25 / GDPAZ
+%
+OE calculation
+RVDPOFZ
+Private sector Debt : Denominated in Foreign Currency: * 25 / GDPAZ
+%
+OE calculation
+RVDPOAZ
+Private sector Debt : Denominated in Australian Dollars: * 25 / GDPAZ
+%
+OE calculation
+22. Public Sector, Expenditure, Taxation, Net Lending and Debt
+BPSBRZ
+Public Sector Borrowing Requirement
+$m
+ABS Cat No 5206.0
+RPSBR
+Public Sector Borrowing Requirement: / GDPAZ
+%
+OE calculation
+GITSZ_
+Indirect taxes and subsidies - revenue
+$m
+ABS Cat No 5206.0
+RUB
+Rate of Unemployment Benefit
+$,000 per quarter
+RUB=XRRUB*RWT/NH
+ABS Cat No 5206.0, TRYM model database, DEEWR Statistics and OE calculations
+NUBR_
+Number of Unemployment Benefit Recipients
+,000
+DEEWR statistics and OE calculations
+NEDF_
+Defence force personell
+,000
+TRYM model database and Budget Papers
+RTN_
+Average tax rate on labour income
+PAYE income tax revenue express as a proportion of labour income (YNZ)
+ABS Cat No 5206.0 and OE calculation
+NPOLD
+Civilian Population over 65
+,000
+ABS Cat No 3201.0 and 6203.0
+XRSELF
+Proportion of retirement income dependent on pension
+Rate
+Approximate – inferred from projections for superannuation income in the Treasury Inter Generational Report
+Treasury IGR 2010
+XROCB
+Exogenous Ratio: Other Cash Benefits
+Rate
+Residual of total benefit payments less unemployment benefits and pensions.  Includes family payments 
+ABS Cat No 5206.0 and OE calculations
+XRRUB
+Exogenous Ratio: Rate of Unemployment Benefits
+Expressed as a ratio to the average hourly wage
+TRYM Model Database and DEEWR Statistics
+XRITC
+Exogenous ratio: Investment Tax Credits
+TRYM Model Database
+RTK
+Average tax rate on capital income
+Taxes on capital and other income as a proportion of YKZ
+ABS Cat No 5206.0 5204.0 and OE calculations
+YKZ
+Capital and other income
+Derived as a residual – inferred tax base for tax revenue on capital and other income
+ABS Cat No 5206.0 5204.0 and OE calculations
+RTRES
+Resource rents tax and mineral royalties
+ABS Cat No 5206.0 5204.0 and OE calculations
+Identity Residuals
+UGINTN
+Residual – Government interest payments
+Rate
+ABS Cat No 5206.0 and OE calculations
+URTK
+Residual – rate of tax on capital income
+Rate
+ABS Cat No 5206.0 and OE calculations
+UGITSZ
+Residual  – indirect taxes less subsidies on products
+Rate
+ABS Cat No 5206.0 and OE calculations
+YDGPZ_
+Interest Payments : Government on Private Sector Debt
+$m
+TRYM Model Database, RBA Statistics and ABS Cat No 5204.0, 5206.0
+YDGOZ_
+Interest Payments : Government Net
+$m
+TRYM Model Database, RBA Statistics and ABS Cat No 5204.0, 5206.0
+YDORAZ_
+Interest Received : Government on Official Reserve Assets
+$m
+ABS Cat No 5302.0
+BGPZ_
+Borrowing from Private Sector : Government
+$m
+ABS Cat No 5206.0 TRYM Model Database and OE calculations
+BGOFZ_
+Foreign Currency Borrowing from Overseas : Government
+$m
+ABS Cat No 5302.0 TRYM Model Database, RBA Statistics and OE calculations
+BGOAZ_
+Australian Dollar Borrowing from Overseas : Government
+$m
+ABS Cat No 5302.0 TRYM Model Database, RBA Statistics and OE calculations
+BORAZ_
+Change in Official Reserve Assets & Lending
+$m
+ABS Cat No 5302.0 and OE calculations
+VDGPZ_
+Government Debt : Held by Private Sector
+$m
+ABS Cat No 5302.0, TRYM Model Database, RBA Statistics and OE calculations
+VDGOAZ_
+Australian Dollar Debt held Overseas : Government
+$m
+TRYM Model Database, RBA Statistics and ABS Cat No 5204.0, 5206.0
+VDGOFZ_
+Foreign Currency Debt held Overseas : Government
+$m
+TRYM Model Database, RBA Statistics and ABS Cat No 5204.0, 5206.0
+VDORAZ_
+Government Debt : Official Reserve Assets & Lending
+$m
+ABS Cat No 5302.0 and OE calculations
+Effective Tax Rates on Production (excluding Payroll and Fringe Benefits Tax)
+RTGAG
+Agriculture
+rate
+Total taxes on production derived and interpolated from ANA data on factor income and gross product at basic prices by industry less inferred payroll tax and fringe benefit tax
+ABS Cat No 5204.0, 5206.0 and OE calculations
+RTGMIN
+Mining
+rate
+Total taxes on production derived and interpolated from ANA data on factor income and gross product at basic prices by industry less inferred payroll tax and fringe benefit tax
+ABS Cat No 5204.0, 5206.0 and OE calculations
+RTGMAN
+Manufacturing
+rate
+Total taxes on production derived and interpolated from ANA data on factor income and gross product at basic prices by industry less inferred payroll tax and fringe benefit tax
+ABS Cat No 5204.0, 5206.0 and OE calculations
+RTGCST
+Construction
+rate
+Total taxes on production derived and interpolated from ANA data on factor income and gross product at basic prices by industry less inferred payroll tax and fringe benefit tax
+ABS Cat No 5204.0, 5206.0 and OE calculations
+RTGSD
+Distributional Services
+rate
+Total taxes on production derived and interpolated from ANA data on factor income and gross product at basic prices by industry less inferred payroll tax and fringe benefit tax
+ABS Cat No 5204.0, 5206.0 and OE calculations
+RTGK
+Finance and Insurance
+rate
+Total taxes on production derived and interpolated from ANA data on factor income and gross product at basic prices by industry less inferred payroll tax and fringe benefit tax
+ABS Cat No 5204.0, 5206.0 and OE calculations
+RTGL
+Property and Business Services
+rate
+Total taxes on production derived and interpolated from ANA data on factor income and gross product at basic prices by industry less inferred payroll tax and fringe benefit tax
+ABS Cat No 5204.0, 5206.0 and OE calculations
+RTGSC
+Consumer Services
+rate
+Total taxes on production derived and interpolated from ANA data on factor income and gross product at basic prices by industry less inferred payroll tax and fringe benefit tax
+ABS Cat No 5204.0, 5206.0 and OE calculations
+RTGEGW
+Electricity, Gas and Water
+rate
+Total taxes on production derived and interpolated from ANA data on factor income and gross product at basic prices by industry less inferred payroll tax and fringe benefit tax
+ABS Cat No 5204.0, 5206.0 and OE calculations
+RTGCOM
+Communications
+rate
+Total taxes on production derived and interpolated from ANA data on factor income and gross product at basic prices by industry less inferred payroll tax and fringe benefit tax
+ABS Cat No 5204.0, 5206.0 and OE calculations
+RTGHUC
+Human Capital Services
+rate
+Total taxes on production derived and interpolated from ANA data on factor income and gross product at basic prices by industry less inferred payroll tax and fringe benefit tax
+ABS Cat No 5204.0, 5206.0 and OE calculations
+Effective Payroll and Fringe Benefits Tax Rates
+RTPRAG
+Agriculture
+rate
+Payroll tax revenue is allocated across industries according to the wage and salary earners component of labour compensation with industry shares adjusted for the average size of firms as indicated by the number of employees divided by the number of employers
+ABS Cat No 5206.0, 5204.0, 6203.0 and OE calculations
+RTPRMIN
+Mining
+rate
+Payroll tax revenue is allocated across industries according to the wage and salary earners component of labour compensation with industry shares adjusted for the average size of firms as indicated by the number of employees divided by the number of employers
+ABS Cat No 5206.0, 5204.0, 6203.0 and OE calculations
+RTPRMAN
+Manufacturing
+rate
+Payroll tax revenue is allocated across industries according to the wage and salary earners component of labour compensation with industry shares adjusted for the average size of firms as indicated by the number of employees divided by the number of employers
+ABS Cat No 5206.0, 5204.0, 6203.0 and OE calculations
+RTPRCST
+Construction
+rate
+Payroll tax revenue is allocated across industries according to the wage and salary earners component of labour compensation with industry shares adjusted for the average size of firms as indicated by the number of employees divided by the number of employers
+ABS Cat No 5206.0, 5204.0, 6203.0 and OE calculations
+RTPRSD
+Distributional Services
+rate
+Payroll tax revenue is allocated across industries according to the wage and salary earners component of labour compensation with industry shares adjusted for the average size of firms as indicated by the number of employees divided by the number of employers
+ABS Cat No 5206.0, 5204.0, 6203.0 and OE calculations
+RTPRFIN
+Finance and Insurance
+rate
+Payroll tax revenue is allocated across industries according to the wage and salary earners component of labour compensation with industry shares adjusted for the average size of firms as indicated by the number of employees divided by the number of employers
+ABS Cat No 5206.0, 5204.0, 6203.0 and OE calculations
+RTPRPBS
+Property and Business Services
+rate
+Payroll tax revenue is allocated across industries according to the wage and salary earners component of labour compensation with industry shares adjusted for the average size of firms as indicated by the number of employees divided by the number of employers
+ABS Cat No 5206.0, 5204.0, 6203.0 and OE calculations
+RTPRSC
+Consumer Services
+rate
+Payroll tax revenue is allocated across industries according to the wage and salary earners component of labour compensation with industry shares adjusted for the average size of firms as indicated by the number of employees divided by the number of employers
+ABS Cat No 5206.0, 5204.0, 6203.0 and OE calculations
+RTPREGW
+Electricity, Gas and Water
+rate
+Payroll tax revenue is allocated across industries according to the wage and salary earners component of labour compensation with industry shares adjusted for the average size of firms as indicated by the number of employees divided by the number of employers
+ABS Cat No 5206.0, 5204.0, 6203.0 and OE calculations
+RTPRCOM
+Communications
+rate
+Payroll tax revenue is allocated across industries according to the wage and salary earners component of labour compensation with industry shares adjusted for the average size of firms as indicated by the number of employees divided by the number of employers
+ABS Cat No 5206.0, 5204.0, 6203.0 and OE calculations
+RTPRG
+Government
+rate
+ABS Cat No 5206.0, 5204.0, 6203.0 and OE calculations
+RTPRB
+Business
+rate
+ABS Cat No 5206.0, 5204.0, 6203.0 and OE calculations
+RTPR
+Average Rate for the Economy
+rate
+ABS Cat No 5206.0, 5204.0, 6203.0 and OE calculations
+Effective Tax Rates on Products (Taxes less Subsidies on Products)
+RTCFD
+Consumption: Food
+rate
+Indirect tax revenue from QNA (wholesales sales tax, excise taxes etc in history) allocated to final expenditure items via the input-output tables.  These typically drop to close to zero with the introduction of the GST.
+ABS Cat No 5206.0, 5209.0 and OE calculations
+RTCCAL
+Consumption: Cigarettes and Alcohol
+rate
+Indirect tax revenue from QNA (wholesales sales tax, excise taxes etc in history) allocated to final expenditure items via the input-output tables.  These typically drop to close to zero with the introduction of the GST.
+ABS Cat No 5206.0, 5209.0 and OE calculations
+RTCDOG
+Consumption: Durables and Other Goods
+rate
+Indirect tax revenue from QNA (wholesales sales tax, excise taxes etc in history) allocated to final expenditure items via the input-output tables.  These typically drop to close to zero with the introduction of the GST.
+ABS Cat No 5206.0, 5209.0 and OE calculations
+RTCMV
+Consumption: Motor Vehicles
+rate
+Indirect tax revenue from QNA (wholesales sales tax, excise taxes etc in history) allocated to final expenditure items via the input-output tables.  These typically drop to close to zero with the introduction of the GST.
+ABS Cat No 5206.0, 5209.0 and OE calculations
+RTCOMT
+Consumption: Operation of Motor Vehicles and Transport
+rate
+Indirect tax revenue from QNA (wholesales sales tax, excise taxes etc in history) allocated to final expenditure items via the input-output tables.  These typically drop to close to zero with the introduction of the GST.
+ABS Cat No 5206.0, 5209.0 and OE calculations
+RTCEGW
+Consumption: Electricity, Gas and Water
+rate
+Indirect tax revenue from QNA (wholesales sales tax, excise taxes etc in history) allocated to final expenditure items via the input-output tables.  These typically drop to close to zero with the introduction of the GST.
+ABS Cat No 5206.0, 5209.0 and OE calculations
+RTCCOM
+Consumption: Communications
+rate
+Indirect tax revenue from QNA (wholesales sales tax, excise taxes etc in history) allocated to final expenditure items via the input-output tables.  These typically drop to close to zero with the introduction of the GST.
+ABS Cat No 5206.0, 5209.0 and OE calculations
+RTCHUC
+Consumption: Human Capital Services
+rate
+Indirect tax revenue from QNA (wholesales sales tax, excise taxes etc in history) allocated to final expenditure items via the input-output tables.  These typically drop to close to zero with the introduction of the GST.
+ABS Cat No 5206.0, 5209.0 and OE calculations
+RTCSRV
+Consumption: Other Services
+rate
+Indirect tax revenue from QNA (wholesales sales tax, excise taxes etc in history) allocated to final expenditure items via the input-output tables.  These typically drop to close to zero with the introduction of the GST.
+ABS Cat No 5206.0, 5209.0 and OE calculations
+RTCRE
+Consumption: Rents
+rate
+Mainly local government rates and charges. Derived as consumption of rents (CREZ) less dwelling output (GDWZ) expressed as a proportion of CREZ.
+ABS Cat No 5206.0, 5209.0 and OE calculations
+RTCREO
+Consumption: Rents - Original
+rate
+Indirect tax revenue from QNA (wholesales sales tax, excise taxes etc in history) allocated to final expenditure items via the input-output tables.  These typically drop to close to zero with the introduction of the GST.
+ABS Cat No 5206.0, 5209.0 and OE calculations
+RTCNR2
+Consumption: Non-Rental
+rate
+Indirect tax revenue from QNA (wholesales sales tax, excise taxes etc in history) allocated to final expenditure items via the input-output tables.  These typically drop to close to zero with the introduction of the GST.
+ABS Cat No 5206.0, 5209.0 and OE calculations
+RTCNRT
+Consumption: Non-Rental (inclusive of GST)
+rate
+ABS Cat No 5206.0, 5209.0 and OE calculations
+RTIDW
+Investment: Dwellings (original)
+rate
+Indirect tax revenue from QNA (wholesales sales tax, excise taxes etc in history) allocated to final expenditure items via the input-output tables.  These typically drop to close to zero with the introduction of the GST.
+ABS Cat No 5206.0, 5209.0 and OE calculations
+RTIBP
+Investment: Private Business
+rate
+Indirect tax revenue from QNA (wholesales sales tax, excise taxes etc in history) allocated to final expenditure items via the input-output tables.  These typically drop to close to zero with the introduction of the GST.
+ABS Cat No 5206.0, 5209.0 and OE calculations
+RTIOB
+Investment: Other Buildings and Structures
+rate
+Indirect tax revenue from QNA (wholesales sales tax, excise taxes etc in history) allocated to final expenditure items via the input-output tables.  These typically drop to close to zero with the introduction of the GST.
+ABS Cat No 5206.0, 5209.0 and OE calculations
+RTIPE
+Investment: Machinery and Equipment
+rate
+Indirect tax revenue from QNA (wholesales sales tax, excise taxes etc in history) allocated to final expenditure items via the input-output tables.  These typically drop to close to zero with the introduction of the GST.
+ABS Cat No 5206.0, 5209.0 and OE calculations
+RTIIP
+Investment: Intellectual Property
+rate
+Indirect tax revenue from QNA (wholesales sales tax, excise taxes etc in history) allocated to final expenditure items via the input-output tables.  These typically drop to close to zero with the introduction of the GST.
+ABS Cat No 5206.0, 5209.0 and OE calculations
+RTIBIO
+Investment: Biological Assets
+rate
+Indirect tax revenue from QNA (wholesales sales tax, excise taxes etc in history) allocated to final expenditure items via the input-output tables.  These typically drop to close to zero with the introduction of the GST.
+ABS Cat No 5206.0, 5209.0 and OE calculations
+RTIOTC
+Investment: Ownership Transfer Costs
+rate
+Indirect tax revenue from QNA (wholesales sales tax, excise taxes etc in history) allocated to final expenditure items via the input-output tables.  These typically drop to close to zero with the introduction of the GST.
+ABS Cat No 5206.0, 5209.0 and OE calculations
+RTCONG
+Consumption: Government
+rate
+Indirect tax revenue from QNA (wholesales sales tax, excise taxes etc in history) allocated to final expenditure items via the input-output tables.  These typically drop to close to zero with the introduction of the GST.
+ABS Cat No 5206.0, 5209.0 and OE calculations
+RTIGE
+Investment: Government Enterprise
+rate
+Indirect tax revenue from QNA (wholesales sales tax, excise taxes etc in history) allocated to final expenditure items via the input-output tables.  These typically drop to close to zero with the introduction of the GST.
+ABS Cat No 5206.0, 5209.0 and OE calculations
+RTIGG
+Investment: General Government
+rate
+Indirect tax revenue from QNA (wholesales sales tax, excise taxes etc in history) allocated to final expenditure items via the input-output tables.  These typically drop to close to zero with the introduction of the GST.
+ABS Cat No 5206.0, 5209.0 and OE calculations
+RTXMIN
+Exports: Mining
+rate
+Indirect tax revenue from QNA (wholesales sales tax, excise taxes etc in history) allocated to final expenditure items via the input-output tables.  These typically drop to close to zero with the introduction of the GST.
+ABS Cat No 5206.0, 5209.0 and OE calculations
+RTXSRV
+Exports: Services
+rate
+Indirect tax revenue from QNA (wholesales sales tax, excise taxes etc in history) allocated to final expenditure items via the input-output tables.  These typically drop to close to zero with the introduction of the GST.
+ABS Cat No 5206.0, 5209.0 and OE calculations
+RTXMAN
+Exports: Manufacturing
+rate
+Indirect tax revenue from QNA (wholesales sales tax, excise taxes etc in history) allocated to final expenditure items via the input-output tables.  These typically drop to close to zero with the introduction of the GST.
+ABS Cat No 5206.0, 5209.0 and OE calculations
+RTXAG
+Exports: Agricultural
+rate
+Indirect tax revenue from QNA (wholesales sales tax, excise taxes etc in history) allocated to final expenditure items via the input-output tables.  These typically drop to close to zero with the introduction of the GST.
+ABS Cat No 5206.0, 5209.0 and OE calculations
+RTGST
+Goods and Services Statutory Tax Rate
+rate
+Budget Papers
+Custom Duties:
+RTMCON
+Consumption Imports
+rate
+Custom duties
+ABS Cat No 5206.0 and OE calculations
+RTMCAP
+Capital Imports
+rate
+Custom duties
+ABS Cat No 5206.0 and OE calculations
+RTMINT
+Intermediate Imports
+rate
+Custom duties
+ABS Cat No 5206.0 and OE calculations
+RTMPE
+Imports of Petroleum Products
+rate
+Custom duties
+ABS Cat No 5206.0 and OE calculations
+RTMGS
+Total Imports
+rate
+Custom duties
+ABS Cat No 5206.0 and OE calculations
+QGST1
+Dummy variable – GST transition Q1
+Index
+To capture timing effects on expenditure and prices etc of GST introduction. (Two quarters before)
+OE estimate
+QGST2
+Dummy variable – GST transition Q2
+Index
+To capture timing effects on expenditure and prices etc of GST introduction. (Quarter before)
+OE estimate 
+QGST3
+Dummy variable – GST transition Q3
+Index
+To capture timing effects on expenditure and prices etc of GST introduction. (Quarter of introduction)
+OE estimate
+QGST4
+Dummy variable – GST transition Q4
+Index
+To capture timing effects on expenditure and prices etc of GST introduction. (Quarter after)
+OE estimate
+XRVDGT
+Target Government Debt to GDP Ratio
+Ratio
+In history derived as a trend of actual debt to GDP ratio
+OE calculation
+XRGGOS
+Exogenous ratio: gross operating surplus on government capital
+Rate
+Derived from dividend receipts relative to estimated GOS
+ABS Cat No 5206.0 and OE calculation

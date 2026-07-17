@@ -1,0 +1,3166 @@
+Outlook EconomicsOutlook Economics
+Outlook Economics
+Outlook Economics
+Australian Macroeconomic (AUS-M) Model
+Equation Listing
+Outlook Economics
+Canberra, Australia 
+28 March 2014
+Outlook Economics is an Australian based economic consultancy that specializes in economic modelling, policy analysis and forecasting. Staffed by former Treasury officials we provide professional, independent and timely analysis of the economic outlook, and of economic events and economic policies. 
+© Outlook Economics 2015
+This work is copyright. Persons wishing to reproduce this material should contact Outlook Economics at the following address.
+Canberra
+Outlook Economics
+11 Bailey Place,
+Yarralumla, 
+Canberra ACT 2600
+Telephone+61 2 6282 9747
+EmailInfo@OutlookEconomics.com 
+Websitewww.OutlookEconomics.com
+Disclaimer
+While Outlook Economics endeavours to provide reliable analysis and believes the material it presents is accurate, it will not be liable for any party acting on such information.
+Contents:
+Australian Macroeconomic (AUS-M) Model Equation Listing
+A.Production Function (Employment, Investment and Output Price) Equations for Individual Industries5
+B.  Industry and Import Demand System Equations29
+C.Household Sector Equations (Wealth, Consumption, Dwellings, Labor Force Participation, Hours Worked, Wages, Vacancies)37
+D.Balance of Payments, Trade Equations and Overseas Net Lending Stock-Flow Identities46
+E.  Product Market - Price System Equations54
+F.  Financial Market Equations and Identities (Exchange Rate, Interest Rates)70
+G.  Fiscal Policy, Taxes, Public Debt and the PSBR72
+H.  GDP and Other Accounting Identities75
+Australian Macroeconomic (AUS-M) Model Equation Listing
+Production Function (Employment, Investment and Output Price) Equations for Individual Industries
+_____________________________________________________________________
+A1: AGRICULTURE (AUS-M Mnemonic: AG)(ABS Industry Code: A)
+______________________________________________
+A1a: Rainfall (Weighted Average of Regions) impact on Agricultural Output (GRAIN)
+graineq
+grain={1-1/exp[a1gagu*qrainc+a2gagu*qrainc(-1)
+     +a3gagu*qrainc(-2)+a4gagu*qrainc(-3)]}*gag
+______________________________________________
+A1b: Underlying Agricultural Output (GAGU)
+gagueq
+gagu= exp{ log(gagu(-1))+(1-a1gag)*[log(gagu(-1))-log(gagu(-2))]
+      +a1gag*log(wip/wip(-4))/4
+      -a0gag*[log(gagu(-1))-log(gagt(-1))-c0gag
+                 -c1gag*[log(pgag(-5)/rtgag(-5))
+                         -log(rwhag(-5)*rtprag(-5)/effag(-5))]
+                -c2gag*qtxc]
+      +ugagu}
+______________________________________________
+AIc: Agricultural Output (GAG)
+gageq
+gag=gagu+grain    
+______________________________________________
+A1d: Agricultural Employment (NEAG)
+neageq
+neag=-nvaga+exp{ log(neag(-1)+nvaga(-1))
+    -a1neag*csag*[log(rwhag*rtprag/(pgag/rtgag))
+               -log(rwhag(-1)*rtprag(-1)/(pgag(-1)/rtgag(-1)))
+               -ceag1*(log(effag)-log(effag(-1)))]
+    +a2neag*[log(gagu/gagu(-1))-(log(nhagt)-log(nhagt(-1)))
+                -ceag1*(log(effag)-log(effag(-1)))]
+    +a3neag*[log(neag(-1)+nvaga(-1))-log(neag(-2)+nvaga(-2))]
+    +[1-a2neag-a3neag]*
+                [log(gagt(-1))-log(gagt(-2))-(log(nhagt(-1))-log(nhagt(-2)))
+                -ceag1*(log(effag(-2))-log(effag(-3)))]
+    -a0neag*{log(neag(-1)+nvaga(-1))+log(nhagt(-1))
+          -log(gagu(-1))-csag*log(clag)
+          +csag*[log(rwhag(-1)*rtprag(-1)/(pgag(-1)/rtgag(-1)))
+          -ceag1*log(effag(-1))]
+          +ceag1*log(effag(-1))}
+          +uneag }
+______________________________________________
+A1e: Investment Q Ratio (QAG)
+qageq
+qag=[[(ckag**(1+1/(csag-1))*(pgag/rtgag)/piag*(1-clag**csag*
+      (rwhag*rtprag/(pgag/rtgag)/exp(ceag1*log(effag)))**(1-csag))
+      **(1/(1-csag)))*exp(ceag2*log(effagc))]]/
+      [((rigl-fie)/(1+fie/100)+riskag-riskag2+a2qinv*
+      fie)/400+rkdag]
+______________________________________________
+A1f: Agricultural Investment (IAG)
+iageq
+iag=kag(-1)*{ (1-a0iag)*iag(-1)/kag(-2)
+     +a0iag*{exp[(log(gagt(-1))-log(gagt(-2)))
+              -csag*log(((rriag(-1)+riskag)/400+rkdag(-1))
+                        /((rriag(-5)+riskag)/400+rkdag(-5)))/4
+              +(csag-1)*ceag2*(log(effagc(-1))-log(effagc(-2)))]-1+rkdag(-1)}
+         +a1iag*[iag(-1)/kag(-2)-iag(-2)/kag(-3)]
+         +a2iag*[qag(-1)-qag(-2)]
+         +a3iag*[ri90(-1)-fie(-1)-(ri90(-5)-fie(-5))]
+         +a4iag*(qag(-1)-1)
+         +a5iag*
+      {[(ckag**(1+1/(csag-1))*(pgag/rtgag)/piag*(1-clag**csag*
+        (rwhag*rtprag/(pgag/rtgag)/exp(ceag1*log(effag)))**(1-csag))
+        **(1/(1-csag)))*exp(ceag2*log(effagc))-rkdag]+riskag2/400
+        +a1rrmag*log(gag/gagst)-
+       [[(ckag**(1+1/(csag-1))*(pgag(-2)/rtgag(-2))/piag(-2)*(1-clag**csag*
+        (rwhag(-2)*rtprag(-2)/(pgag(-2)/rtgag(-2))
+                        /exp(ceag1*log(effag(-2))))**(1-csag))
+        **(1/(1-csag)))*exp(ceag2*log(effagc(-2)))-rkdag(-2)]+riskag2/400
+        +a1rrmag*log(gag(-2)/gagst(-2))]}+uiag }
+______________________________________________
+A1g: Equilibrium Price given Wages and the Capital Stock (PSTAG)
+pstageq
+pstag=[exp{[log{rwhag*rtprag}-(ceag1*log(effag))-log(clag)]
+       +(1/(csag-1))*[log{(-ckag/clag)
+        *{(kag(-1)*exp(ceag2*log(effagc(-1)))/gagu)**((csag-1)/csag)}
+        +1/clag}]}]
+______________________________________________
+A1h: Agricultural Output (Value Added) Price (PGAG)
+pgageq
+pgag= exp{ log(pgag(-1))
+     +a1pgag*log(pxag/pxag(-1))
+     +a2pgag*log(pxag(-1)/pxag(-2))
+     +a3pgag*log[(wpxag/resdr)/(wpxag(-1)/resdr(-1))]
+     +[1-a1pgag-a2pgag-a3pgag]
+                *[log(pgag(-1))-log(pgag(-2))]
+     +c2pgag*[qtxc-qtxc(-1)]
+     -a0pgag*[log(pgag(-1))-c1pgag*log(pxag(-1)*(1-rtxag(-1)))
+     -c2pgag*qtxc(-1)]
+     +upgag }
+______________________________________________
+A1i: Agricultural Exports (XAG)
+xageq
+xag=exp{ log(xag(-1))
+      +[1-a2xag-a3xag]*[log(xag(-1))-log(xag(-2))]
+      +a2xag*[c3xag*log((gagst+grain-(sfm+xrba)-.479*ibio)
+               /(gagst(-1)+grain(-1)-(sfm(-1)+xrba(-1))-.479*ibio(-1)))
+                        +c1xag*(qtxc-qtxc(-1))]
++a3xag*[c3xag*log((gagst(-1)+grain(-1)-(sfm(-1)+xrba(-1))-.479*ibio(-1))
+               /(gagst(-2)+grain(-2)-(sfm(-2)+xrba(-2))-.479*ibio(-2)))
+                        +c1xag*(qtxc(-1)-qtxc(-2))]
+     +a4xag*[log(wmtpg/wmtpg(-1))-gr]
+     +a5xag*[log(gag/(gagst+grain))-log(gag(-1)/(gagst(-1)+grain(-1)))]
+      +a6xag*[sfm/gagst-sfm(-1)/gagst(-1)]
+   -a0xag*{log(xag(-1))
+       -c3xag*log(gagst(-1)+grain(-1)-(sfm(-1)+xrba(-1))-.479*ibio(-1))
+          -c2xag*log(gag(-1)/(gagst(-1)+grain(-1)))
+          -c0xag-c1xag*qtxc(-1)}
+      +uxag }
+______________________________________________
+A1j: Potential Output given Employment and Capital (GAGST)
+gagsteq
+gagst=[clag*((nhagt*neag)*exp(ceag1*log(effag)))**(-(1-csag)/csag)
+         +ckag*(kag(-1)*exp(ceag2*log(effagc(-1))))
+         **(-(1-csag)/csag)]**(-csag/(1-csag))
+_____________________________________________________________________
+A2: MINING (AUS-M Mnemonic: MIN)(ABS Industry Code: B) 
+______________________________________
+A2a: Mining Employment (NEMIN)
+nemineq
+    nemin = -nvmina+exp{ log(nemin(-1)+nvmina(-1))
+    -a1nemin*csmin*[log(rwhmin*rtprmin/(pgmin/rtgmin))
+               -log(rwhmin(-1)*rtprmin(-1)/(pgmin(-1)/rtgmin(-1)))
+               -cemin1*(log(effmin)-log(effmin(-1)))]
+    +a2nemin*[log(gmin(-1)/gmin(-2))-(log(nhmint(-1))-log(nhmint(-2)))
+                -cemin1*(log(effmin(-1))-log(effmin(-2)))]
+    +[1-a2nemin]*
+           [(log(gmint(-1))-log(gmint(-2)))-(log(nhmint(-1))-log(nhmint(-2)))
+             -cemin1*(log(effmin(-1))-log(effmin(-2)))]
+    +a3nemin*[imin/kmin-imin(-1)/kmin(-1)]
+    -a0nemin*{log(nemin(-1)+nvmina(-1))
+    +log(nhmint(-1))
+          -log(gmin(-1))-csmin*log(clmin)
+          +csmin*[log(rwhmin(-1)*rtprmin(-1)/(pgmin(-1)/rtgmin(-1)))
+          -cemin1*log(effmin(-1))]
+          +cemin1*log(effmin(-1))}
+          +unemin }
+______________________________________
+A2b: Mining Investment Q Ratio (QMIN)
+qmineq
+qmin=[[(ckmin**(1+1/(csmin-1))*(pgmin/rtgmin)/pimin*(1-clmin**csmin*
+      (rwhmin*rtprmin/(pgmin/rtgmin)/exp(cemin1*log(effmin)))**(1-csmin))
+      **(1/(1-csmin)))*exp(cemin2*log(effminc))]]/
+      [((rigl-fie)/(1+fie/100)+riskmin-riskmin2+a2qinv*
+      fie)/400+rkdmin]
+______________________________________
+A2c: All Resources Equity Price Index (QRES)
+qreseq
+qres=qres(-1)
+      +a1qres*(qres(-1)-qres(-2))
+      +a2qres*[log(wpxmin/wpcon)-log(wpxmin(-1)/wpcon(-1))]
+      +a3qres*[log(wpxmin(-1)/wpcon(-1))-log(wpxmin(-2)/wpcon(-2))]
+      +a4qres*[log(wgdpp/wgdpp(-1))-gr]
+      -a0qres*[(qres(-1)-1-c1qres)
+                   -c2qres*(qmin(-1)-1)]
+      +uqres
+______________________________________
+A2d: Mining Investment (IMIN)
+imineq
+imin=  kmin(-1)*{ (1-a0imin-a3imin)*imin(-1)/kmin(-2)
+        +a2imin*[(log(wpxmin/wpcon)-qwpxmin)
+                 -(log(wpxmin(-4)/wpcon(-4))-qwpxmin(-4))]
+        +a3imin*imin(-4)/kmin(-5)
+        +a0imin*[c1imin*{exp[(log(gmint(-1))-log(gmint(-2)))
+           -csmin*log(rrminta(-1)/rrminta(-5))/4
+        +(csmin-1)*cemin2*log(effminc(-1)/effminc(-2))]-1+rkdmin(-1)}
+        +c2imin*[qres(-1)-1-c1qres]
+        +c3imin*[log(wpxmin/wpcon)-qwpxmin]
+  +c4imin
+  +c5imin*qtimin]
+  +uimin}
+______________________________________
+A2e: Required Rate of Return on Mining Investment (RRMINT)
+rrmintaeq
+rrminta=.95*rrmint(-1)
+       +.05*[((rriglt+riskmin)/400+rkdmin)*pimin/(pgmin/rtgmin)]
+       +urrmint
+______________________________________
+A2f: Equilibrim Output Price given Wages and the Capital Stock (PSTMIN)
+pstmineq
+pstmin=[exp{[log{rwhmin*rtprmin}-(cemin1*log(effmin))-log(clmin)]
+       +(1/(csmin-1))*[log{(-ckmin/clmin)
+          *{(kmin(-1)*exp(cemin2*log(effminc(-1)))/gmin)**((csmin-1)
+          /csmin)}
+       +1/clmin}]}]
+______________________________________
+A2g: Output (Value-Added) Price (PGMIN)
+pgmineq
+pgmin = exp{ (1-a0pgmin)*[log(pgmin(-1))
+              +a1pgmin*log(pxmin/pxmin(-1))+a2pgmin*log(pxmin(-1)/pxmin(-2))
+        +(1-a1pgmin-a2pgmin)*inf]
++a0pgmin*[c0pgmin*log((xmin*pxmin-mnmg*pmnmg)/(xmin-mnmg)*(1-rtxmin))
+                       +c1pgmin
+                       +c2pgmin*log((wpmpe(-6)/resdr(-6))/pgdpa(-6))
+                       +c3pgmin*qtime]
+              +upgmin }?/[1+(psf-1)*9]
+______________________________________
+A2h: Mining Export Volumes (XMIN)
+xmineq
+xmin = 0.6*(mnmg+mnmg(-1))+xrba
+      +exp{ log(xmin(-1)-.6*(mnmg(-1)+mnmg(-2))-xrba(-1))
+      +[1-a1xmin-a2xmin-a3xmin-a4xmin]
+        *[log(xmin(-1)-.6*(mnmg(-1)+mnmg(-2))-xrba(-1))
+         -log(xmin(-2)-.6*(mnmg(-2)+mnmg(-3))-xrba(-2))]
+      +a1xmin*[log(gminst(-6)/gminst(-7))
+                        +c1xmin*(qtxmin-qtxmin(-1))]
+      +a2xmin*[log(wmtp(-4)/wmtp(-8))]
+      +a3xmin*[log(wip/wip(-4))]
+      +a4xmin*[log(gnea/gnea(-4))]
+      -a0xmin*[log(xmin(-1)-.6*(mnmg(-1)+mnmg(-2))-xrba(-1))
+                  -log(gminst(-7))-.282*log(gnea(-1)/gdpat(-1))
+                       -c0xmin-c1xmin*qtxmin(-1)}
+      +uxmin }
+______________________________________
+A2i: Potential Output given Employment and Capital (GMINST)
+gminsteq
+gminst=[clmin*((nhmint*neminad)*exp(cemin1*log(effmin)))**(-(1-csmin)/csmin)
+         +ckmin*(kminad(-1)*exp(cemin2*log(effminc(-1))))
+         **(-(1-csmin)/csmin)]**(-csmin/(1-csmin))
+______________________________________
+A2j: Minng Output – Chain Linked Value Added (GMIN)
+gmineq
+gmin=exp{log(gmin(-1))
+      +(1-a1gmin-a2gmin-a3gmin-a4gmin-a5gmin-a6gmin)
+              *log(gmint/gmint(-1))
+      +a1gmin*[log((egmin+.67*smin)/(egmin(-1)+.67*smin(-1)))
+                                        +c1gmin*(qtmin-qtmin(-1))]
+      +a2gmin*[log((egmin(-1)+.67*smin(-1))/(egmin(-2)+.67*smin(-2)))
+                                        +c1gmin*(qtmin(-1)-qtmin(-2))]
+      +a3gmin*log(gminst(-6)/gminst(-7))
+      +a4gmin*log(gminst(-7)/gminst(-8))
+      +a5gmin*[log(gmin(-1)/gmin(-2))]
+      +a6gmin*[log(gmin(-2)/gmin(-3))]
+      -a0gmin*[log(gmin(-1))-log(gminst(-7)*(1+gr)**6)]
+      +ugmin}
+______________________________________
+A2k: Minng Capital Stock – Adjusted for Substitution Effects (KMINAD)
+kminadeq
+kminad=kmin(-7)*[(rrminta/rrmintav)/exp(cemin2*log(effminc))]**csmin
+______________________________________
+A2l: Minng Employment – Adjusted for Substitution Effects (NEMINAD)
+neminadeq
+neminad=nemin*[((rwhmin*rtprmin/(pgmin/rtgmin))/rrwminav)
+/exp(cemin1*log(effmin))]**csmin
+_____________________________________________________________________
+A3: MANUFACTURING (MAN)  (C)
+______________________________________
+A3a: Manufacturing Employment (NEMAN)
+nemaneq
+        neman = -nvmana+exp{ log(neman(-1)+nvmana(-1))
+    -a1neman*csman*[log(rwhman*rtprman/(pgman/rtgman))
+               -log(rwhman(-1)*rtprman(-1)/(pgman(-1)/rtgman(-1)))
+               -ceman1*(log(effman)-log(effman(-1)))]
+    +a2neman*[log(gman/gman(-1))-(log(nhmant)-log(nhmant(-1)))
+                -ceman1*(log(effman)-log(effman(-1)))]
+    +a3neman*[log(neman(-1)+nvmana(-1))-log(neman(-2)+nvmana(-2))]
+    +[1-a2neman-a3neman]*
+                [log(gmant(-1))-log(gmant(-2))
+                -(log(nhmant(-1))-log(nhmant(-2)))
+                -ceman1*(log(effman(-1))-log(effman(-2)))]
+    -a0neman*{log(neman(-1)+nvmana(-1))
+    +log(nhmant(-1))
+          -log(gman(-1))-csman*log(clman)
+          +csman*[log(rwhman(-1)*rtprman(-1)/(pgman(-1)/rtgman(-1)))
+          -ceman1*log(effman(-1))]
+          +ceman1*log(effman(-1))}
+          +uneman }
+______________________________________
+A3b: Manufacturing Investment Q Ratio (QMAN)
+qmaneq
+qman=[[(ckman**(1+1/(csman-1))*(pgman/rtgman)/pkman*(1-clman**csman*
+      (rwhman*rtprman/(pgman/rtgman)/exp(ceman1*log(effman)))**(1-csman))
+      **(1/(1-csman)))*exp(ceman2*log(effmanc))]]/
+      [((rigl-fie)/(1+fie/100)+riskman-riskman2+a2qinv*
+      fie)/400+rkdman*piman/pkman]
+______________________________________
+A3c: Manufacturing Investment (IMAN)
+imaneq
+iman=kman(-1)*{ (1-a0iman)*iman(-1)/kman(-2)
+         +a0iman*{exp[(log(gmant)-log(gmant(-1)))
+                -csman*log(rrimant/rrimant(-4))/4
+                +(csman-1)*ceman2*(log(effmanc/effmanc(-1)))]-1+rkdman}
+         +a1iman*[iman(-1)/kman(-2)-iman(-2)/kman(-3)]
+         +a2iman*[log(gman/gman(-1))-(log(gmant)-log(gmant(-1)))]
+         +a3iman*[log(gman(-1))-log(gmanst(-1))]
+         +a4iman*(qman(-3)-1)
+         +a6iman*(imin/kmin(-1)-imin(-1)/kmin(-2))
+         +uiman }
+______________________________________
+A3d: Equilibrium Output Price given Wages and Capital(PSTMAN)
+pstmaneq
+pstman=[exp{[log{rwhman*rtprman}-(ceman1*log(effman))-log(clman)]
+       +(1/(csman-1))*[log{(-ckman/clman)
+           *{(kman(-1)*exp(ceman2*log(effmanc(-1)))/gman)**((csman-1)/csman)}
+            +1/clman}]}]
+______________________________________
+A3e: Capacity Utilisation Component of PSTMAN (PSTMAN2)
+pstmaneq2 lpstman2=-log(clman)+(1/(csman-1))*[log{(-ckman/clman)
+           *{(kman(-1)*exp(ceman2*log(effmanc(-1)))/gman)**((csman-1)/csman)}
+            +1/clman}]
+______________________________________
+A3f: Manufacturing Output (Value-Added) Price (PGMAN)
+pgmaneq
+     pgman = rtgman*exp{ log(pgman(-1)/rtgman(-1))         
+     +a1pgman*[lpstman2-lpstman2(-1)]
+     +a2pgman*log{pstman(-1)/pstman(-2)}
+     +a3pgman*log{pstman(-2)/pstman(-3)}
+     +a4pgman*log{pstman(-3)/pstman(-4)}
+     +a5pgman*log{pstman(-4)/pstman(-5)}
+ +[1-a2pgman-a3pgman-a4pgman-a5pgman]
+      *[log((rwhman*rtprman)/(rwhman(-1)*rtprman(-1)))
+                 -ceman1*(log(effman)-log(effman(-1)))]
+     +a6pgman*[log(pmgs/pmgs(-1))
+              -log(pmgs(-1)/pmgs(-2))]
+     +a7pgman*[log(gman(-1)/gmant(-1))-log(gman(-5)/gmant(-5))]
+     +a0pgman*{log(pstman(-5))
+                -log(pgman(-5)/rtgman(-5))}
+     +upgman }
+______________________________________
+A3g: Potential Output given Employment and Capital (GMANST)
+gmansteq
+gmanst= [clman*((nhmant*neman)*exp(ceman1*log(effman)))**(-(1-csman)/csman)
+         +ckman*(kman(-1)*exp(ceman2*log(effmanc(-1))))
+         **(-(1-csman)/csman)]**(-csman/(1-csman)) 
+_____________________________________________________________________
+A4: CONSTRUCTION (CST)  (E)
+______________________________________
+A4a: Construction Employment (NECST)
+necsteq
+necst = -nvcsta+exp{ log(necst(-1)+nvcsta(-1))
+    -a1necst*cscst*[log(rwhcst*rtprcst/(pgcst/rtgcst))
+               -log(rwhcst(-1)*rtprcst(-1)/(pgcst(-1)/rtgcst(-1)))
+               -cecst1*(log(effcst)-log(effcst(-1)))]
+    +a3necst*[log(gcst/gcst(-1))-(log(nhcstt)-log(nhcstt(-1)))
+                -cecst1*(log(effcst)-log(effcst(-1)))]
+    +a6necst*[idw(-1)/gcst(-1)-idw(-2)/gcst(-2)]
+    +[1-a3necst]*
+                [log(gcstt(-1))-log(gcstt(-2))
+                -(log(nhcstt(-1))-log(nhcstt(-2)))
+                -cecst1*(log(effcst(-2))-log(effcst(-3)))]
+    -a0necst*{log(necst(-1)+nvcsta(-1))
+    +log(nhcstt(-1))
+          -log(gcst(-1))-cscst*log(clcst)
+          +cscst*[log(rwhcst(-1)*rtprcst(-1)/(pgcst(-1)/rtgcst(-1)))
+                  -cecst1*log(effcst(-1))]
+          +cecst1*log(effcst(-1))}
+          +unecst }
+qcsteq
+qcst=[[(ckcst**(1+1/(cscst-1))*(pgcst/rtgcst)/picst*(1-clcst**cscst*
+      (rwhcst*rtprcst/(pgcst/rtgcst)/exp(cecst1*log(effcst)))**(1-cscst))
+      **(1/(1-cscst)))*exp(cecst2*log(effcstc))]]/
+      [((rigl-fie)/(1+fie/100)+riskcst-riskcst2+a2qinv*
+      fie)/400+rkdcst]
+icsteq
+icst=kcst(-1)*{ (1-a0icst)*icst(-1)/kcst(-2)
+         +a0icst*{exp[(log(gcstt)-log(gcstt(-1)))
+                -cscst*log(((rricst+riskcst)/400+rkdcst)
+                          /((rricst(-4)+riskcst)/400+rkdcst(-4)))/4
+                +(cscst-1)*cecst2*(log(effcstc)-log(effcstc(-1)))]-1+rkdcst}
+         +a1icst*[icst(-1)/kcst(-2)-icst(-2)/kcst(-3)]
+     +a2icst*[log(gcst/gcst(-1))-(log(gcstst)-log(gcstst(-1)))]
+         +a4icst*(qcst(-3)-1)
+         +a5icst*[rnu-rnu(-1)]
+         +a6icst*[(iob-iobs+ige+ibs)/gcst
+                 -(iob(-1)-iobs(-1)+ige(-1)+ibs(-1))/gcst(-1)]
+         +a7icst*[iobfin/ifin-iobfin(-1)/ifin(-1)]
+         +uicst }
+pstcsteq
+pstcst=[exp{[log{rwhcst*rtprcst}-(cecst1*log(effcst))-log(clcst)]
+       +(1/(cscst-1))*[log{(-ckcst/clcst)
+          *{(kcst(-1)*exp(cecst2*log(effcstc(-1)))/gcst)**((cscst-1)/cscst)}
+          +1/clcst}]}]
+pstcsteq2 lpstcst2=-log(clcst)+(1/(cscst-1))*[log{(-ckcst/clcst)
+          *{(kcst(-1)*exp(cecst2*log(effcstc(-1)))/gcst)**((cscst-1)/cscst)}
+          +1/clcst}]
+pgcsteq
+      pgcst=exp{ log(rtgcst)+log(pgcst(-1))-log(rtgcst(-1))
+     +a1pgcst*[lpstcst2-lpstcst2(-1)]
+     +a2pgcst*log{pstcst(-1)/pstcst(-2)}
+     +a3pgcst*log{pstcst(-2)/pstcst(-3)}
+     +a4pgcst*log(pcre/pcre(-1))
+ +[1-a2pgcst-a3pgcst-a4pgcst]
+      *[log((rwhcst*rtprcst)/(rwhcst(-1)*rtprcst(-1)))
+                 -cecst1*(log(effcst)-log(effcst(-1)))]
+     +a6pgcst*[iobfin/ifin-iobfin(-1)/ifin(-1)]
+     +a7pgcst*[log((pmgs(-1)*(1+rtmgs(-1)))/(pmgs(-2)*(1+rtmgs(-2))))
+              -log((pmgs(-2)*(1+rtmgs(-2)))/(pmgs(-3)*(1+rtmgs(-3))))]
+     +a0pgcst*{log(pstcst(-5))
+                        -log(pgcst(-5)/rtgcst(-5))}
+          +upgcst }
+gcststeq
+gcstst=[clcst*((nhcstt*necst)*exp(cecst1*log(effcst)))**(-(1-cscst)/cscst)
+         +ckcst*(kcst(-1)*exp(cecst2*log(effcstc(-1))))
+         **(-(1-cscst)/cscst)]**(-cscst/(1-cscst))
+_____________________________________________________________________
+A5: DISTRIBUTIONAL SERVICES (SD)  (F,G & I)
+(wholesale trade F, retail trade G, transport postal and warehousing I)
+nesdeq
+nesd=-nvsda+exp{ log(nesd(-1)+nvsda(-1))
+    -a1nesd*cssd*[log(rwhsd*rtprsd/(pgsd/rtgsd))
+               -log(rwhsd(-1)*rtprsd(-1)/(pgsd(-1)/rtgsd(-1)))
+               -cesd1*(log(effsd)-log(effsd(-1)))]
+    +a3nesd*[log(gsd/gsd(-1))-(log(nhsdt)-log(nhsdt(-1)))
+                -cesd1*(log(effsd)-log(effsd(-1)))]
+    +a4nesd*[log(gsd(-1)/gsd(-2))-(log(nhsdt(-1))-log(nhsdt(-2)))
+                -cesd1*(log(effsd(-1))-log(effsd(-2)))]
+    +a5nesd*[log(nesd(-1)+nvsda(-1))-log(nesd(-2)+nvsda(-2))]
+    +[1-a3nesd-a4nesd-a5nesd]*
+                [log(gsdt(-1))-log(gsdt(-2))-(log(nhsdt(-1))-log(nhsdt(-2)))
+                -cesd1*(log(effsd(-1))-log(effsd(-2)))]
+    -a0nesd*{log(nesd(-1)+nvsda(-1))
+    +log(nhsdt(-1))
+          -log(gsd(-1))-cssd*log(clsd)
+          +cssd*[log(rwhsd(-1)*rtprsd(-1)/(pgsd(-1)/rtgsd(-1)))
+          -cesd1*log(effsd(-1))]
+          +cesd1*log(effsd(-1))}
+          +unesd }
+qsdeq
+qsd=[[(cksd**(1+1/(cssd-1))*(pgsd/rtgsd)/pisd*(1-clsd**cssd*
+      (rwhsd*rtprsd/(pgsd/rtgsd)/exp(cesd1*log(effsd)))**(1-cssd))
+      **(1/(1-cssd)))*exp(cesd2*log(effsdc))]]/
+      [((rigl-fie)/(1+fie/100)+risksd-risksd2+a2qinv*
+      fie)/400+rkdsd]
+isdeq
+isd=ksd(-1)*{ (1-a0isd)*isd(-1)/ksd(-2)
+         +a0isd*{exp[(log(gsdt)-log(gsdt(-1)))
+                -cssd*log(((rrisd+risksd)/400+rkdsd)
+                         /((rrisd(-4)+risksd)/400+rkdsd(-4)))/4
+                +(cssd-1)*cesd2*(log(effsdc)-log(effsdc(-1)))]-1+rkdsd}
+         +a1isd*[isd(-1)/ksd(-2)-isd(-2)/ksd(-3)]
+         +a2isd*[log(gsd/gsd(-1))-(log(gsdt)-log(gsdt(-1)))]
+         +a3isd*log(gsd(-1)/gsdst(-1))
+         +a4isd*(qsd(-3)-1)
+         +a5isd*[rnu-rnu(-1)]
+         +uisd }
+pstsdeq
+pstsd=[exp{[log{rwhsd*rtprsd}-(cesd1*log(effsd))-log(clsd)]
+       +(1/(cssd-1))*[log{(-cksd/clsd)
+                *{(ksd(-1)*exp(cesd2*log(effsdc(-1)))/gsd)**((cssd-1)/cssd)}
+                +1/clsd}]}]
+pgsdeq
+pgsd= exp{ log(rtgsd)+log(pgsd(-1))-log(rtgsd(-1))
+     +a1pgsd*log{pstsd(-1)/pstsd(-2)}
+     +a2pgsd*log{pstsd(-2)/pstsd(-3)}
+     +a3pgsd*log{pstsd(-3)/pstsd(-4)}
+ +[1-a1pgsd-a2pgsd-a3pgsd]
+      *[log((rwhsd*rtprsd)/(rwhsd(-1)*rtprsd(-1)))
+                 -cesd1*(log(effsd)-log(effsd(-1)))]
+     +a4pgsd*[log(pmgs/pmgs(-1))
+              -log(pmgs(-1)/pmgs(-2))]
+     +a5pgsd*[log(gsd(-1)/gsdt(-1))-log(gsd(-5)/gsdt(-5))]
+     +a0pgsd*{log(pstsd(-5))
+                        -log(pgsd(-5)/rtgsd(-5))}
+         +upgsd }
+gsdsteq
+gsdst=[clsd*((nhsdt*nesd)*exp(cesd1*log(effsd)))**(-(1-cssd)/cssd)
+         +cksd*(ksd(-1)*exp(cesd2*log(effsdc(-1))))
+         **(-(1-cssd)/cssd)]**(-cssd/(1-cssd))
+_____________________________________________________________________
+A6: FINANCE AND INSURANCE (FIN)  (K)
+nefineq
+nefin=-nvfina+exp{ log(nefin(-1)+nvfina(-1))
+    +a3nefin*[log(gfin/gfin(-1))-(log(nhfint)-log(nhfint(-1)))
+                -cefin1*(log(efffin)-log(efffin(-1)))]
+    +a4nefin*[log(gfin(-1)/gfin(-2))-(log(nhfint(-1))-log(nhfint(-2)))
+                -cefin1*(log(efffin(-1))-log(efffin(-2)))]
+    +[1-a3nefin-a4nefin]*
+              [log(gfint(-1))-log(gfint(-2))-(log(nhfint(-1))-log(nhfint(-2)))
+                -cek1*(log(efffin(-2))-log(efffin(-3)))]
+    -a0nefin*{log(nefin(-1)+nvfina(-1))
+    +log(nhfint(-1))
+          -log(gfin(-1))-csfin*log(clfin)
+          +csfin*[log(rwhfin(-1)*rtprk(-1)/(pgfin(-1)/rtgfin(-1)))
+-cefin1*log(efffin(-1))]
+          +cefin1*log(efffin(-1))}
+          +unefin }
+qfineq
+qfin=[[(ckfin**(1+1/(csfin-1))*(pgfin/rtgfin)/pkfin*(1-clfin**csfin*
+      (rwhfin*rtprk/(pgfin/rtgfin)/exp(cefin1*log(efffin)))**(1-csfin))
+      **(1/(1-csfin)))*exp(cefin2*log(efffinc))]]/
+      [((rigl-fie)/(1+fie/100)+riskfin-riskfin2+a2qinv*
+      fie)/400+rkdfin*pifin/pkfin]
+ifineq
+ifin=kfin(-1)*{ (1-a0ifin)*ifin(-1)/kfin(-2)
+         +a0ifin*{exp[(log(gfint)-log(gfint(-1)))
+              -csfin*log(rrifint/rrifint(-4))/4
+  +(csfin-1)*cefin2*(log(efffinc)-log(efffinc(-1)))]-1+rkdfin}
+         +a1ifin*[ifin(-1)/kfin(-2)-ifin(-2)/kfin(-3)]
+         +a4ifin*(qfin(-5)-1)
+         +a5ifin*(rvackfin(-5)-c4ifin)/rvackfin(-5)
+         +uifin }
+iobfin = ifin*{c0iobfin+c1iobfin*qtiobfin
+                   +c2iobfin*qiipfin
+                   +c3iobfin*(1-qiipfin)
+      *((rvackfin(-4)+rvackfin(-5)+rvackfin(-6)+rvackfin(-7)
+           +rvackfin(-10))-c4ifin*5)
+                /(rvackfin(-4)+rvackfin(-5)+rvackfin(-6)
+                   +rvackfin(-7)+rvackfin(-10))
+                +uiobfin}
+iipfineq
+iipfin = ifin*{ c2iipfin*qiipfin
+                     +c3iipfin*qiipfin
+       *((rvackfin(-4)+rvackfin(-5)+rvackfin(-6)
+           +rvackfin(-7)+rvackfin(-10))-c4ifin*5)
+                 /(rvackfin(-4)+rvackfin(-5)+rvackfin(-6)
+                   +rvackfin(-7)+rvackfin(-10))
+       +uiipfin }
+pstfineq
+pstfin=[exp{[log{rwhfin*rtprk}-(cefin1*log(efffin))-log(clfin)]
+       +(1/(csfin-1))*[log{(-ckfin/clfin)
+          *{(kfin(-1)*exp(cefin2*log(efffinc(-1)))/gfin)**((csfin-1)/csfin)}
+          +1/clfin}]}]
+pstfineq2 lpstfin2=-log(clfin)+(1/(csfin-1))*[log{(-ckfin/clfin)
+           *{(kfin(-1)*exp(cefin2*log(efffinc(-1)))/gfin)**((csfin-1)/csfin)}
+           +1/clfin}]
+pgfineq
+pgfin=rtgfin*exp{ log(pgfin(-1)/rtgfin(-1))
+     +a1pgfin*[lpstfin2-lpstfin2(-1)]
+     +a2pgfin*log{pstfin(-1)/pstfin(-2)}
+     +a3pgfin*log{pstfin(-2)/pstfin(-3)}
+     +a4pgfin*log{pstfin(-3)/pstfin(-4)}
+ +[1-a2pgfin-a3pgfin-a4pgfin]
+      *[log((rwhfin*rtprk)/(rwhfin(-1)*rtprk(-1)))
+                 -cefin1*(log(efffin)-log(efffin(-1)))]
+     +a0pgfin*{log(pstfin(-4))-log(pgfin(-4)/rtgfin(-4))}
+     +upgfin}
+gfinsteq
+gfinst=[clfin*((nhfint*nefin)*exp(cefin1*log(efffin)))**(-(1-csfin)/csfin)
+         +ckfin*(kfin(-1)*exp(cefin2*log(efffinc(-1))))
+         **(-(1-csfin)/csfin)]**(-csfin/(1-csfin))
+_____________________________________________________________________
+A7: PROPERTY AND BUSINESS SERVICES (PBS)  (L,M & N)
+(Rental hiring and real estate L, Professional scientific and technical services M, Administrative and support services N) 
+nepbseq
+nepbs=-nvpbsa+exp{-log(nhpbst)+log(nepbs(-1)+nvpbsa(-1))+log(nhpbst(-1))
++(1-a1nepbs)*[log(nepbs(-1)+nvpbsa(-1))-log(nepbs(-2)+nvpbsa(-2))
+         +(log(nhpbst(-1))-log(nhpbst(-2)))]
+         +a1nepbs*[log(gpbs)-log(gpbs(-1))
+                -c1nepbs*(log(effpbs)-log(effpbs(-1)))]
+    -a0nepbs*{log(nepbs(-1)+nvpbsa(-1))+log(nhpbst(-1))
+          -c0nepbs-[log(gpbs(-1))-c1nepbs*log(effpbs(-1))]}
+          +unepbs }
+qpbsseq
+qpbss=[[([pgpbs*gpbs/rtgfin-rwhpbs*rtprpbs*nepbs*nhpbst]
+        -rkdpbs*kpbs(-1)*pipbs(-1))/(kpbs*pipbs)*400]]/
+      [(rigl-fie)/(1+fie/100)+riskpbs
+      +a2qinv*fie]
+ipbseq
+ipbs=kpbs(-1)*{(1-a0ipbs)*ipbs(-1)/kpbs(-2)
+         +a0ipbs*{exp[(log(gpbst)-log(gpbst(-1)))
+                -cepbs2*(qtpbs-qtpbs(-1))]-1+rkdpbs}
+         +a1ipbs*[ipbs(-1)/kpbs(-2)-ipbs(-2)/kpbs(-3)]
+         +a2ipbs*[log(gpbs/gpbs(-4))-(log(gpbst)-log(gpbst(-4)))]
+         +a4ipbs*(qpbss(-3)-1)
+         +a5ipbs*[rnu-rnu(-1)]
+         +a6ipbs*[rvackpbs(-2)-cvacpbs]
+         +uipbs }
+iobpbseq
+iobpbs=xriobpbs*nepbs
+iippbseq
+iippbs = ipbs*{ c2iippbs*qiippbs
+                     +c3iippbs*qiippbs
+       *((rvackpbs(-4)+rvackpbs(-5)+rvackpbs(-6)
+     +rvackpbs(-7)+rvackpbs(-10))-cvacpbs*5)
+                 /(rvackpbs(-4)+rvackpbs(-5)+rvackpbs(-6)
+                    +rvackpbs(-7)+rvackpbs(-10))
+       +uiippbs }
+pgpbseq
+pgpbs= exp{ log(rtgpbs)+log(pgpbs(-1))-log(rtgpbs(-1))
+     +a1pgpbs*[log((rwhpbs*rtprpbs)/(rwhpbs(-1)*rtprpbs(-1)))
+                -c1nepbs*(log(effpbs)-log(effpbs(-1)))]
+     +a2pgpbs*[log((rwhpbs(-1)*rtprpbs(-1))/(rwhpbs(-2)*rtprpbs(-2)))
+                -c1nepbs*(log(effpbs(-1))-log(effpbs(-2)))]
+ +[1-a1pgpbs-a2pgpbs]
+      *[log(pgpbs(-1)/rtgpbs(-1))-log(pgpbs(-7)/rtgpbs(-7))
+              -c3pgpbs*(qtpbs(-1)-qtpbs(-7))]/6
+     +a3pgpbs*(log(gpbs(-2))-log(gpbst(-2)) )
+     +c3pgpbs*(qtpbs-qtpbs(-1))
+     -a0pgpbs*{log(pgpbs(-3)/rtgpbs(-3))-c1pgpbs
+             -[log(rwhpbs(-3)*rtprpbs(-3))-c1nepbs*log(effpbs(-3))]
+             -c3pgpbs*qtpbs(-3)} 
+     +upgpbs }
+_____________________________________________________________________
+A8: CONSUMER SERVICES (CS) (H, R & S)
+(Accomodation and Food Services H, Arts and Recreation Services R, and Other Services S)
+wsesceq
+wsesc=-nvsca+exp{ log(wsesc(-1)+nvsca(-1))
+    -a1nesc*cssc*[log(rwhsc*rtprsc/(pgsc/rtgsc))
+               -log(rwhsc(-1)*rtprsc(-1)/(pgsc(-1)/rtgsc(-1)))
+               -cesc1*(log(effsc)-log(effsc(-1)))]
+    +a3nesc*[log(gsc/gsc(-1))-(log(nhsct)-log(nhsct(-1)))
+                -cesc1*(log(effsc)-log(effsc(-1)))]
+    +a4nesc*[log(gsc(-1)/gsc(-2))-(log(nhsct(-1))-log(nhsct(-2)))
+                -cesc1*(log(effsc(-1))-log(effsc(-2)))]
+    +[1-a3nesc-a4nesc]*
+          [log(gsct(-1))-log(gsct(-2))-(log(nhsct(-1))-log(nhsct(-2)))
+                -cesc1*(log(effsc(-1))-log(effsc(-2)))]
+    -a0nesc*{log(wsesc(-1)+nvsca(-1))+log(nhsct(-1))
+          -log(gsc(-1))-cssc*log(clsc)
+          +cssc*[log(rwhsc(-1)*rtprsc(-1)/(pgsc(-1)/rtgsc(-1)))
+          -cesc1*log(effsc(-1))]
+          +cesc1*log(effsc(-1))}
+          +unesc }
+nesceq
+nesc=xrnesc*wsesc
+qsceq
+qsc=[[(cksc**(1+1/(cssc-1))*(pgsc/rtgsc)/pisc*(1-clsc**cssc*
+      (rwhsc*rtprsc/(pgsc/rtgsc)/exp(cesc1*log(effsc)))**(1-cssc))
+      **(1/(1-cssc)))*exp(cesc2*log(effscc))]]/
+      [((rigl-fie)/(1+fie/100)+risksc-risksc2+a2qinv*
+      fie)/400+rkdsc]
+isceq
+isc=ksc(-1)*{(1-a0isc)*isc(-1)/ksc(-2)
+         +a0isc*{exp[(log(gsct)-log(gsct(-1)))
+                -cssc*log(((rrisc+risksc)/400+rkdsc)
+                         /((rrisc(-4)+risksc)/400+rkdsc(-4)))/4
+               +(cssc-1)*cesc2*(log(effscc)-log(effscc(-1)))]-1+rkdsc}
+         +a1isc*[isc(-1)/ksc(-2)-isc(-2)/ksc(-3)]
+         +a2isc*[log(gsc/gsc(-1))-(log(gsct)-log(gsct(-1)))]
+         +a3isc*[log(gsc(-2))-log(gscst(-2))]
+         +a4isc*(qsc(-6)-1)
+         +a5isc*[rnu-rnu(-1)]
+         +a6isc*(rvacksc(-2)-cvacsc)
+         +uisc }
+iobsceq
+iobsc =isc*{c0iobsc+c1iobsc*qtiobsc
+                   +c2iobsc*qiipsc
+                   +c3iobsc*(1-qiipsc)
+  *((rvacksc(-2)+rvacksc(-3)+rvacksc(-4)
+      +rvacksc(-5)+rvacksc(-8))-cvacsc*5)
+          /(rvacksc(-2)+rvacksc(-3)+rvacksc(-4)
+    +rvacksc(-5)+rvacksc(-8))
+          +uiobsc}
+iipsceq
+iipsc = isc*{ c2iipsc*qiipsc
+                     +c3iipsc*qiipsc
+*((rvacksc(-2)+rvacksc(-3)+rvacksc(-4)+rvacksc(-5)+rvacksc(-8))-     cvacsc*5)
+             /(rvacksc(-2)+rvacksc(-3)+rvacksc(-4)+rvacksc(-5)+rvacksc(-8))
+   +uiipsc }
+pstsceq
+pstsc=[exp{[log{rwhsc*rtprsc}-(cesc1*log(effsc))-log(clsc)]
+       +(1/(cssc-1))*[log{(-cksc/clsc)
+          *{(ksc(-1)*exp(cesc2*log(effscc(-1)))/gsc)**((cssc-1)/cssc)}
+                +1/clsc}]}]
+pstsceq2 lpstsc2=-log(clsc)+(1/(cssc-1))*[log{(-cksc/clsc)
+          *{(ksc(-1)*exp(cesc2*log(effscc(-1)))/gsc)**((cssc-1)/cssc)}
+                +1/clsc}]
+pgsceq
+pgsc=rtgsc*exp{ log(pgsc(-1)/rtgsc(-1))
+     +a2pgsc*log{pstsc(-1)/pstsc(-2)}
+     +a3pgsc*log{pstsc(-2)/pstsc(-3)}
+     +a4pgsc*log{pstsc(-3)/pstsc(-4)}
+     +a5pgsc*log{pstsc(-4)/pstsc(-5)}
+ +[1-a2pgsc-a3pgsc-a4pgsc-a5pgsc]
+      *[log((rwhsc*rtprsc)/(rwhsc(-1)*rtprsc(-1)))
+                 -cesc1*(log(effsc)-log(effsc(-1)))]
+     +a6pgsc*[log(gsc(-1)/gsct(-1))-log(gsc(-5)/gsct(-5))]
+     +a7pgsc*[log((pmgs(-1)*(1+rtmgs(-1)))/(pmgs(-2)*(1+rtmgs(-2))))
+              -log((pmgs(-2)*(1+rtmgs(-2)))/(pmgs(-3)*(1+rtmgs(-3))))]
+     +a0pgsc*{log(pstsc(-5))
+                -log(pgsc(-5)/rtgsc(-5))}
+           +upgsc }
+gscsteq
+gscst = [clsc*((nhsct*wsesc)*exp(cesc1*log(effsc)))**(-(1-cssc)/cssc)
+         +cksc*(ksc(-1)*exp(cesc2*log(effscc(-1))))
+         **(-(1-cssc)/cssc)]**(-cssc/(1-cssc)) 
+_____________________________________________________________________
+A9: ELECTRICITY GAS AND WATER (EGW) (D)
+neegweq
+neegw=-nvegwa+exp{log(neegw(-1)+nvegwa(-1))
+    +a3neegw*[log(gegw/gegw(-1))-(log(nhegwt)-log(nhegwt(-1)))
+                -ceegw1*(log(effegw)-log(effegw(-1)))]
+    +[1-a3neegw]*
+                [log(gegwt(-1))-log(gegwt(-2))
+                -(log(nhegwt(-1))-log(nhegwt(-2)))
+                -ceegw1*(log(effegw(-2))-log(effegw(-3)))]
+    -a0neegw*{log(neegw(-1)+nvegwa(-1))
+    +log(nhegwt(-1))
+          -log(gegw(-1))-csegw*log(clegw)
+          +csegw*[log(rwhegw(-1)*rtpregw(-1)/(pgegw(-1)/rtgegw(-1)))
+          -ceegw1*log(effegw(-1))]
+          +ceegw1*log(effegw(-1))}
+          +uneegw }
+qegweq
+qegw=[[(ckegw**(1+1/(csegw-1))*(pgegw/rtgegw)/piegw*(1-clegw**csegw*
+      (rwhegw*rtpregw/(pgegw/rtgegw)/exp(ceegw1*log(effegw)))**(1-csegw))
+      **(1/(1-csegw)))*exp(ceegw2*log(effegwc))]]/
+      [((rigl-fie)/(1+fie/100)+riskegw-riskegw2+a2qinv*
+      fie)/400+rkdegw]
+iegweq
+iegwk=(1-a0iegw-a1iegw)*iegwk(-1)
+       +a1iegw*iegwk(-4)
+       +a0iegw*
+         [exp[(lgegwt-lgegwt(-1))
+             -csegw*log([rriegwt]/[rriegwt(-4)])/4
+             +(csegw-1)*ceegw2*(qtegwc-qtegwc(-1))]-1+rkdegw]
+       +a4iegw*(qegw(-2)-1)
+       +c0iegw+c1iegw*qtime
+iegweq
+iegw=kegw(-1)*[(1-a0iegw-a1iegw)*iegw(-1)/kegw(-2)
+       +a1iegw*iegw(-4)/kegw(-5)
+       +a0iegw*
+         [exp[(log(gegwt)-log(gegwt(-1)))
+             -csegw*log([rriegwt]/[rriegwt(-4)])/4
+             +(csegw-1)*ceegw2*(log(effegwc)-log(effegwc(-1)))]-1+rkdegw]
+       +a4iegw*(qegw(-2)-1)
+       +c0iegw+c1iegw*qtime
+ +uiegw]
+rriegwteq
+rriegwt=.95*rriegwt(-1)+
+  .05*[((rriglt+riskegw)/400+rkdegw)*piegw/(pgegw/rtgegw)]+urriegw
+pstegweq
+pstegw=[exp{[log{rwhegw*rtpregw}-(ceegw1*log(effegw))-log(clegw)]
+       +(1/(csegw-1))*[log{(-ckegw/clegw)
+           *{(kegw(-1)*exp(ceegw2*log(effegwc(-1)))/gegw)**((csegw-1)/csegw)}
+           +1/clegw}]}]
+pstegweq2 lpstegw2=-log(clegw)+(1/(csegw-1))*[log{(-ckegw/clegw)
+           *{(kegw(-1)*exp(ceegw2*log(effegwc(-1)))/gegw)**((csegw-1)/csegw)}
+           +1/clegw}]
+pgegweq
+pgegw=exp{ log(rtgegw)+log(pgegw(-1))-log(rtgegw(-1))
+    +a2pgegw*log{pstegw(-1)/pstegw(-2)}
+    +a3pgegw*log{pstegw(-2)/pstegw(-3)}
+ +[1-a2pgegw-a3pgegw]
+       *[log((rwhegw*rtpregw)/(rwhegw(-1)*rtpregw(-1)))
+                -ceegw1*(log(effegw)-log(effegw(-1)))]
+    +a0pgegw*{log(pstegw(-3))
+              -log(pgegw(-3)/rtgegw(-3))}
+         +upgegw }
+gegwsteq
+gegwst=[clegw*((nhegwt*neegw)*exp(ceegw1*log(effegw)))**(-(1-csegw)/csegw)
+         +ckegw*(kegw(-1)*exp(ceegw2*log(effegwc(-1))))
+         **(-(1-csegw)/csegw)]**(-csegw/(1-csegw))
+_____________________________________________________________________
+A10: COMMUNICATION SERVICES (COM)  (J)
+necomeq
+necom=-nvcoma+exp{ log(necom(-1)+nvcoma(-1))
+    -a1necom*cscom*[log(rwhcom*rtprcom/(pgcom/rtgcom))
+               -log(rwhcom(-1)*rtprcom(-1)/(pgcom(-1)/rtgcom(-1)))
+               -cecom1*(log(effcom)-log(effcom(-1)))]
+    +a3necom*[log(gcom/gcom(-1))-(log(nhcomt)-log(nhcomt(-1)))
+                -cecom1*(log(effcom)-log(effcom(-1)))]
+    +a5necom*[log(necom(-1)+nvcoma(-1))-log(necom(-2)+nvcoma(-2))]
+    +[1-a3necom-a5necom]*
+                [log(gcomt(-1))-log(gcomt(-2))
+                -(log(nhcomt(-1))-log(nhcomt(-2)))
+                -cecom1*(log(effcom(-2))-log(effcom(-3)))]
+    -a0necom*{log(necom(-1)+nvcoma(-1))
+    +log(nhcomt(-1))
+          -log(gcom(-1))-cscom*log(clcom)
+          +cscom*[log(rwhcom(-1)*rtprcom(-1)/(pgcom(-1)/rtgcom(-1)))
+          -cecom1*log(effcom(-1))]
+          +cecom1*log(effcom(-1))}
+       +unecom }
+qcomeq
+qcom=[[(ckcom**(1+1/(cscom-1))*(pgcom/rtgcom)/picom*(1-clcom**cscom*
+   (rwhcom*rtprcom/(pgcom/rtgcom)/exp(cecom1*log(effcom)))**(1-cscom))
+      **(1/(1-cscom)))*exp(cecom2*log(effcomc))]]/
+      [((rigl-fie)/(1+fie/100)+riskcom-riskcom2+a2qinv*
+      fie)/400+rkdcom]
+icomeq
+icom=kcom(-1)*{ (1-a0icom)*icom(-1)/kcom(-2)
+         +a0icom*{exp[(log(gcomt)-log(gcomt(-1)))
+          -cscom*log(rricomt/rricomt(-4))/4
+          +(cscom-1)*cecom2*(log(effcomc)-log(effcomc(-1)))]-1+rkdcom}
+         +a1icom*[icom(-1)/kcom(-2)-icom(-2)/kcom(-3)]
+         +a2icom*[log(gcom/gcom(-1))-(log(gcomt)-log(gcomt(-1)))]
+         +a3icom*log(gcom(-6)/gcomst(-6))
+         +a4icom*(qcom(-3)-1)
+         +uicom }
+pstcomeq
+pstcom=[exp{[log{rwhcom*rtprcom}-(cecom1*log(effcom))-log(clcom)]
+       +(1/(cscom-1))*[log{(-ckcom/clcom)
+           *{(kcom(-1)*exp(cecom2*log(effcomc(-1)))/gcom)**((cscom-1)/cscom)}
+           +1/clcom}]}]
+pstcomeq2 lpstcom2=-log(clcom)+(1/(cscom-1))*[log{(-ckcom/clcom)
+           *{(kcom(-1)*exp(cecom2*log(effcomc(-1)))/gcom)**((cscom-1)/cscom)}
+           +1/clcom}]
+pgcomeq
+pgcom=exp{ log(rtgcom)+log(pgcom(-1))-log(rtgcom(-1))
+     +a1pgcom*[lpstcom2-lpstcom2(-1)]
+     +a2pgcom*log{pstcom/pstcom(-1)}
+     +a3pgcom*log{pipe/pipe(-1)}
+ +[1-a2pgcom-a3pgcom]
+      *[log((rwhcom*rtprcom)/(rwhcom(-4)*rtprcom(-4)))
+                 -cecom1*(log(effcom)-log(effcom(-4)))]/4
+     +a4pgcom*[log(gcom)-log(gcomst)]
+     +a0pgcom*{log(pstcom(-2))+c1pgcom*qtime(-2)
+                -log(pgcom(-2)/rtgcom(-2))}
+          +upgcom }
+param clcom ckcom cecom1 cecom2 cscom riskcom riskcom2
+eqsub pgcomeq pstcomeq2
+gcomsteq
+gcomst
+   =[clcom*((nhcomt*necom)*exp(cecom1*log(effcom)))**(-(1-cscom)/cscom)
+         +ckcom*(kcom(-1)*exp(cecom2*log(effcomc(-1))))
+         **(-(1-cscom)/cscom)]**(-cscom/(1-cscom))
+_____________________________________________________________________
+A11: HUMAN CAPITAL SERVICES (HUC)  (O, P & Q)
+(Public administration and safety 0, Education and Training P and Health and Social Assistance Q)
+nehuceq
+nehuc=-nvhuca+exp{ -log(nhhuct)+log(nehuc(-1)+nvhuca(-1))+log(nhhuct(-1))
+   +(1-a1nehuc)*[log(nehuc(-1)+nvhuca(-1))-log(nehuc(-2)+nvhuca(-2))
+                 +(log(nhhuct(-1))-log(nhhuct(-2)))]
+       +a1nehuc*[log(ghuc)-log(ghuc(-1))
+                -c1nehuc*(log(effhuc)-log(effhuc(-1)))]
+    -a0nehuc*{log(nehuc(-1)+nvhuca(-1))+log(nhhuct(-1))
+          -c0nehuc-[log(ghuc(-1))-c1nehuc*log(effhuc(-1))]}
+       +unehuc }
+ihuceq
+ihuc=xrihuc*igg
+pghuceq
+pghuc=exp{ log(rtghuc)+log(pghuc(-1))-log(rtghuc(-1))
+     +a1pghuc*[log((rwhhuc*rtprg)/(rwhhuc(-1)*rtprg(-1)))
+                  -c1nehuc*(log(effhuc)-log(effhuc(-1)))]
+     +a2pghuc*[log((rwhhuc(-1)*rtprg(-1))/(rwhhuc(-2)*rtprg(-2)))
+                  -c1nehuc*(log(effhuc(-1))-log(effhuc(-2)))]
+ +[1-a1pghuc-a2pghuc]
+      *[log(pghuc(-1))-log(pghuc(-2))-(log(rtghuc(-1))-log(rtghuc(-2)))
+       -c3pghuc*(qthuc(-1)-qthuc(-2))]
+     +c3pghuc*(qthuc-qthuc(-1))
+   -a0pghuc*{ log(pghuc(-3))-log(rtghuc(-3))
+             -c1pghuc-[log(rwhhuc(-3)*rtprg(-3))-c1nehuc*log(effhuc(-3))]
+             -c3pghuc*qthuc(-3) }
+     +upghuc }
+____________________________________________________________________
+A12: INDUSTRY EMPLOYMENT,INVESTMENT AND OUTPUT PRICE EQUATIONS
+AND IDENTITIES
+gagteq      gagt=xrgagt*gdpat
+gminteq     gmint=xrgmint*gdpat
+gmanteq  gmant=[xrgmant+(a6ga*qgmant+a7ga)*xrsupnct]*gdpat
+gcstteq  gcstt=[xrgcstt+(a6gb*qgcstt+a7gb)*xrsupnct]*gdpat
+gsdteq   gsdt=[xrgsdt+(a6gc*qgsdt+a7gc)*xrsupnct]*gdpat
+gfinteq    gfint=[xrgfint+(a6gd*qgfint+a7gd)*xrsupnct]*gdpat
+gpbsteq    gpbst=[xrgpbst+(a6ge*qgpbst+a7ge)*xrsupnct]*gdpat
+gscteq   gsct=[xrgsct+(a6gf*qgsct+a7gf)*xrsupnct]*gdpat
+gegwteq     gegwt=xrgegwt*gdpat
+gcomteq  gcomt=[xrgcomt+(a6gg*qgcomt+a7gg)*xrsupnct]*gdpat
+ghucteq     ghuct=xrghuct*gdpat
+rwhageq  rwhag=xrwhag*(rwt/nh)
+rwhmineq rwhmin=xrwhmin*(rwt/nh)
+rwhmaneq rwhman=xrwhman*(rwt/nh)
+rwhcsteq rwhcst=xrwhcst*(rwt/nh)
+rwhsdeq  rwhsd=xrwhsd*(rwt/nh)
+rwhfineq   rwhfin=xrwhfin*(rwt/nh)
+rwhpbseq   rwhpbs=xrwhpbs*(rwt/nh)
+rwhsceq  rwhsc=xrwhsc*(rwt/nh)
+rwhegweq rwhegw=xrwhegw*(rwt/nh)
+rwhcomeq rwhcom=xrwhcom*(rwt/nh)
+rwhhuceq rwhhuc=xrwhhuc*(rwt/nh)
+nhagteq  nhagt=xrnhagt*nhlr
+nhminteq nhmint=xrnhmint*nhlr
+nhmanteq nhmant=xrnhmant*nhlr
+nhcstteq nhcstt=xrnhcstt*nhlr
+nhsdteq  nhsdt=xrnhsdt*nhlr
+nhfinteq  nhfint=xrnhfint*nhlr
+nhpbsteq   nhpbst=xrnhpbst*nhlr
+nhscteq  nhsct=xrnhsct*nhlr
+nhegwteq   nhegwt=xrnhegwt*nhlr
+nhcomteq nhcomt=xrnhcomt*nhlr
+nhhucteq nhhuct=xrnhhuct*nhlr
+nvagaeq   nvaga=nvag-neag/net*(rvast*nlf/100)
+nvminaeq  nvmina=nvmin-nemin/net*(rvast*nlf/100)
+nvmanaeq  nvmana=nvman-neman/net*(rvast*nlf/100)
+nvcstaeq  nvcsta=nvcst-necst/net*(rvast*nlf/100)
+nvsdaeq   nvsda=nvsd-nesd/net*(rvast*nlf/100)
+nvfinaeq    nvfina=nvfin-nefin/net*(rvast*nlf/100)
+nvpbsaeq    nvpbsa=nvpbs-nepbs/net*(rvast*nlf/100)
+nvscaeq   nvsca=nvsc-nesc/net*(rvast*nlf/100)
+nvegwaeq  nvegwa=nvegw-neegw/net*(rvast*nlf/100)
+nvcomaeq  nvcoma=nvcom-necom/net*(rvast*nlf/100)
+nvhucaeq  nvhuca=nvhuc-nehuc/net*(rvast*nlf/100)
+nvageq   nvag=neag*(xrnvag*nv/net)
+nvmineq  nvmin=nemin*(xrnvmin*nv/net)
+nvmaneq  nvman=neman*(xrnvman*nv/net)
+nvcsteq  nvcst=necst*(xrnvcst*nv/net)
+nvsdeq   nvsd=nesd*(xrnvsd*nv/net)
+nvfineq    nvfin=nefin*(xrnvfin*nv/net)
+nvpbseq    nvpbs=nepbs*(xrnvpbs*nv/net)
+nvsceq   nvsc=nesc*(xrnvsc*nv/net)
+nvegweq  nvegw=neegw*(xrnvegw*nv/net)
+nvcomeq  nvcom=necom*(xrnvcom*nv/net)
+nvhuceq  nvhuc=nehuc*(xrnvhuc*nv/net)
+kageq   kag=kag(-1)+iag-rkdaga*kag(-1)
+kmineq  kmin=kmin(-1)+imin-rkdmina*kmin(-1)
+kmaneq  kman=kman(-1)+iman-rkdmana*kman(-1)
+kcsteq  kcst=kcst(-1)+icst-rkdcsta*kcst(-1)
+ksdeq   ksd=ksd(-1)+isd-rkdsda*ksd(-1)
+kfineq    kfin=kfin(-1)+ifin-rkdfina*kfin(-1)
+kpbseq    kpbs=kpbs(-1)+ipbs-rkdpbsa*kpbs(-1)
+ksceq   ksc=ksc(-1)+isc-rkdsca*ksc(-1)
+kegweq  kegw=kegw(-1)+iegw-rkdegwa*kegw(-1)
+kcomeq  kcom=kcom(-1)+icom-rkdcoma*kcom(-1)
+khuceq  khuc=khuc(-1)+ihuc-rkdhuca*khuc(-1)
+kobfineq  kobfin=kobfin(-1)+iobfin-rkdobk*kobfin(-1)
+kobpbseq  kobpbs=kobpbs(-1)+iobpbs-rkdobl*kobpbs(-1)
+kobsceq kobsc=kobsc(-1)+iobsc-rkdobsc*kobsc(-1)
+rvackfineq   rvackfin=c1vackfin+((kobfin/nefin)/xrvackfin-1)
+rvackpbseq   rvackpbs=c1vackpbs+((kobpbs/nepbs)/xrvackpbs-1)
+rvacksceq  rvacksc=c1vacksc+((kobsc/nesc)/xrvacksc-1)
+iobmineq iobmin=xriobmin*imin
+iobsdeq  iobsd=xriobsd*isd
+iipmineq iipmin=xriipmin*imin
+iipsdeq  iipsd=xriipsd*isd
+piageq   piag=xrpiag*pibp
+pimineq  pimin=xrpimin*pibp
+pimaneq  piman=xrpiman*pibp
+picsteq  picst=xrpicst*pibp
+pisdeq   pisd=xrpisd*pibp
+pifineq    pifin=xrpifin*pibp
+pipbseq    pipbs=xrpipbs*pibp
+pisceq   pisc=xrpisc*pibp
+piegweq  piegw=xrpiegw*pibp
+picomeq  picom=xrpicom*pibp
+pihuceq  pihuc=xrpihuc*pibp
+pkmaneq  pkman=xrpkman*piman
+pkfineq    pkfin=xrpkfin*pifin
+_____________________________________________________________________
+A13: Private Business Investment and Capital Stock Identities
+ibpueq
+ibpu=xribpu*[iag+imin+iman+icst+isd+ifin+ipbs+isc+.5*icom]
+ibpeq ibp=ibpu+ibs
+kbpeq kbp=kbp(-1)*(1-rkdbp)+ibp+ukbp
+__________________________________________________________________
+A14: Inventories
+__________________________________________________________________
+A14A: Agricultural Inventories (KSFM)
+ksfmeq
+ksfm=exp{log(ksfm(-1))+gr
+        +c1sag*(qtksfm-qtksfm(-1))
+        +a1sag*[log(ksfm(-1)/ksfm(-2))
+        -gr(-1)-c1sag*(qtksfm(-1)-qtksfm(-2))]
+        -a0sag*[log(ksfm(-1)/xc(-1))-c0sag
+                -c1sag*qtksfm(-1)]
+        +a2sag*[log(xc+sfm)-log(xc(-1)+sfm(-1))-gr]
+        +a3sag*qrain(-2)
+        +uksfm}
+_____________________________________
+A14B: Non-Farm Stockbuilding
+A15A: Mining Inventories (KSMIN)
+ksmineq
+ksmin=exp{log(ksmin(-1))+gr+(xrssmin-xrssmin(-1))
+          +a1ksmin*{log(ksmin(-1)/ksmin(-2))
+                    -gr(-1)-(xrssmin(-1)-xrssmin(-2))}
+          +a2ksmin*{log(egmin/egmin(-1))-gr}
+          +a3ksmin*{log(egmin/egmin(-1))-log(egmin(-1)/egmin(-5))/4}
+        +a0ksmin*{[log(ksmin(-1))-c1ksmin-log(egmin(-1))]-xrssmin(-1)}
+          +uksmin}
+_____________________________________
+A14C: Manufacturing Stockbuilding (KSMAN) 
+salmaneq
+salman=egman/xrsalman          
+ksmaneq
+ksman=exp{log(ksman(-1))+[rssmant-rssmant(-1)]
+      +(1-a2ksman)*[log(ksman(-1))-log(ksman(-2))-{rssmant(-1)-rssmant(-2)}]
+         +a1ksman*[log(salman/salman(-1))-log(salman(-1)/salman(-5))/4]
+         +a2ksman*log(salman/salman(-1))
+         +a3ksman*[log(resdr/resdr(-1))-log(resdr(-1)/resdr(-5))/4]
+         +a0ksman*[log(ksman(-1))-log(salman(-1))
+                -rssmant(-1)]
+   +uksman}
+_____________________________________
+A14D: Retail and Wholesale Stockbuilding (KSD)
+egoodseq
+egoods=cfd+ccal+cdog+cmv+.25*idw+.25*(iob-iobs)+(ipe-ipes)
+              +.25*(ige+igg+ibs)+xman
+kssdeq
+kssd=exp{log(kssd(-1))
+         +[rsssdt-rsssdt(-1)]
+   +(1-a2kssd)*[log(kssd(-1))-log(kssd(-2))-{rsssdt(-1)-rsssdt(-2)}]
+         +a1kssd*[log(egoods/egoods(-1))-log(egoods(-1)/egoods(-5))/4]
+         +a2kssd*log(egoods/egoods(-1))
+         +a3kssd*qasia
+         +a0kssd*[log(kssd(-1))-log(egoods(-1))
+                -rsssdt(-1)
+                -c1kssd*(mgs(-2)-msrv(-2))/egoods(-1)]
+   +ukssd}
+_____________________________________
+A14E: Other Stockbuilding (KSOTH)
+ksotheq
+ksoth=exp{log(ksoth(-1))+gr+(xrssoth-xrssoth(-1))
+     +a1ksoth*{log(ksoth(-2)/ksoth(-3))-gr(-2)-(xrssoth(-2)-xrssoth(-3))}
+     +a2ksoth*{log((egegw+egsc)/(egegw(-1)+egsc(-1)))-gr}
+         +a0ksoth*{log(ksoth(-1))-log(egegw(-1)+egsc(-1))-xrssoth(-1)}
+     +uksoth}
+_____________________________________
+A14F: Non-farm stockbuilding (KSN)
+ksneq ksn=ksmin+ksman+kssd+ksoth+uksn
+smineq smin=ksmin-ksmin(-1)
+smaneq sman=ksman-ksman(-1)
+ssdeq  ssd=kssd-kssd(-1)
+sotheq soth=ksoth-ksoth(-1)
+_____________________________________
+A14G: Agricultural Stocks Identity
+sfmeq sfm=ksfm-ksfm(-1)
+_____________________________________
+A14H: Non-commodity Stocks Identity
+snneq snn=ksn-ksn(-1)
+_____________________________________________________________________
+A14I: Price of Non-commodity Stockbuilding Identity
+psnneq psnn=xrpsnn*psupnc
+Industry and Import Demand System Equations
+_____________________________________________________________________
+B1: Weighted Input-Output Demand Terms (EG. EM.)
+egageq
+egag=(oaa*cfd+oab*ccal+oac*cdog+oad*cmv+oae*comt+oaf*cegw+oag*ccom
+      +oah*chuc+oai*csrv+oaj*cre+oak*cong+oal*idw
+      +oam*(iob-iobs)+oan*(ipe-ipes)
+      +oao*ibio+oap*iip+oaq*iotc+oar*(ige+ibs)+oas*igg+oat*xag
+      +oau*(xmin-xrba-mnmg)
+      +oav*xman+oaw*xsrv)/100*upegag
+egmineq
+egmin=(oba*cfd+obb*ccal+obc*cdog+obd*cmv+obe*comt+obf*cegw+obg*ccom
+      +obh*chuc+obi*csrv+obj*cre+obk*cong+obl*idw
+      +obm*(iob-iobs)+obn*(ipe-ipes)
+      +obo*ibio+obp*iip+obq*iotc+obr*(ige+ibs)+obs*igg+obt*xag
+      +obu*(xmin-xrba-mnmg)
+      +obv*xman+obw*xsrv)/100*upegmin
+egmaneq
+egman=(oca*cfd+ocb*ccal+occ*cdog+ocd*cmv+oce*comt+ocf*cegw+ocg*ccom
+      +och*chuc+oci*csrv+ocj*cre+ock*cong+ocl*idw
+      +ocm*(iob-iobs)+ocn*(ipe-ipes)
+      +oco*ibio+ocp*iip+ocq*iotc+ocr*(ige+ibs)+ocs*igg+oct*xag
+      +ocu*(xmin-xrba-mnmg)
+      +ocv*xman+ocw*xsrv)/100*upegman
+egcsteq
+egcst=(oda*cfd+odb*ccal+odc*cdog+odd*cmv+ode*comt+odf*cegw+odg*ccom
+      +odh*chuc+odi*csrv+odj*cre+odk*cong+odl*idw
+      +odm*(iob-iobs)+odn*(ipe-ipes)
+      +odo*ibio+odp*iip+odq*iotc+odr*(ige+ibs)+ods*igg+odt*xag
+      +odu*(xmin-xrba-mnmg)
+      +odv*xman+odw*xsrv)/100*upegcst
+egsdeq
+egsd=(oea*cfd+oeb*ccal+oec*cdog+oed*cmv+oee*comt+oef*cegw+oeg*ccom
+      +oeh*chuc+oei*csrv+oej*cre+oek*cong+oel*idw
+      +oem*(iob-iobs)+oen*(ipe-ipes)
+      +oeo*ibio+oep*iip+oeq*iotc+oer*(ige+ibs)+oes*igg+oet*xag
+      +oeu*(xmin-xrba-mnmg)
+      +oev*xman+oew*xsrv)/100*upegsd
+egfineq
+egfin =(ofa*cfd+ofb*ccal+ofc*cdog+ofd*cmv+ofe*comt+off*cegw+ofg*ccom
+      +ofh*chuc+ofi*csrv+ofj*cre+ofk*cong+ofl*idw
+      +ofm*(iob-iobs)+ofn*(ipe-ipes)
+      +ofo*ibio+ofp*iip+ofq*iotc+ofr*(ige+ibs)+ofs*igg+oft*xag
+      +ofu*(xmin-xrba-mnmg)
+      +ofv*xman+ofw*xsrv)/100*upegfin
+egpbseq
+egpbs =(oga*cfd+ogb*ccal+ogc*cdog+ogd*cmv+oge*comt+ogf*cegw+ogg*ccom
+      +ogh*chuc+ogi*csrv+ogj*cre+ogk*cong+ogl*idw
+      +ogm*(iob-iobs)+ogn*(ipe-ipes)
+      +ogo*ibio+ogp*iip+ogq*iotc+ogr*(ige+ibs)+ogs*igg+ogt*xag
+      +ogu*(xmin-xrba-mnmg)
+      +ogv*xman+ogw*xsrv)/100*upegpbs
+egsceq     
+egsc=(oha*cfd+ohb*ccal+ohc*cdog+ohd*cmv+ohe*comt+ohf*cegw+ohg*ccom
+      +ohh*chuc+ohi*csrv+ohj*cre+ohk*cong+ohl*idw
+      +ohm*(iob-iobs)+ohn*(ipe-ipes)
+      +oho*ibio+ohp*iip+ohq*iotc+ohr*(ige+ibs)+ohs*igg+oht*xag
+      +ohu*(xmin-xrba-mnmg)
+      +ohv*xman+ohw*xsrv)/100*upegsc
+egegweq
+egegw=(oia*cfd+oib*ccal+oic*cdog+oid*cmv+oie*comt+oif*cegw+oig*ccom
+      +oih*chuc+oii*csrv+oij*cre+oik*cong+oil*idw
+      +oim*(iob-iobs)+oin*(ipe-ipes)
+      +oio*ibio+oip*iip+oiq*iotc+oir*(ige+ibs)+ois*igg+oit*xag
+      +oiu*(xmin-xrba-mnmg)
+      +oiv*xman+oiw*xsrv)/100*upegegw
+egcomeq
+egcom=(oja*cfd+ojb*ccal+ojc*cdog+ojd*cmv+oje*comt+ojf*cegw+ojg*ccom
+      +ojh*chuc+oji*csrv+ojj*cre+ojk*cong+ojl*idw
+      +ojm*(iob-iobs)+ojn*(ipe-ipes)
+      +ojo*ibio+ojp*iip+ojq*iotc+ojr*(ige+ibs)+ojs*igg+ojt*xag
+      +oju*(xmin-xrba-mnmg)
+      +ojv*xman+ojw*xsrv)/100*upegcom
+eghuceq
+eghuc=(oka*cfd+okb*ccal+okc*cdog+okd*cmv+oke*comt+okf*cegw+okg*ccom
+      +okh*chuc+oki*csrv+okj*cre+okk*cong+okl*idw
+      +okm*(iob-iobs)+okn*(ipe-ipes)
+      +oko*ibio+okp*iip+okq*iotc+okr*(ige+ibs)+oks*igg+okt*xag
+      +oku*(xmin-xrba-mnmg)
+      +okv*xman+okw*xsrv)/100*upeghuc
+egdwteq
+egdwt=(ola*cfd+olb* ccal+olc*cdog+old*cmv+ole*comt+olf*cegw+olg*ccom
+      +olh*chuc+oli*csrv+olj*cre+olk*cong+oll*idw
+      +olm*(iob-iobs)+oln*(ipe-ipes)
+      +olo*ibio+olp*iip+olq*iotc+olr*(ige+ibs)+ols*igg+olt*xag
+      +olu*(xmin-xrba-mnmg)
+      +olv*xman+olw*xsrv)/100*upegdwt
+egitseq
+egits=(oma*cfd+omb*ccal+omc*cdog+omd*cmv+ome*comt+omf*cegw+omg*ccom
+      +omh*chuc+omi*csrv+omj*cre+omk*cong+oml*idw
+      +omm*(iob-iobs)+omn*(ipe-ipes)
+      +omo*ibio+omp*iip+omq*iotc+omr*(ige+ibs)+oms*igg+omt*xag
+      +omu*(xmin-xrba-mnmg)
+      +omv*xman+omw*xsrv)/100*upegits
+emconeq
+emcon=(ona*cfd+onb*ccal+onc*cdog+ond*cmv+one*comt+onf*cegw+ong*ccom
+      +onh*chuc+oni*csrv+onj*cre+onk*cong+onl*idw
+      +onm*(iob-iobs)+onn*(ipe-ipes)
+      +ono*ibio+onp*iip+onq*iotc+onr*(ige+ibs)+ons*igg+ont*xag
+      +onu*(xmin-xrba-mnmg)
+      +onv*xman+onw*xsrv)/100*upemcon
+emcapeq
+emcap=(ooa*cfd+oob*ccal+ooc*cdog+ood*cmv+ooe*comt+oof*cegw+oog*ccom
+      +ooh*chuc+ooi*csrv+ooj*cre+ook*cong+ool*idw
+      +oom*(iob-iobs)+oon*(ipe-ipes)
+      +ooo*ibio+oop*iip+ooq*iotc+oor*(ige+ibs)+oos*igg+oot*xag
+      +oou*(xmin-xrba-mnmg)
+      +oov*xman+oow*xsrv)/100*upemcap
+eminteq
+emint=(opa*cfd+opb*ccal+opc*cdog+opd*cmv+ope*comt+opf*cegw+opg*ccom
+      +oph*chuc+opi*csrv+opj*cre+opk*cong+opl*idw
+      +opm*(iob-iobs)+opn*(ipe-ipes)
+      +opo*ibio+opp*iip+opq*iotc+opr*(ige+ibs)+ops*igg+opt*xag
+      +opu*(xmin-xrba-mnmg)
+      +opv*xman+opw*xsrv)/100*upemint
+empeeq
+empe=(oqa*cfd+oqb*ccal+oqc*cdog+oqd*cmv+oqe*comt+oqf*cegw+oqg*ccom
+      +oqh*chuc+oqi*csrv+oqj*cre+oqk*cong+oql*idw
+      +oqm*(iob-iobs)+oqn*(ipe-ipes)
+      +oqo*ibio+oqp*iip+oqq*iotc+oqr*(ige+ibs)+oqs*igg+oqt*xag
+      +oqu*(xmin-xrba-mnmg)
+      +oqv*xman+oqw*xsrv)/100*upempe
+emsrveq
+emsrv=(ora*cfd+orb*ccal+orc*cdog+ord*cmv+ore*comt+orf*cegw+org*ccom
+      +orh*chuc+ori*csrv+orj*cre+ork*cong+orl*idw
+      +orm*(iob-iobs)+orn*(ipe-ipes)
+      +oro*ibio+orp*iip+orq*iotc+orr*(ige+ibs)+ors*igg+ort*xag
+      +oru*(xmin-xrba-mnmg)
+      +orv*xman+orw*xsrv)/100*upemsrv
+_____________________________________________________________________
+B2: Demand System Aggregation Identities (SUPNC, PSUP AND GDPP)
+supnceq
+supnc=[egman+egcst+egsd+egfin+egpbs+egsc+egcom
++emcon+emcap+emint+empe+emsrv+.85*sman+.75*ssd+soth]/(1-diss-qmcad)
+psupnceq
+psupnc=[gman*pgman+gcst*pgcst+gsd*pgsd+gfin*pgfin+gpbs*pgpbs+gsc*pgsc
+  +gcom*pgcom
+        +mcon*pmcon*(1+rtmcon)+mcap*pmcap*(1+rtmcap)+mint*pmint*(1+rtmint)
+        +mpe*pmpe*(1+rtmpe)+msrv*pmsrv]/[[gman+gcst+gsd+gfin+gpbs+gsc+gcom
+        +mcon+mcap+mint+mpe+msrv]*[1-qolymp]]
+gdppeq
+gdpp=gag+gmin+gman+gcst+gsd+gfin+gpbs+gsc+gegw+gcom+ghuc+gdwt+gits+dispad
+_____________________________________________________________________
+B3: Industry and Import Demand System (G.F, M.F)
+gmanfeq
+gmanf=supnc*{egman/supnc+a2ga*sman/supnc+a3ga*ssd/supnc+a4ga*soth/supnc
++a5ga*diss+a6ga*qgmant+a7ga
++(1-a0g)*[gmanf(-1)/supnc(-1)
+-egman(-1)/supnc(-1)-a2ga*sman(-1)/supnc(-1)-a3ga*ssd(-1)/supnc(-1)
+-a4ga*soth(-1)/supnc(-1)-a5ga*diss(-1)
+-a6ga*qgmant(-1)-a7ga
++a8ga*[egman/supnc-egman(-1)/supnc(-1)+a6ga*(qgmant-qgmant(-1))]
+-a8ga*[gmanf(-1)/supnc(-1)-gmanf(-2)/supnc(-2)]
++a9ga*(log(supnc/supnc(-1))-gr)]
++a0g*[aaa*log(pgman/psupnc)
++aab*log(pgcst/psupnc)+aac*log(pgsd/psupnc) +aad*log(pgfin/psupnc)
++aae*log(pgpbs/psupnc)+aaf*log(pgsc/psupnc)+aag*log(pgcom/psupnc)
++aah*log(pmcon*(1+rtmcon)/psupnc)+aal*log(pmcap*(1+rtmcap)/psupnc)
++aaj*log(pmint*(1+rtmint)/psupnc)
++aak*log(pmpe*(1+rtmpe)/psupnc)+aal*log(pmsrv/psupnc)
+-(aab+aac+aad+aae+aaf+aag+aah+aal+aaj+aak+aal)*log(pgman/psupnc)]
+        +ugman}
+gcstfeq
+gcstf=supnc*{egcst/supnc++a2gb*sman/supnc+a3gb*ssd/supnc+a4gb*soth/supnc
++a5gb*diss+a6gb*qgcstt+a7gb
++(1-a0g)*[gcstf(-1)/supnc(-1)
+-egcst(-1)/supnc(-1)-a2gb*sman(-1)/supnc(-1)-a3gb*ssd(-1)/supnc(-1)
+-a4gb*soth(-1)/supnc(-1)-a5gb*diss(-1)
+-a6gb*qgcstt(-1)-a7gb
++a8gb*[egcst/supnc-egcst(-1)/supnc(-1)+a6gb*(qgcstt-qgcstt(-1))]
+-a8gb*[gcstf(-1)/supnc(-1)-gcstf(-2)/supnc(-2)]
++a9gb*(log(supnc/supnc(-1))-gr)]
++a0g*[aab*log(pgman/psupnc)
+ +abb*log(pgcst/psupnc)+abc*log(pgsd/psupnc) +abd*log(pgfin/psupnc)
+ +abe*log(pgpbs/psupnc)+abf*log(pgsc/psupnc)+abg*log(pgcom/psupnc)
+ +abh*log(pmcon*(1+rtmcon)/psupnc)+abi*log(pmcap*(1+rtmcap)/psupnc)
+ +abj*log(pmint*(1+rtmint)/psupnc)
+ +abk*log(pmpe*(1+rtmpe)/psupnc)+abl*log(pmsrv/psupnc)
+-(aab+abc+abd+abe+abf+abg+abh+abi+abj+abk+abl)*log(pgcst/psupnc)]
+        +ugcst}
+gsdfeq
+gsdf=supnc*{egsd/supnc+a2gc*sman/supnc+a3gc*ssd/supnc+a4gc*soth/supnc
++a5gc*diss+a6gc*qgsdt+a7gc
++(1-a0g)*[gsdf(-1)/supnc(-1)
+-egsd(-1)/supnc(-1)-a2gc*sman(-1)/supnc(-1)-a3gc*ssd(-1)/supnc(-1)
+-a4gc*soth(-1)/supnc(-1)-a5gc*diss(-1)
+-a6gc*qgsdt(-1)-a7gc
++a8gc*[egsd/supnc-egsd(-1)/supnc(-1)+a6gc*(qgsdt-qgsdt(-1))]
+-a8gc*[gsdf(-1)/supnc(-1)-gsdf(-2)/supnc(-2)]
++a9gc*(log(supnc/supnc(-1))-gr)]
++a0g*[aac*log(pgman/psupnc)
+ +abc*log(pgcst/psupnc)+acc*log(pgsd/psupnc) +acd*log(pgfin/psupnc)
+ +ace*log(pgpbs/psupnc)+acf*log(pgsc/psupnc)+acg*log(pgcom/psupnc)
+ +ach*log(pmcon*(1+rtmcon)/psupnc)+aci*log(pmcap*(1+rtmcap)/psupnc)
+ +acj*log(pmint*(1+rtmint)/psupnc)
+ +ack*log(pmpe*(1+rtmpe)/psupnc)+acl*log(pmsrv/psupnc)
+-(aac+abc+acd+ace+acf+acg+ach+aci+acj+ack+acl)*log(pgsd/psupnc)]
+        +ugsd}
+gfinfeq
+gfinf=supnc*{egfin/supnc+a2gd*sman/supnc+a3gd*ssd/supnc+a4gd*soth/supnc
++a5gd*diss+a6gd*qgfint+a7gd
++(1-a0g)*[gfinf(-1)/supnc(-1)
+-egfin(-1)/supnc(-1)-a2gd*sman(-1)/supnc(-1)-a3gd*ssd(-1)/supnc(-1)
+-a4gd*soth(-1)/supnc(-1)-a5gd*diss(-1)
+-a6gd*qgfint(-1)-a7gd
++a8gd*[egfin/supnc-egfin(-1)/supnc(-1)+a6gd*(qgfint-qgfint(-1))]
+-a8gd*[gfinf(-1)/supnc(-1)-gfinf(-2)/supnc(-2)]
++a9gd*(log(supnc/supnc(-1))-gr)]
++a0g*[aad*log(pgman/psupnc)
+ +abd*log(pgcst/psupnc)+acd*log(pgsd/psupnc) +add*log(pgfin/psupnc)
+ +ade*log(pgpbs/psupnc)+adf*log(pgsc/psupnc)+adg*log(pgcom/psupnc)
+ +adh*log(pmcon*(1+rtmcon)/psupnc)+adi*log(pmcap*(1+rtmcap)/psupnc)
+ +adj*log(pmint*(1+rtmint)/psupnc)
+ +adk*log(pmpe*(1+rtmpe)/psupnc)+adl*log(pmsrv/psupnc)
+-(aad+abd+acd+ade+adf+adg+adh+adi+adj+adk+adl)*log(pgfin/psupnc)]
+        +ugfin}
+gpbsfeq
+gpbsf=supnc*{egpbs/supnc+a2ge*sman/supnc+a3ge*ssd/supnc+a4ge*soth/supnc
++a5ge*diss+a6ge*qgpbst+a7ge
++(1-a0g)*[gpbsf(-1)/supnc(-1)
+-egpbs(-1)/supnc(-1)-a2ge*sman(-1)/supnc(-1)-a3ge*ssd(-1)/supnc(-1)
+-a4ge*soth(-1)/supnc(-1)-a5ge*diss(-1)
+-a6ge*qgpbst(-1)-a7ge
++a8ge*[egpbs/supnc-egpbs(-1)/supnc(-1)+a6ge*(qgpbst-qgpbst(-1))]
+-a8ge*[gpbsf(-1)/supnc(-1)-gpbsf(-2)/supnc(-2)]
++a9ge*(log(supnc/supnc(-1))-gr)]
++a0g*[aae*log(pgman/psupnc)
+ +abe*log(pgcst/psupnc)+ace*log(pgsd/psupnc) +ade*log(pgfin/psupnc)
+ +aee*log(pgpbs/psupnc)+aef*log(pgsc/psupnc)+aeg*log(pgcom/psupnc)
+ +aeh*log(pmcon*(1+rtmcon)/psupnc)+aei*log(pmcap*(1+rtmcap)/psupnc)
+ +aej*log(pmint*(1+rtmint)/psupnc)
+ +aek*log(pmpe*(1+rtmpe)/psupnc)+ael*log(pmsrv/psupnc)
+-(aae+abe+ace+ade+aef+aeg+aeh+aei+aej+aek+ael)*log(pgpbs/psupnc)]
+        +ugpbs}
+gscfeq
+gscf=supnc*{egsc/supnc+qolymp+a2gf*sman/supnc+a3gf*ssd/supnc
++a4gf*soth/supnc
++a5gf*diss+a6gf*qgsct+a7gf
++(1-a0g)*[gscf(-1)/supnc(-1)
+-egsc(-1)/supnc(-1)-qolymp(-1)
+-a2gf*sman(-1)/supnc(-1)-a3gf*ssd(-1)/supnc(-1)
+-a4gf*soth(-1)/supnc(-1)-a5gf*diss(-1)
+-a6gf*qgsct(-1)-a7gf
++a8gf*[egsc/supnc-egsc(-1)/supnc(-1)+a6gf*(qgsct-qgsct(-1))]
+-a8gf*[gscf(-1)/supnc(-1)-gscf(-2)/supnc(-2)-(qolymp(-1)-qolymp(-2))]
++a9gf*(log(supnc/supnc(-1))-gr)]
++a0g*[aaf*log(pgman/psupnc)
+ +abf*log(pgcst/psupnc)+acf*log(pgsd/psupnc) +adf*log(pgfin/psupnc)
+ +aef*log(pgpbs/psupnc)+aff*log(pgsc/psupnc) +afg*log(pgcom/psupnc)
+ +afh*log(pmcon*(1+rtmcon)/psupnc)+afi*log(pmcap*(1+rtmcap)/psupnc)
+ +afj*log(pmint*(1+rtmint)/psupnc)
+ +afk*log(pmpe*(1+rtmpe)/psupnc)+afl*log(pmsrv/psupnc)
+-(aaf+abf+acf+adf+aef+afg+afh+afi+afj+afk+afl)*log(pgsc/psupnc)]
+        +ugsc}
+gcomfeq
+gcomf=supnc*{egcom/supnc+a2gg*sman/supnc+a3gg*ssd/supnc+a4gg*soth/supnc
++a5gg*diss+a6gg*qgcomt+a7gg
++(1-a0g)*[gcomf(-1)/supnc(-1)
+-egcom(-1)/supnc(-1)-a2gg*sman(-1)/supnc(-1)-a3gg*ssd(-1)/supnc(-1)
+-a4gg*soth(-1)/supnc(-1)-a5gg*diss(-1)
+-a6gg*qgcomt(-1)-a7gg
++a8gg*[egcom/supnc-egcom(-1)/supnc(-1)+a6gg*(qgcomt-qgcomt(-1))]
+-a8gg*[gcomf(-1)/supnc(-1)-gcomf(-2)/supnc(-2)]
++a9gg*(log(supnc/supnc(-1))-gr)]
++a0g*[aag*log(pgman/psupnc)
+ +abg*log(pgcst/psupnc)+acg*log(pgsd/psupnc) +adg*log(pgfin/psupnc)
+ +aeg*log(pgpbs/psupnc)+afg*log(pgsc/psupnc)+agg*log(pgcom/psupnc)
+ +agh*log(pmcon*(1+rtmcon)/psupnc)+agi*log(pmcap*(1+rtmcap)/psupnc)
+ +agj*log(pmint*(1+rtmint)/psupnc)
+ +agk*log(pmpe*(1+rtmpe)/psupnc)+agl*log(pmsrv/psupnc)
+-(aag+abg+acg+adg+aeg+afg+agh+agi+agj+agk+agl)*log(pgcom/psupnc)]
+        +ugcom}
+mconfeq
+mconf=supnc*{emcon/supnc+a2gh*sman/supnc+a3gh*ssd/supnc
++a4gh*soth/supnc+a5gh*diss+a6gh*qmcont+a7gh
++(1-a0g)*[mconf(-1)/supnc(-1)
+-emcon(-1)/supnc(-1)-a2gh*sman(-1)/supnc(-1)-a3gh*ssd(-1)/supnc(-1)
+-a4gh*soth(-1)/supnc(-1)-a5gh*diss(-1)
+-a6gh*qmcont(-1)-a7gh
++a8gh*[emcon/supnc-emcon(-1)/supnc(-1)+a6gh*(qmcont-qmcont(-1))]
+-a8gh*[mconf(-1)/supnc(-1)-mconf(-2)/supnc(-2)]
++a9gh*(log(supnc/supnc(-1))-gr)]
++a0g*[aah*log(pgman/psupnc)
+ +abh*log(pgcst/psupnc)+ach*log(pgsd/psupnc)+adh*log(pgfin/psupnc)
+ +aeh*log(pgpbs/psupnc)+afh*log(pgsc/psupnc)+agh*log(pgcom/psupnc)
+ +ahh*log(pmcon*(1+rtmcon)/psupnc)+ahi*log(pmcap*(1+rtmcap)/psupnc)
+ +ahj*log(pmint*(1+rtmint)/psupnc)
+ +ahk*log(pmpe*(1+rtmpe)/psupnc)+ahl*log(pmsrv/psupnc)
+-(aah+abh+ach+adh+aeh+afh+agh+ahi+ahj+ahk+ahl)
+*log(pmcon*(1+rtmcon)/psupnc)]
+        +umcon}
+mcapfeq
+mcapf=supnc*{emcap/supnc+qmcad+a2gi*sman/supnc
++a3gi*ssd/supnc+a4gi*soth/supnc
++a5gi*diss+a6gi*qmcapt+a7gi
++(1-a0g)*[mcapf(-1)/supnc(-1)
+-emcap(-1)/supnc(-1)-qmcad(-1)
+-a2gi*sman(-1)/supnc(-1)-a3gi*ssd(-1)/supnc(-1)
+-a4gi*soth(-1)/supnc(-1)-a5gi*diss(-1)
+-a6gi*qmcapt(-1)-a7gi
++a8gi*[emcap/supnc-emcap(-1)/supnc(-1)+a6gi*(qmcapt-qmcapt(-1))]
+-a8gi*[mcapf(-1)/supnc(-1)-mcapf(-2)/supnc(-2)]
++a9gi*(log(supnc/supnc(-1))-gr)]
++a0g*[aal*log(pgman/psupnc)
+ +abi*log(pgcst/psupnc)+aci*log(pgsd/psupnc) +adi*log(pgfin/psupnc)
+ +aei*log(pgpbs/psupnc)+afi*log(pgsc/psupnc)+agi*log(pgcom/psupnc)
+ +ahi*log(pmcon*(1+rtmcon)/psupnc)+aii*log(pmcap*(1+rtmcap)/psupnc)
+ +aij*log(pmint*(1+rtmint)/psupnc)
+ +aik*log(pmpe*(1+rtmpe)/psupnc)+ail*log(pmsrv/psupnc)
+-(aal+abi+aci+adi+aei+afi+agi+ahi+aij+aik+ail)
+*log(pmcap*(1+rtmcap)/psupnc)]
+        +umcap}
+mintfeq
+mintf=supnc*{emint/supnc+a2gj*sman/supnc+a3gj*ssd/supnc
++a4gj*soth/supnc+a5gj*diss+a6gj*qmintt+a7gj
++(1-a0g)*[mintf(-1)/supnc(-1)
+-emint(-1)/supnc(-1)
+-a2gj*sman(-1)/supnc(-1)-a3gj*ssd(-1)/supnc(-1)
+-a4gj*soth(-1)/supnc(-1)-a5gj*diss(-1)-a6gj*qmintt(-1)-a7gj
++a8gj*[emint/supnc-emint(-1)/supnc(-1)+a6gj*(qmintt-qmintt(-1))]
+-a8gj*[mintf(-1)/supnc(-1)-mintf(-2)/supnc(-2)]
++a9gj*(log(supnc/supnc(-1))-gr)]
++a0g*[aaj*log(pgman/psupnc)
+ +abj*log(pgcst/psupnc)+acj*log(pgsd/psupnc) +adj*log(pgfin/psupnc)
+ +aej*log(pgpbs/psupnc)+afj*log(pgsc/psupnc)+agj*log(pgcom/psupnc)
+ +ahj*log(pmcon*(1+rtmcon)/psupnc)+aij*log(pmcap*(1+rtmcap)/psupnc)
+ +ajj*log(pmint*(1+rtmint)/psupnc)
+ +ajk*log(pmpe*(1+rtmpe)/psupnc)+ajl*log(pmsrv/psupnc)
+-(aaj+abj+acj+adj+aej+afj+agj+ahj+aij+ajk+ajl)
+*log(pmint*(1+rtmint)/psupnc)]
+        +umint}
+mpefeq
+mpef=supnc*{empe/supnc+a2gk*sman/supnc+a3gk*ssd/supnc+a4gk*soth/supnc
++a5gk*diss+a6gk*qmpet+a7gk
++(1-a0g)*[mpef(-1)/supnc(-1)
+-empe(-1)/supnc(-1)-a2gk*sman(-1)/supnc(-1)-a3gk*ssd(-1)/supnc(-1)
+-a4gk*soth(-1)/supnc(-1)-a5gk*diss(-1)
+-a6gk*qmpet(-1)-a7gk
++a8gk*[empe/supnc-empe(-1)/supnc(-1)+a6gk*(qmpet-qmpet(-1))]
+-a8gk*[mpef(-1)/supnc(-1)-mpef(-2)/supnc(-2)]
++a9gk*(log(supnc/supnc(-1))-gr)]
++a0g*[aak*log(pgman/psupnc)
+ +abk*log(pgcst/psupnc)+ack*log(pgsd/psupnc) +adk*log(pgfin/psupnc)
+ +aek*log(pgpbs/psupnc)+afk*log(pgsc/psupnc)+agk*log(pgcom/psupnc)
+ +ahk*log(pmcon*(1+rtmcon)/psupnc)+aik*log(pmcap*(1+rtmcap)/psupnc)
+ +ajk*log(pmint*(1+rtmint)/psupnc)
+ +akk*log(pmpe*(1+rtmpe)/psupnc)+akl*log(pmsrv/psupnc)
+-(aak+abk+ack+adk+aek+afk+agk+ahk+aik+ajk+akl)
+*log(pmpe*(1+rtmpe)/psupnc)]
+        +umpe}
+MSRVfeq
+msrvf=
+supnc*
+[eMSRV/supnc+(1-a5ga-a5gb-a5gc-a5gd-a5ge-a5gf-a5gg-a5gh-a5gi-a5gj-a5gk)*diss
+-[a6ga*qgmant+a6gb*qgcstt+a6gc*qgsdt+a6gd*qgfint+a6ge*qgpbst+a6gf*qgsct
+ +a6gg*qgcomt+a6gh*qmcont+a6gi*qmcapt+a6gj*qmintt+a6gk*qmpet]
+-[a7ga+a7gb+a7gc+a7gd+a7ge+a7gf+a7gg+a7gh+a7gi+a7gj+a7gk]
++(1-a0g)*[MSRVf(-1)/supnc(-1)
+-eMSRV(-1)/supnc(-1)
+-(1-a5ga-a5gb-a5gc-a5gd-a5ge-a5gf-a5gg-a5gh-a5gi-a5gj-a5gk)*diss(-1)
++[a6ga*qgmant(-1)+a6gb*qgcstt(-1)+a6gc*qgsdt(-1)+a6gd*qgfint(-1)+a6ge*qgpbst(-1)
+ +a6gf*qgsct(-1)+a6gg*qgcomt(-1)+a6gh*qmcont(-1)+a6gi*qmcapt(-1)
+ +a6gj*qmintt(-1)+a6gk*qmpet(-1)]
++[a7ga+a7gb+a7gc+a7gd+a7ge+a7gf+a7gg+a7gh+a7gi+a7gj+a7gk]
++a8gl*[eMSRV/supnc-eMSRV(-1)/supnc(-1)
+-[a6ga*(qgmant-qgmant(-1))+a6gb*(qgcstt-qgcstt(-1))+a6gc*(qgsdt-qgsdt(-1))
+ +a6gd*(qgfint-qgfint(-1))+a6ge*(qgpbst-qgpbst(-1))+a6gf*(qgsct-qgsct(-1))
+ +a6gg*(qgcomt-qgcomt(-1))+a6gh*(qmcont-qmcont(-1))+a6gi*(qmcapt-qmcapt(-1))
+ +a6gj*(qmintt-qmintt(-1))+a6gk*(qmpet-qmpet(-1))]]
+ -a8gl*[mSRVf(-1)/supnc(-1)-MSRVf(-2)/supnc(-2)]
+-[a9ga+a9gb+a9gc+a9gd+a9ge+a9gf+a9gg+a9gh+a9gi+a9gj+a9gk]
+*(log(supnc/supnc(-1))-gr)]
++a0g*[-(aaa*log(pGMAN/psupnc)+abb*log(pGCST/psupnc)+acc*log(pGSD/psupnc)
++add*log(pgfin/psupnc)+aee*log(pgpbs/psupnc)+aff*log(pGSC/psupnc)
++agg*log(pGCOM/psupnc)
++ahh*log(pMCON*(1+rtmcon)/psupnc)+aii*log(pMCAP*(1+rtmcap)/psupnc)
++ajj*log(pMINT*(1+rtmint)/psupnc)+akk*log(pMPE*(1+rtmpe)/psupnc))
++aal*log(pGMAN/psupnc)
++abl*log(pgcst/psupnc)+acl*log(pGSD/psupnc)+adl*log(pgfin/psupnc)
++ael*log(pgpbs/psupnc)+afl*log(pGSC/psupnc)+agl*log(pGCOM/psupnc)
++ahl*log(pMCON*(1+rtmcon)/psupnc)+ail*log(pMCAP*(1+rtmcap)/psupnc)
++ajl*log(pMINT*(1+rtmint)/psupnc)+akl*log(pMPE*(1+rtmpe)/psupnc)
+-(aal+abl+acl+adl+ael+afl+agl+ahl+ail+ajl+akl)
+*log(pMSRV/psupnc)]+umsrv]
+___________________________________________________________________
+B4: Demand System Identities
+sfsupeq
+sfsup=[supnc+qolymp*supnc]
+       /[gman+gcst+gsd+gfin+gpbs+gsc+gcom+mcon+mcap+mint+mpe+msrv]
+gmaneq gman=gmanf*sfsup
+gcsteq gcst=gcstf*sfsup
+gsdeq     gsd=gsdf*sfsup
+gfineqgfin=gfinf*sfsup
+gpbseqgpbs=gpbsf*sfsup
+gsceqgsc=gscf*sfsup
+gcomeqgcom=gcomf*sfsup
+mconeqmcon=mconf*sfsup
+mcapeqmcap=mcapf*sfsup
+minteqmint=mintf*sfsup
+mpeeqmpe=mpef*sfsup
+msrveqmsrv=msrvf*sfsup
+mgseq
+mgs=mcon+mcap+mint+mpe+msrv+dismgs
+Household Sector Equations (Wealth, Consumption, Dwellings, Labour Force Participation, Hours Worked, Wages, Vacancies)
+______________________________________________________________________
+C1: Private Wealth Equation (VMZ)
+VMZEQ
+vmz=xrvmz*{xrfm1z*fm1z+(kag+kmin+kman+kcst+ksd+kfin+kpbs+ksc+.6*kcom+.3*kegw)*qord*pcon
+          +kdw*pkdwe*2.3
+          +kdog*pcdog
+          +kmv*pcmv
+          -vepoz
+          -vdpoaz-vdpofz
+          +vdgpz*qval+veopz
+          +ksn*xrpksn*(0.65*ppcdog+.18*ppipe+.17*ppiob)
+          +ksfm*xrpksfm*pxc}
+Components of Wealth:
+All Ordinaries Index (QORD)
+qordeq
+qord=xrqord*{(qmin*kmin+qman*kman+qcst*kcst+qsd*ksd
+              +qk*kfin+qcom*kcom)/(kmin+kman+kcst+ksd+kfin+kcom)}
+______________________________________________________________________
+C1b: Established House Price Equation (PKDWE)
+PKDWEEQ
+pkdwe=exp{log(pkdwe(-1))+a1pkdwe*log(pkdwe(-1)/pkdwe(-2))
+    +a2pkdwe*(log(pidw/pidw(-1)+1.1/2.1*rriglat/400)
+    +a3pkdwe*(log(pidw(-1)/pidw(-2))+1.1/2.1*rriglat(-1)/400)
+    +(1-a1pkdwe-a2pkdwe-a3pkdwe)
+       *(log(pconut/pconut(-1))+1.1/2.1*rriglat/400)
+    +a4pkdwe*(idw/kdw(-1)-idw(-1)/kdw(-2))
+    +a5pkdwe*
+     ( (rwh(-1)*(1-rtn(-1))*(1-rnu(-1)/100))/
+(pkdwe(-1)*(rimort(-1)+1.5))
+ -(rwh(-5)*(1-rtn(-5))*(1-rnu(-5)/100))/
+(pkdwe(-5)*(rimort(-5)+1.5)) )
+    +a6pkdwe*
+( (rwh(-2)*(1-rtn(-2))*(1-rnu(-2)/100))/
+(pkdwe(-2)*(rimort(- 2)+1.5))-qaffordm )
+      +a7pkdwe*qfhome(-2) 
+      +a0pkdwe*
+[rriglat(-1)+riskdw-
+(( (pcre(-1)*cre(-1)*(1-kvacd(-1)/100)*(1-rtcre(-1))
+-rkddw(-1)*pidw(-1)*kdw(-1))
+        /(pkdwe(-1)*kdw(-1)*2.1)*400*.8+1.1/2.1*rriglat(-1) )
+    +c2pkdwe*((log(pkdwe(-1)/pkdwe(-5))-log(pconu(-1)/pconu(-5)))*100
+-1.1/2.1*rriglat))]/400
++upkdwe}
+_____________________________________________________________________
+C2: Rental Vacancy Rate Equation
+kvacdeq
+kvacd=(1-a0kv-a3kv)*{kvacd(-1)
+   +a1kv*[log(pcre/pcre(-1))-log(pcnr/pcnr(-1))
+-(log(1/xrpcret)-log(1/xrpcret(-1)))]     
+   +a2kv*(rnu(-1)-rnu(-2))}
+   +a3kv*kvacd(-2)
+     +a0kv*{kvacst
+       +c1kvacd*[log(pcre(-6)/pcnr(-6))-log(1/xrpcret(-6))]
+       +c2kvacd*[log(cre/cnrs)
+                   -{c1cre+cdwsig*log(pcre/pcnr)
+ +c2cre*qdemd+c3cre*npadb/npop
+                    +c4cre*(rnu-rnu(-5))+c5cre*qcret
+     +c6cre*(npim/npop-rnpimt)
+    +c7cre*[log(pkdwe(-2)/pkdwe(-6))-log(pcnr(-2)/pcnr(-6))
+                     -(log(1/xrpcret(-2))-log(1/xrpcret(-6)))]
+    +c8cre*(pcre(-1)/(pkdwe(-1)*(rimort(-1)+1.5))-c7kvacd)}]
+           +c3kvacd*(pcre(-1)/(pkdwe(-1)*(rimort(-1)+1.5))
+-c7kvacd)
+   +c4kvacd*[log(cnr/cnr(-6))-log(cre/cre(-6))]           
+   +c5kvacd*[npim/npop-rnpimt]
+   +c6kvacd*qtkvacd}
+           +ukvacd;
+cnrseq cnrs=cnr-cmv-cdog+csmv+csdog
+eqsub kvacdeq cnrseq
+_____________________________________________________________________
+C3: Rental Price Equation
+pcreeq pcre=exp{log(pcre(-1))
+                 +(1-a1pcr-a2pcr-a3pcr-a4pcr)*[log(pcre(-1))-log(pcre(-2))]
+                 +a1pcr*[log(pcre(-2))-log(pcre(-3))]
+                 +a2pcr*log(pidw/pidw(-1))
+                 +a3pcr*log(pcnr/pcnr(-1))
+                 +a4pcr*log(pcnr(-1)/pcnr(-2))
+                 +a5pcr*log((pmgs/pd)/(pmgs(-1)/pd(-1)))
+                 +a0pcr*(kvacd-kvacst)/kvacd
+                 +upcre}
+pcreteq pcret=xrpcret*pcre
+_____________________________________________________________________
+C4: Dwelling Investment, Dwelling Capital Stock, Established House Prices and Investment Q Ratios
+__________________________________
+C4A: Dwelling Investment Q Ratio (detrended for investment equation)
+qdwieq
+qdwi=[pcret*(1-rtcre)*xrcre*(1-kvacd)/pidw]    
+                  /{[(a6dw*rigl+(1-a6dw)*ri90-fie)    
+                      /(1+fie/100)]/400+rkddw*(1+fie/400)+c1dw}
+__________________________________
+C4B: Dwelling Sector Q-ratio (for wealth equation)
+qdweq
+qdw=[pcre*(1-rtcre)*xrcre/pidw
+         /(((rigl-fie)/(1+fie/100))/400+rkddw*(1+fie/400)+c1dw)]+uqdw
+__________________________________
+C4C: Dwelling Investment
+idweq
+idw=kdw(-1)*{(exp(grdw)-1+rkddw)*(1-a1dw-a2dw-a3dw)
+     +a1dw*[idw(-1)/kdw(-2)]
+     +a2dw*[idw(-2)/kdw(-3)]
+     +a3dw*[idw(-3)/kdw(-4)]
+     +a4dw*[(rwh(-2)*(1-rnu(-2)/100))/
+(pkdwe(-2)* (rimort(-2)+1.5))
+           -(rwh(-6)*(1-rnu(-6)/100))/
+(pkdwe(-6)*(rimort(-6)+1.5))]
+     +a5dw*[log(npadb/npadb(-4))/4-log(npop/npop(-4))]
+     +a11dw*log(qdemd/qdemd(-4))
+     +a7dw*qgst1
+     +a8dw*qgst2
+     +a9dw*qgst3
+     +a10dw*qgst4
+     +a0qdw*[qdwi-1]
+     +a1qdw*[qdwi(-1)-1]
+     +a2qdw*[qdwi(-2)-1]
+     +a3qdw*[qdwi(-3)-1]             
+     +a4qdw*[qdwi(-4)-1]             
+     +a12dw*[log(pkdwe/pkdwe(-4))
+-log(pconut/pconut(-4))-1.1/2.1*rriglat/100] 
+     +uidw}
+idwteq
+idwt=xridwt*idw
+grdweq
+grdw=lcnrst-lcnrst(-1)
+              +log[(cdwsig*log(1/xrpcret)
+                   +c2cre*qdemd+c3cre*npadb/npop
+                   +c5cre*qtime)/
+                  (cdwsig*log(1/xrpcret(-1))
+                   +c2cre*qdemd(-1)
+                   +c3cre*npadb(-1)/npop(-1)
+                   +c5cre*qtime(-1))]
+         -log(xrcre/xrcre(-8))/8
+eqsub idweq grdweq
+______________________________________
+C4D: Dwelling Capital Stock Identity
+kdweq kdw=kdw(-1)*(1-rkddw)+idw
+______________________________________
+C4E: Production of Rent
+creeq cre=xrcre*kdw(-1)
+_____________________________________________________________________
+C5: Consumption Equation
+    and long-run growth rate for consumption
+conseq
+cons=cons(-1)*exp[grc+(qdemc-qdemc(-1))
+     +a0con*{log(c0con)+log[(ynz(-1)/pcon(-1))
++c1con*(vmz(-1)-pkdwe(-1)*kdw(-1)*2.3)/pcon(-1)
+       +c2con*(pcre(-1)*kdw(-1)*2.3)/pcon(-1)]
+  +c3con*bpsbrz(-1)/gdpaz(-1)
+   +c4con*log(pkdwe(-1)/pcre(-1))
+      +c5con*[log(wpxmin(-1)/wpcon(-1))-qwpxmin(-1)]
+  +c6con*(xrrwh(-1)-1)
+  +log(qdemc(-1))-log(cons(-1))}
+     +a1con*[log(ynz/ynz(-1))-log(pcon/pcon(-1))-grc]
+     +a2con*[log(ynz(-1)/ynz(-2))-log(pcon(-1)/pcon(-2))-grc(-1)]
+     +a3con*[log(ynz(-2)/ynz(-3))-log(pcon(-2)/pcon(-3))-grc(-2)]
+     +a4con*[log(pkdwe(-1)/pcre(-1))-log(pkdwe(-2)/pcre(-2))]
+     +a5con*[bpsbrz(-1)/gdpaz(-1)-bpsbrz(-2)/gdpaz(-2)]
+     +a6con*[log(vmz/vmz(-1))-log(pcon/pcon(-1))-grc]
+     +a7con*(dlprodt-c9con)
+     +ucon]
+conaeq
+cona=cons-csmv-csdog+cmv+cdog
+_____________________________________________________________________
+C6: Consumption Demand System Equations
+kmveq                           
+kmv=kmv(-1)*(1-.067)+cmv              
+kdogeq
+kdog=kdog(-1)*(1-.067)+cdog           
+csnreq
+csnr=con-cre-discon-cdog+csdog-cmv+csmv
+pcsnreq
+pcsnr=[con*pcon-cre*pcre-cdog*pcdog+csdog*pcdog-cmv*pcmv+csmv*pcmv]
+      /[con-cre-discon-cdog+csdog-cmv+csmv]
+cmveq
+cmv=(csmv-0.92*(0.0732*kmv))/0.08
+cdogeq
+cdog=(csdog-0.7*(0.067+0.0062)*kdog)/0.3
+cfdeq                            ?Equation for Food      F
+cfd=csnr*{ a2cf*[log(cnr/cnr(-1))-gr]
+       +a3cf*[log(kdw/kdw(-1))-log(kdw(-1)/kdw(-9))/8]
+       +a4cf*qcfdt+a5cf+a6cf*qgst2+a7cf*qgst3
+       +(1-a0c)*[cfd(-1)/csnr(-1)-a2cf*[log(cnr(-1)/cnr(-2))-gr(-1)]
+       -a3cf*log(kdw(-1)/kdw(-2)-log(kdw(-2)/kdw(-10))/8]
+       -a4cf*qcfdt(-1)-a5cf-a6cf*qgst2(-1)-a7cf*qgst3(-1)]
+       +a0c*[cff*log(pcfd/pcsnr)
+       +cfa*log(pccal/pcsnr)+cfdl*log(pcdog/pcsnr)+cfm*log(pcmv/pcsnr)
+       +cft*log(pcomt/pcsnr)+cfe*log(pcegw/pcsnr)+cfc*log(pccom/pcsnr)
+       +cfh*log(pchuc/pcsnr)+cfs*log(pcsrv/pcsnr)
+       -(cfa+cfdl+cfm+cft+cfe+cfc+cfh+cfs)*log(pcfd/pcsnr)]
+       +ucfd }
+ccaleq                           ?Equation for ALC and CIG A
+ccal=csnr*{ a2ca*[log(cnr/cnr(-1))-gr]
+        +a3ca*[log(kdw/kdw(-1))-log(kdw(-1)/kdw(-9))/8]
+        +a4ca*qccalt+a5ca+a6ca*qgst2+a7ca*qgst3
+        +(1-a0c)*[ccal(-1)/csnr(-1)-a2ca*[log(cnr(-1)/cnr(-2))-gr(-1)]
+        -a3ca*log(kdw(-1)/kdw(-2)-log(kdw(-2)/kdw(-10))/8]
+        -a4ca*qccalt(-1)-a5ca-a6ca*qgst2(-1)-a7ca*qgst3(-1)]
+        +a0c*[caa*log(pccal/pcsnr)
+        +cfa*log(pcfd/pcsnr)+cadl*log(pcdog/pcsnr)+cam*log(pcmv/pcsnr)
+        +cat*log(pcomt/pcsnr)+cae*log(pcegw/pcsnr)+cac*log(pccom/pcsnr)
+        +cah*log(pchuc/pcsnr)+cas*log(pcsrv/pcsnr)
+        -(cfa+cadl+cam+cat+cae+cac+cah+cas)*log(pccal/pcsnr)]
+        +uccal }
+csdogeq                          ?Equation for csdog     D
+csdog=csnr*{ a2cd*[log(cnr/cnr(-1))-gr]
+       +a3cd*[log(kdw/kdw(-1))-log(kdw(-1)/kdw(-9))/8]
+       +a4cd*qcsdogt+a5cd+a6cd*qgst2+a7cd*qgst3
+       +(1-a0c)*[csdog(-1)/csnr(-1)-a2cd*[log(cnr(-1)/cnr(-2))-gr(-1)]
+       -a3cd*log(kdw(-1)/kdw(-2)-log(kdw(-2)/kdw(-10))/8]
+       -a4cd*qcsdogt(-1)-a5cd-a6cd*qgst2(-1)-a7cd*qgst3(-1)]
+       +a0c*[cdd*log(pcdog/pcsnr)
+       +cfdl*log(pcfd/pcsnr)+cadl*log(pccal/pcsnr)+cdm*log(pcmv/pcsnr)
+       +cdt*log(pcomt/pcsnr)+cde*log(pcegw/pcsnr)+cdc*log(pccom/pcsnr)
+       +cdh*log(pchuc/pcsnr)+cds*log(pcsrv/pcsnr)
+       -(cfdl+cadl+cdm+cdt+cde+cdc+cdh+cds)*log(pcdog/pcsnr)]
+       +ucsdog }
+csmveq                            ?Equation for CsMV     M
+csmv=csnr*{ a2cm*[log(cnr/cnr(-1))-gr]
+      +a3cm*[log(kdw/kdw(-1))-log(kdw(-1)/kdw(-9))/8]
+      +a4cm*qcsmvt+a5cm+a6cm*qgst2+a7cm*qgst3
+      +(1-a0c)*[csmv(-1)/csnr(-1)-a2cm*[log(cnr(-1)/cnr(-2))-gr(-1)]
+      -a3cm*log(kdw(-1)/kdw(-2)-log(kdw(-2)/kdw(-10))/8]
+      -a4cm*qcsmvt(-1)-a5cm-a6cm*qgst2(-1)-a7cm*qgst3(-1)]
+      +a0c*[cmm*log(pcmv/pcsnr)
+      +cfm*log(pcfd/pcsnr)+cam*log(pccal/pcsnr)+cdm*log(pcdog/pcsnr)
+      +cmt*log(pcomt/pcsnr)+cme*log(pcegw/pcsnr)+cmc*log(pccom/pcsnr)
+      +cmh*log(pchuc/pcsnr)+cms*log(pcsrv/pcsnr)
+      -(cfm+cam+cdm+cmt+cme+cmc+cmh+cms)*log(pcmv/pcsnr)]
+      +ucsmv }
+comteq                           ?Equation for comt    T
+comt=csnr*{ a2ct*[log(cnr/cnr(-1))-gr]
+      +a3ct*[log(kdw/kdw(-1))-log(kdw(-1)/kdw(-9))/8]
+      +a4ct*qcomtt+a5ct+a6ct*qgst2+a7ct*qgst3
+      +(1-a0c)*[comt(-1)/csnr(-1)-a2ct*[log(cnr(-1)/cnr(-2))-gr(-1)]
+      -a3ct*log(kdw(-1)/kdw(-2)-log(kdw(-2)/kdw(-10))/8]
+      -a4ct*qcomtt(-1)-a5ct-a6ct*qgst2(-1)-a7ct*qgst3(-1)]
+      +a0c*[ctt*log(pcomt/pcsnr)
+      +cft*log(pcfd/pcsnr)+cat*log(pccal/pcsnr)+cdt*log(pcdog/pcsnr)
+      +cmt*log(pcmv/pcsnr)+cte*log(pcegw/pcsnr)+ctc*log(pccom/pcsnr)
+      +cth*log(pchuc/pcsnr)+cts*log(pcsrv/pcsnr)
+      -(cft+cat+cdt+cmt+cte+ctc+cth+cts)*log(pcomt/pcsnr)]
+      +ucomt }
+cegweq                          ?Equation for WCEGW     E
+cegw=csnr*{ a2ce*[log(cnr/cnr(-1))-gr]
+      +a3ce*[log(kdw/kdw(-1))-log(kdw(-1)/kdw(-9))/8]
+      +a4ce*qcegwt+a5ce+a6ce*qgst2+a7ce*qgst3
+      +(1-a0c)*[cegw(-1)/csnr(-1)-a2ce*[log(cnr(-1)/cnr(-2))-gr(-1)]
+      -a3ce*log(kdw(-1)/kdw(-2)-log(kdw(-2)/kdw(-10))/8]
+      -a4ce*qcegwt(-1)-a5ce-a6ce*qgst2(-1)-a7ce*qgst3(-1)]
+      +a0c*[cee*log(pcegw/pcsnr)
+      +cfe*log(pcfd/pcsnr)+cae*log(pccal/pcsnr)+cde*log(pcdog/pcsnr)
+      +cme*log(pcmv/pcsnr)+cte*log(pcomt/pcsnr)+cec*log(pccom/pcsnr)
+      +ceh*log(pchuc/pcsnr)+ces*log(pcsrv/pcsnr)
+      -(cfe+cae+cde+cme+cte+cec+ceh+ces)*log(pcegw/pcsnr)]
+      +ucegw }
+ccomeq                          ?Equation for WCCOM     C
+ccom=csnr*{ a2cc*[log(cnr/cnr(-1))-gr]
+      +a3cc*[log(kdw/kdw(-1))-log(kdw(-1)/kdw(-9))/8]
+      +a4cc*qccomt+a5cc+a6cc*qgst2+a7cc*qgst3
+      +(1-a0c)*[ccom(-1)/csnr(-1)-a2cc*[log(cnr(-1)/cnr(-2))-gr(-1)]
+      -a3cc*log(kdw(-1)/kdw(-2)-log(kdw(-2)/kdw(-10))/8]
+      -a4cc*qccomt(-1)-a5cc-a6cc*qgst2(-1)-a7cc*qgst3(-1)]
+      +a0c*[ccc*log(pccom/pcsnr)
+      +cfc*log(pcfd/pcsnr)+cac*log(pccal/pcsnr)+cdc*log(pcdog/pcsnr)
+      +cmc*log(pcmv/pcsnr)+ctc*log(pcomt/pcsnr)+cec*log(pcegw/pcsnr)
+      +cch*log(pchuc/pcsnr)+ccs*log(pcsrv/pcsnr)
+      -(cfc+cac+cdc+cmc+ctc+cec+cch+ccs)*log(pccom/pcsnr)]
+      +uccom }
+chuceq                          ?Equation for Wchuc     H
+chuc=csnr*{ a2ch*[log(cnr/cnr(-1))-gr]
+      +a3ch*[log(kdw/kdw(-1))-log(kdw(-1)/kdw(-9))/8]
+      +a4ch*qchuct+a5ch+a6ch*qgst2+a7ch*qgst3
+      +(1-a0c)*[chuc(-1)/csnr(-1)-a2ch*[log(cnr(-1)/cnr(-2))-gr(-1)]
+      -a3ch*log(kdw(-1)/kdw(-2)-log(kdw(-2)/kdw(-10))/8]
+      -a4ch*qchuct(-1)-a5ch-a6ch*qgst2(-1)-a7ch*qgst3(-1)]
+      +a0c*[chh*log(pchuc/pcsnr)
+      +cfh*log(pcfd/pcsnr)+cah*log(pccal/pcsnr)+cdh*log(pcdog/pcsnr)
+      +cmh*log(pcmv/pcsnr)+cth*log(pcomt/pcsnr)+ceh*log(pcegw/pcsnr)
+      +cch*log(pccom/pcsnr)+chs*log(pcsrv/pcsnr)
+      -(cfh+cah+cdh+cmh+cth+ceh+cch+chs)*log(pchuc/pcsnr)]
+      +uchuc }
+csrveq                          ?Equation for Wcsrv     S
+csrv=con-cre-cfd-ccal-cdog-cmv-comt-cegw-ccom-chuc-discon
+_____________________________________________________________________
+C7: Average Earnings Equation (RWT)
+rwteq 
+rwt=nh*exp{log(rwt(-1)/nh(-1))+clam1/4
+            +a1rwta*log(pconu(-1)/pconu(-2))
+            +a1rwtb*log(pconu(-2)/pconu(-3))
+            +a1rwtc*log(pconu(-3)/pconu(-4))
+            +(1-a1rwta-a1rwtb-a1rwtc)*log(pconut/pconut(-1))
+            +(a2rwt*rum)*[c2rwt*[pos(rnu(-1)-rnu(-2))]
+                        -(1-c2rwt)*[pos(-(rnu(-1)-rnu(-2)))]]
+            +a3rwt*(qcc-qcc(-4))
+            +a4rwt*{rnust(-1)+wsu-rnu(-1)}/rnu(-1)
+            +a5rwt*q743
+            +urwt}
+Hourly Earnings (RWH)
+rwheq  rwh=rwt/nh
+Hourly Business Wage Identity (RWBH)
+rwbheq
+rwbh=[rwt*(nebt+nege+negg+nedf)]/[nh*(nebt+xrwg*[nege+negg+nedf])]
+_____________________________________________________________________
+C8:  Average Hours Worked Equation (NH)
+nheq
+nh=exp{a0nh*[log(nh(-1))
+          +a1nh*(log(gba/gba(-1))-gr)
+          +a2nh*(log(gba(-1)/gba(-2))-gr(-1))
+          +a3nh*[log(idw/idw(-10))/10-(gr+gr(-4))/2]
+          +a4nh*(log(nv/nlf*100)-[(log(rnu)-unv)
+                       -[c0bc+c2bc/(1+exp(-(qtnv-c3bc)/c4bc))]]/c1bc)
+          +(qtnh-qtnh(-1))]
+   +(1-a0nh)*[qtnh]
+       +unh}
+_____________________________________________________________________
+C9: Labour Supply Equation
+nlfeq
+nlf=exp{log(npada)-log(nhlr)
+        +a0ls*[log(nlf(-1)*nhlr(-1)/npada(-1))
+    +a1ls*qnlf*[log(nebd/npada)-log(nebd(-1)/npada(-1))-a6ld*qpriv-unebd/4]
+    +a2ls*qnlf*[log((nege+negg)/npada)
+               -log((nege(-1)+negg(-1))/npada(-1))+a6ld*4*qpriv]
+    +(qtnlf-qtnlf(-1))+log(qdeml/qdeml(-1))+log(nhlr/nhlr(-1))]
+    +(1-a0ls)*[qtnlf
+         +log(nhlr)+log(qdeml)
+         +c7ls*qnlf*{log(net/npada)-unebd/5}]
+        +unlf}
+_____________________________________________________________________
+C10: Beveridge Curve
+nveq 
+nv=exp{log(nlf/100)+log(nv(-1)/nlf(-1)*100)
+        +(1/a1bc)*[log(rnu/rnu(-1))
+        -a2bc*{c2bc/(1+exp(-(qtnv-c3bc)/c4bc))
+                -c2bc/(1+exp(-(qtnv(-1)-c3bc)/c4bc))}
+        +a0bc*{log(rnu(-1))-[c0bc+c2bc/(1+exp(-(qtnv(-1)-c3bc)/c4bc))]
+                                -c1bc*log(nv(-1)/nlf(-1)*100)}-unv]}
+_____________________________________________________________________
+C11: Unemployment Rate
+rnueq rnu=100*(nlf-[nebt+nege+negg])/nlf
+______________________________________________________________________
+C12: LTU Cohort Model
+nuneq   nun=rnu*nlf/100
+nun1feq  nun1f=  [c1nun1+a0nun1*nun1(-1)/nlf(-1)*100
+                      +a1nun1*(rnu-rnu(-1))
+                      +a2nun1*[nv/(nlf+nv)-nv(-1)/(nlf(-1)+nv(-1))]*100
+                      +a3nun1*rnu(-1)+c2nun1*qtnun+c3nun1*qnunl
+                      +urnun1]*nlf/100
+nun2feq  nun2f=nun1(-1)*(1-exit1)
+nun3feq  nun3f=nun2(-1)*(1-exit2)
+nun4feq  nun4f=nun3(-1)*(1-exit3)
+nun5feq  nun5f=nun4(-1)*(1-exit4)
+nun6feq  nun6f=(nun3(-3)+nun4(-3)+nun5(-3))*(1-exit345)
+nun7feq  nun7f=(nun6(-3)+nun7(-3))*(1-exit67)
+exit1eq   exit1 = c1nun2+a0nun2*exit1(-1)
+                      +a1nun2*rnu(-1)+a2nun2*(rnu-rnu(-1))
+                      +a3nun2*(rnu(-1)-rnu(-2))
+                      +c2nun2*qtnun
+                      +c3nun2*qnunl
+                      +uexit1
+exit2eq   exit2 = c1nun3+a0nun3*exit2(-1)
+                      +a1nun3*rnu(-1)+a2nun3*(rnu-rnu(-1))
+                      +a3nun3*(rnu(-1)-rnu(-2))+a4nun3*(nv/(nlf+nv))*100
+                      +a5nun3*(nv(-1)/
+(nlf(-1)+nv(-1)))*100+c2nun3*qtnun
+                      +c3nun3*qnunl
+                      +uexit2
+exit3eq   exit3 = c1nun4+a0nun4*exit3(-1)
+       +a1nun4*(rnu-rnu(-1))+a2nun4*(rnu(-1)-rnu(-2))
+         +a3nun4*rnu(-1)+a4nun4*(nv/(nlf+nv))*100
+         +a5nun4*[nv(-1)/(nlf(-1)+nv(-1))-nv(-2)/(nlf(-2)+nv(-2))]*100
+                  +c2nun4*qtnun
+                  +c3nun4*qnunl
+                  +uexit3
+exit4eq   exit4 = c1nun5+a0nun5*exit4(-1)
+                      +a1nun5*(rnu-rnu(-1))+a2nun5*(rnu(-1)-rnu(-2))
+                      +a3nun5*rnu(-1)+a4nun5*(nv/(nlf+nv))*100
+                      +a5nun5*(nv(-1)/(nlf(-1)+nv(-1)))*100+c2nun5*qtnun
+                      +c3nun5*qnunl
+                      +uexit4
+exit345eq exit345=c1nun6+a0nun6*exit345(-1)
+                      +a1nun6*rnu+a2nun6*log(net/net(-1))
+                      +a3nun6*(rnu-rnu(-4))
+                      +a4nun6*(nv/(nlf+nv))*100
+                      +a5nun6*[nv/(nlf+nv)-nv(-4)/(nlf(-4)+nv(-4))]*100
+                      +c2nun6*qtnun
+                      +c3nun6*qnunl
+                      +uexit345
+exit67eq exit67 = c1nun7+a0nun7*exit67(-1)
+                      +a1nun7*rnu+a2nun7*log(net/net(-1))
+                      +a3nun7*(rnu-rnu(-4))
+                      +a4nun7*(nv/(nlf+nv))*100
+                      +a5nun7*[nv/(nlf+nv)-nv(-4)/(nlf(-4)+nv(-4))]*100
+                      +c2nun7*qtnun
+                      +c3nun7*qnunl
+                      +uexit67
+nunfeq nunf=nun1f+nun2f+nun3f+nun4f+nun5f+nun6f+nun7f
+nun1eq nun1=nun1f*nun/nunf
+nun2eq nun2=nun2f*nun/nunf
+nun3eq nun3=nun3f*nun/nunf
+nun4eq nun4=nun4f*nun/nunf
+nun5eq nun5=nun5f*nun/nunf
+nun6eq nun6=nun6f*nun/nunf
+nun7eq nun7=nun7f*nun/nunf
+_____________________________________________________________________
+C13: Unemployment Beneficiaries Equation
+nubreq
+nubr={ c6nubr*[a1nubr*nun1/nlf*100+a2nubr*nun2/nlf*100
+   +a3nubr*nun3/nlf*100+a4nubr*nun4/nlf*100+a5nubr*nun5/nlf*100
+   +a6nubr*nun6/nlf*100+a7nubr*nun7/nlf*100
+   +[c0nubr+c1nubr/(1+exp(-c2nubr*(qtnun+c3nubr)))]
+   +a8nubr*unet4+a9nubr*unlf4]
+   +c7nubr*{nubr(-1)/nlf(-1)*100
+   -c6nubr*[a1nubr*nun1(-1)/nlf(-1)*100+a2nubr*nun2(-1)/nlf(-1)*100
+   +a3nubr*nun3(-1)/nlf(-1)*100+a4nubr*nun4(-1)/nlf(-1)*100
+   +a5nubr*nun5(-1)/nlf(-1)*100+a6nubr*nun6(-1)/nlf(-1)*100
+   +a7nubr*nun7(-1)/nlf(-1)*100
+   +[c0nubr+c1nubr/(1+exp(-c2nubr*(qtnun(-1)+c3nubr)))]
+   +a8nubr*unet4(-1)+a9nubr*unlf4(-1)]}
+   +unubr }*nlf/100
+_____________________________________________________________________
+C14: INSTITUTIONAL SECTOR EMPLOYMENT, INVESTMENT & PRICE IDENTITIES
+nebteq
+nebt=xrnebt*[neag+nemin+neman+necst+nesd+nefin+nepbs+nesc+.5*necom+nehuc-negg]
+neteq
+net=xrdisnet*[neag+nemin+neman+necst+nesd+nefin+nepbs+nesc+neegw+necom+nehuc]
+wseeq
+wse=xrwse*net
+nebdeq nebd=nebt+(nv-rvast*nlf/100)
+negeeq
+nege=net-negg-nebt
+_____________________________________________________________________
+C15: Labour Income Identity
+rubeq rub=xrrub*rwt/nh
+ynzeq ynz=(1-rtn)*rwt*(net+nedf)
+               +[rub*nubr+(npad-npada)*rwt/nh*.32*xrself
+               +xrocb*npada*rub]
+Balance of Payments, Trade Equations and Overseas Net Lending Stock-Flow Identities
+_____________________________________________________________________
+D1: Manufacturing (ETM) Export Volumes 
+xmaneq xman=exp{log(xman(-1))+gr
+                 +[c1xman/(1+exp(-c2xman*(qtxnc+c3xman)))
+                 -c1xman/(1+exp(-c2xman*(qtxnc(-1)+c3xman)))]
+                +a1xman*[log(gnea/gnea(-1))-log(gmant/gmant(-1))]
+                +a2xman*[log(wmtpg/wmtpg(-1))-gr]
+                +a3xman*[log(pxman*retwxg/wpmgs)- 
+                         log(pxman(-4)*retwxg(-4)/wpmgs(-4))]
+    -a0xman*[log(xman(-1))-log(wmtpg(-1))
+                     -[c0xman+c1xman/(1+exp(-c2xman*(qtxnc(-1)+c3xman)))]
+                     -c4xman*log(pxman(-1)*retwxg(-1)/wpmtpg(-1))]
+                +uxman}
+_____________________________________________________________________
+D2: Services Export Volumes 
+xsrveq xsrv=exp{log(xsrv(-1))+gr
+                 +[c1xsrv/(1+exp(-c2xsrv*(qtxnc+c3xsrv)))
+                 -c1xsrv/(1+exp(-c2xsrv*(qtxnc(-1)+c3xsrv)))]
+                 +a1xsrv*(qgst3-qgst3(-1))
+                 +a2xsrv*[log(wmtps/wmtps(-1))-gr]
+     +a3xsrv*[log(pxsrv*retwxs/wpcon)-
+              log(pxsrv(-1)*retwxs(-1)/wpcon(-1))]
+     -a0xsrv*[log(xsrv(-1))-log(wmtps(-1))
+                     -[c0xsrv+c1xsrv/(1+exp(-c2xsrv*(qtxnc(-1)+c3xsrv)))]
+                     -c4xsrv*log(pxsrv(-1)*retwxs(-1)/wpmtps(-1))
+                     -a1xsrv*qgst3(-1)]
+                 +uxsrv}
+Non-Commodity Export Equation
+xnceq
+xnc=xman+xsrv+disxgs
+_____________________________________________________________________
+Price of Imports Equations
+_____________________________________________________________________
+D3: Price of Consumer Good Imports
+pmconeq
+pmcon=exp{log(pmcon(-1))
+      +c1pmcon*[qtpmgs-qtpmgs(-1)]
+      +a1pmcon*[log(wpmgs/retwim)-log(wpmgs(-1)/retwim(-1))]
+      +a2pmcon*[log(rwh/rwh(-4))/4-clam1/4]
+      +(1-a1pmcon-a2pmcon)*[log(pmcon(-1))-log(pmcon(-2))
+               -c1pmcon*(qtpmgs(-1)-qtpmgs(-2))]
+      +a3pmcon*[log(wpmpe/wpmpe(-1))-log(wpcon/wpcon(-1))]   
+      +a4pmcon*[log(resdr/resdr(-2))-log(retwim/retwim(-2))] 
+      -a0pmcon*[log(pmcon(-1))-log(wpmgs(-1)/retwim(-1))         
+          -[c0pmcon+c1pmcon*qtpmgs(-1)]]
+      +upmcon}
+_____________________________________________________________________
+D4: Import Prices (Capital Goods) 
+pmcapeq                  
+pmcap=exp{log(pmcap(-1))
+        +{(c1pmcap/(1+exp(c2pmcap*(qtpmgs+c3pmcap))))
+         -(c1pmcap/(1+exp(c2pmcap*(qtpmgs(-1)+c3pmcap))))}
+      +a1pmcap*[log(wpmgs/retwim)-log(wpmgs(-1)/retwim(-1))]
+      +(1-a1pmcap)*[log(pmcap(-1))-log(pmcap(-2))
+            -{(c1pmcap/(1+exp(c2pmcap*(qtpmgs(-1)+c3pmcap))))
+             -(c1pmcap/(1+exp(c2pmcap*(qtpmgs(-2)+c3pmcap))))}]
+      +a2pmcap*[log(reusd/reusd(-1))-log(retwim/retwim(-1))] 
+      -a0pmcap*{log(pmcap(-1))-log(wpmgs(-1)/retwim(-1))
+           -[c0pmcap+(c1pmcap/(1+exp(c2pmcap*(qtpmgs(-1)+c3pmcap))))]}
+      +upmcap}
+_____________________________________________________________________
+D5: Import Prices (Intermediate and Other Goods)
+pminteq
+pmint=exp{log(pmint(-1))
+        +{(c1pmint/(1+exp(c2pmint*(qtpmgs+c3pmint))))
+           -(c1pmint/(1+exp(c2pmint*(qtpmgs(-1)+c3pmint))))}
+        +a1pmint*[log(wpmgs/retwim)-log(wpmgs(-1)/retwim(-1))]
+        +(1-a1pmint-a2pmint)
+                *[log(wpmgs(-1)/retwim(-1))-log(wpmgs(-2)/retwim(-2))]
+        +a2pmint*[log(rwh/rwh(-4))/4-clam1/4]
+        +a3pmint*[log(reusd/reusd(-1))-log(retwim/retwim(-1))]
+        +a4pmint*[log(reusd(-1)/reusd(-2))-log(retwim(-1)/retwim(-2))]
+        -a0pmint*{log(pmint(-1))-log(wpmgs(-1)/retwim(-1))
+           -[c0pmint+(c1pmint/(1+exp(c2pmint*(qtpmgs(-1)+c3pmint))))]}
+        +upmint}
+_____________________________________________________________________
+D6: Import Prices (oil)
+pmpeeq
+pmpe=exp{log(pmpe(-1))
+      +a1pmpe*[log(wpmpe/resdr)-log(wpmpe(-1)/resdr(-1))]
+     +(1-a1pmpe-a2pmpe)
+         *[log(wpmpe(-1)/resdr(-1))-log(wpmpe(-2)/resdr(-2))]
+      +a2pmpe*[log(pmpe(-1))-log(pmpe(-2))]
+      -a0pmpe*{log(pmpe(-1))-log(wpmpe(-1)/resdr(-1))-c0pmpe}
+      +upmpe}
+_____________________________________________________________________
+D7: Import Prices (Services)
+pmsrveq
+pmsrv=exp{log(pmsrv(-1))
+      +c1pmsrv*[qtpmgs-qtpmgs(-1)]
+      +a1pmsrv*[log(wpmgs/retwim)-log(wpmgs(-1)/retwim(-1))]
+      +a2pmsrv*[log(wpmgs(-1)/retwim(-1))-log(wpmgs(-2)/retwim(-2))]
+      +(1-a1pmsrv-a2pmsrv)*[log(pmsrv(-1))-log(pmsrv(-2))
+                  -c1pmsrv*(qtpmgs(-1)-qtpmgs(-2))]
+      +a3pmsrv*[log(reusd/reusd(-1))-log(retwim/retwim(-1))] 
+      -a0pmsrv*{log(pmsrv(-1))-log(wpmgs(-1)/retwim(-1))
+          -[c0pmsrv+c1pmsrv*qtpmgs(-1)]}
+      +upmsrv}
+pmnmgeq pmnmg=xrpmnmg*pxmin
+pmgseq
+pmgs=(mcon*pmcon+mcap*pmcap+mint*pmint+mpe*pmpe+msrv*pmsrv)
+     /(mcon+mcap+mint+mpe+msrv+dismgs)
+pmgiteq
+pmgit=exp{a0pmgit*{log(pmgit(-1))+log(pcon/pcon(-4))/4
+                  +a3pmgit*[log(pmgs/pmgs(-1))-log(pcon/pcon(-4))/4]
+                  +a1pmgit*[qtpmgs-qtpmgs(-1)]
+                  +a2pmgit*[qtpmgs+qtpmgs(-1)]*[qtpmgs-qtpmgs(-1)]}
+         +(1-a0pmgit)*[c0pmgit+a1pmgit*qtpmgs+a2pmgit*(qtpmgs)**2
+                       +log(pmgs)]
+         +upmgit}
+_____________________________________________________________________
+D8: Imports of Goods and Services Equation - See Industry Demand System
+mnmgeq mnmg=xrmnmg*gdpa
+mgiteq
+mgit=exp{a1mgit*{log(mgit(-1))+gr+a2mgit*[log(mgs/mgs(-1))-gr]
+                 +a3mgit*[log(mgs(-1)/mgs(-2))-gr(-1)]}
+       +(1-a1mgit)*{log[c1mgit+c2mgit/(1+exp(c3mgit*(qtmgs+c4mgit)))
+                        +c5mgit*(qtmgit+c6mgit)]
+                    -log(pmgit/(mgs*pmgs))}
+       +umgit}
+____________________________________________________________________
+Quantity of Exports (XGS)
+xgseq xgs=xnc+xc
+______________________________________________________________________
+Price of Exports (PXGS)
+pxgseq pxgs=(xc*pxc+xnc*pxnc)/(xc+xnc)
+_____________________________________________________________________
+D9: Commodity Exports Equation
+xceq  xc=xag+xmin
+______________________________________________________________________
+D10: Price of Commodity Exports Equation
+pxceq
+pxc=(xag*pxag+xmin*pxmin)/(xag+xmin)
+______________________________________________________________________
+D11: Agricultural Export Prices
+pxageq
+pxag=exp[log(pxag(-1))
+      +c1pxag*[qtpxc-qtpxc(-1)]                                
+      +(1-a1pxag-a2pxag-a3pxag)
+             *(log(pxag(-1))-log(pxag(-2))-c1pxag*[qtpxc(-1)-qtpxc(-2)])
+      +a1pxag*[log{wpxag/resdr}
+              -log{wpxag(-1)/resdr(-1)}]
+      +a2pxag*[log{wpxag(-1)/resdr(-1)}
+              -log{wpxag(-2)/resdr(-2)}]
+      +a3pxag*[log{wpxag(-2)/resdr(-2)}
+              -log{wpxag(-3)/resdr(-3)}]
+      +a4pxag*log(resdr(-1)/resdr(-3))                         
+      -a4pxag*log(resdr(-4)/resdr(-8))/2                       
+      +a5pxag*[log(wpmpe/wpmpe(-3))-log(wpcon/wpcon(-3))]      
+      -a0pxag*{log(pxag(-1))-c0pxag-c1pxag*qtpxc(-1)
+              -log[wpxag(-1)/resdr(-1)]}
+              +upxag]
+______________________________________________________________________
+D12: Mining Export Prices
+pxmineq
+pxmin=exp[log(pxmin(-1))+c1pxmin*(qtpxc-qtpxc(-1))
+      +(1-a1pxmin-a2pxmin)*[log(pxmin(-1))-log(pxmin(-2))
+                            -c1pxmin*(qtpxc(-1)-qtpxc(-2))]
+      +a1pxmin*[log{((1-xrxoil)*wpxmin+xrxoil*wpmpe)/resdr}
+           -log{((1-xrxoil)*wpxmin(-1)+xrxoil*wpmpe(-1))/resdr(-1)}]
+      +a2pxmin*[log{((1-xrxoil)*wpxmin(-1)+xrxoil*wpmpe(-1))/resdr(-1)}
+           -log{((1-xrxoil)*wpxmin(-2)+xrxoil*wpmpe(-2))/resdr(-2)}]
+      +a3pxmin*[log(reusd/reusd(-1))-log(resdr/resdr(-1))]
+      -a0pxmin*{log(pxmin(-1))-c1pxmin*qtpxc(-1)
+               -log[((1-xrxoil)*wpxmin(-1)
+      +xrxoil*wpmpe(-1))/resdr(-1)]}
+      +upxmin]
+______________________________________________________________________
+Price of World Commodity Price Equation
+______________________________________________________________________
+D13: World Agricultural Commodity Prices in SDRs (WPXAG)
+wpxageq
+wpxag=exp[log(wpxag(-1))+log(wpcon/wpcon(-1))
+      +a1wpxag*[log(wip)-log(wip(-1))-gr]
+      +a2wpxag*[log(wgdpp(-1)/wgdpp(-5))-4*gr(-1)]
+      +a3wpxag*[log(wpmpe)-log(wpcon)
+               -log(wpmpe(-4))+log(wpcon(-4))]
+      +a4wpxag*qrainc
+      +a5wpxag*[log(reusd/reusd(-1))-log(resdr/resdr(-1))]
+      +a6wpxag*[log(wpxag(-1))-log(wpxag(-2))-log(wpcon(-1)/wpcon(-2))]
+      +(1-a6wpxag)*[qwpxag-qwpxag(-1)]
+       -a0wpxag*{log(wpxag(-1))-log(wpcon(-1))-qwpxag(-1)}
++uwpxag]
+______________________________________________________________________
+D14: World Mining Commodity Prices in SDRs (WPXAG)
+wpxmineq
+wpxmin=exp[log(wpxmin(-1))
+       +[qwpxmin-qwpxmin(-1)]
+       +log(wpcon/wpcon(-1))
+       +a1wpxmin*[log(wip)-log(wip(-1))-gr]
+       +a2wpxmin*[log(wgdpp)-log(wgdpp(-4))-gr*4]
+       +a3wpxmin*[log(reusd/reusd(-1))-log(resdr/resdr(-1))]
+       -a0wpxmin*{log(wpxmin(-1))-log(wpcon(-1))
+       -qwpxmin
+-c1wpxmin*log(wgdpp(-1)/wgdppt(-1))}
++uwpxmin]
+_____________________________________________________________________
+D15: Interest Received on Official Reserve Assets
+Endog: ydoraz vdoraz
+Exog:  wri90 uydor
+ydorazeq ydoraz=vdoraz(-1)*(wri90(-1)/400+uydor)
+____________________________________________________________________
+D16: Balance on Current Account
+Endog: bcaz xnc pxnc xc pxc pmgs mgs
+       yeopz yepoz ydoraz ydgoz ydpoz gdpaz retwi
+Exog:  xrymtcz npim wmtp wpmtp wnpop xrytocz xrytodz
+bcazeq bcaz=[xnc*pxnc+xc*pxc]-[mgs*pmgs]
+               + [yeopz-yepoz]+ydoraz-ydpoz-ydgoz
+               + xryctocz*wmtp*wpmtp/retwi
+               - xrycotdz*gdpaz
+               - xryctodz*gdpaz
+               + xrbcaz*gdpaz
+____________________________________________________________________
+D17: Dividends and Remitted Profits Paid to Overseas
+yepozeq yepoz=vepoz(-1)*{(1-rtk(-1))*ykz(-1)
+                          /[pibp(-1)*kbp(-1)*qord(-1)]+uyepo}
+____________________________________________________________________
+D18: Dividends and Remitted Profits Received from Overseas
+yeopzeq yeopz=veopz(-1)*(wrigl(-1)+2.5-wfie(-1)+uyeop)/400
+____________________________________________________________________
+D19: Private Interest Payments on Overseas Debt
+ydpozeq ydpoz=vdpoaz(-1)*(ri90(-1)/400+uydpo)
+                  +vdpofz(-1)*(wrigl(-1)/400+uydpo)
+____________________________________________________________________
+D20: Interest Payments by Government to Private Sector
+ydgpzeq ydgpz=vdgpz(-1)*{[.8*rigl(-1)+.2*ri90(-1)]*qval(-1)/400+uydgp}
+____________________________________________________________________
+D21: Government Interest Payments on Overseas Debt
+ydgozeq ydgoz=vdgoaz(-1)*(rigl(-1)/400+uydgo)
+                  +vdgofz(-1)*(wri90(-1)/400+uydgo)
+____________________________________________________________________
+D22: Overseas Holding of Australian Equity
+vepozeq
+vepoz=vepoz(-1)*[1+log(qord/qord(-1))+log(pibp/pibp(-1))+uvepo]+bepoz
+____________________________________________________________________
+D23: Australian Holding of Overseas Equity
+veopzeq
+veopz=veopz(-1)*[1-log(resdr/resdr(-1))+log(wpmtp/wpmtp(-1))+uveop]+beopz
+____________________________________________________________________
+D24: Official Reserve Assets
+vdorazeq
+vdoraz=vdoraz(-1)*[1-log(resdr/resdr(-1))+uvdor]+boraz
+____________________________________________________________________
+D25: Private Sector $A Debt
+vdpoazeq vdpoaz=vdpoaz(-1)*[1+uvdpoa]+bpoaz
+____________________________________________________________________
+D26: Private Sector Foreign Currency Debt
+vdpofzeq
+vdpofz=vdpofz(-1)*[1-log(resdr/resdr(-1))+uvdpof]+bpofz
+____________________________________________________________________
+D27: Government Debt held by Private Sector
+vdgpzeq
+vdgpz=vdgpz(-1)*[1+uvdgp]+bgpz
+____________________________________________________________________
+D28: Government $A Debt held by Overseas Sector
+vdgoazeq vdgoaz=vdgoaz(-1)*[1+uvdgoa]+bgoaz
+____________________________________________________________________
+D29: Government Foreign Currency Debt held by Overseas Sector
+vdgofzeq
+vdgofz=vdgofz(-1)*[1-log(resdr/resdr(-1))+uvdgof]+bgofz
+____________________________________________________________________
+D30: Private Equity Financing from Overseas
+bepozeq
+bepoz=vepoz/vepoz(-1)*{bepoz(-1)
+        +alpha*(xrepo(-1)*(vepoz(-1)+vdpofz(-1)+vdpoaz(-1)-veopz(-1))
+                -vepoz(-1))
+        +gamma*[(xrepo*(vepoz+vdpofz+vdpoaz-veopz)-vepoz)
+                -(xrepo(-1)*(vepoz(-1)+vdpofz(-1)+vdpoaz(-1)-veopz(-1))
+                -vepoz(-1))]+ubepo}
+____________________________________________________________________
+D31: Private Equity Investment Overseas
+beopzeq
+beopz=veopz/veopz(-1)*{beopz(-1)
+        +alpha*(xreop(-1)*(vepoz(-1)+vdpofz(-1)+vdpoaz(-1)-veopz(-1))
+                -veopz(-1))
+        +gamma*[(xreop*(vepoz+vdpofz+vdpoaz-veopz)-veopz)
+                -(xreop(-1)*(vepoz(-1)+vdpofz(-1)+vdpoaz(-1)-veopz(-1))
+                -veopz(-1))]+ubeop}
+____________________________________________________________________
+D32: Change in Official Reserve Assets
+borazeq
+boraz=0.1*boraz(-1)*[gdpaz/gdpaz(-1)]
+        +alpha*(xrdoraz(-1)*gdpaz(-1)
+                -vdoraz(-1))
+        +0.9*[xrdoraz*gdpaz
+                -xrdoraz(-1)*gdpaz(-1)]
+        +0.8*[xrdoraz(-1)*gdpaz(-1)
+                *log((resdr*pgnea/wpmtp)/(resdr(-1)*pgnea(-1)/wpmtp(-1)))]
+        +ubora
+____________________________________________________________________
+D33: Government Foreign Currency Borrowing from Overseas
+bgofzeq
+bgofz=0.2*bgofz(-1)*[gdpaz/gdpaz(-1)]
+        +alpha*(xrdgof(-1)*(vdgofz(-1)+vdgoaz(-1)+vdgpz(-1)-vdoraz(-1))
+                -vdgofz(-1))
+        +0.8*[xrdgof*(vdgofz+vdgoaz+vdgpz-vdoraz)
+                -xrdgof(-1)*(vdgofz(-1)+vdgoaz(-1)+vdgpz(-1)-vdoraz(-1))]
+                +ubgof
+____________________________________________________________________
+D34: Government Borrowing from Private Sector (BGPZ)
+bgpzeq
+bgpz=0.2*bgpz(-1)*[gdpaz/gdpaz(-1)]
+        +alpha*[xrdgp(-1)*(vdgofz(-1)+vdgoaz(-1)+vdgpz(-1)-vdoraz(-1))
+                -vdgpz(-1)]
+        +0.8*[xrdgp*(vdgofz+vdgoaz+vdgpz-vdoraz)
+                -xrdgp(-1)*(vdgofz(-1)+vdgoaz(-1)+vdgpz(-1)-vdoraz(-1))]
+        +ubgp
+____________________________________________________________________
+D35: Government $A Borrowing from Overseas (BGOAZ)
+bgoazeq bgoaz=bpsbrz-[fm1z*xrfm1z-fm1z(-1)*xrfm1z(-1)]
+                     -bgofz-bgpz+boraz-brfiz + ubgoa
+____________________________________________________________________
+D36: Private Foreign Currency Borrowing from Overseas (BPOFZ)
+bpofzeq
+bpofz=vdpofz/vdpofz(-1)*{bpofz(-1)
+        +alpha*(xrdpof(-1)*(vepoz(-1)+vdpofz(-1)+vdpoaz(-1)-veopz(-1))
+                -vdpofz(-1))
+        +gamma*[(xrdpof*(vepoz+vdpofz+vdpoaz-veopz)-vdpofz)
+                -(xrdpof(-1)*(vepoz(-1)+vdpofz(-1)+vdpoaz(-1)-veopz(-1))
+                -vdpofz(-1))]+ubpof}
+____________________________________________________________________
+D37: Private $A Borrowing from Overseas (BPOAZ)
+bpoazeq
+bpoaz=-bcaz
+      +rbiz*gdpaz
+      -(bepoz+bgofz+bgoaz+bpofz-beopz-boraz)+ubpoa
+      -(-xrykmtcz*npim*wmtp*wpmtp/wnpop/retwi
+      -xryktocz*wmtp*wpmtp/retwi
+      +xrykotdz*gdpaz
+      +xryktodz*gdpaz)
+_____________________________________________________________________
+D38: Net Foreign Liabilities (VNFLZ) 
+vnflzeq vnflz=(vepoz+vdpofz+vdpoaz+vdgoaz+vdgofz-vdoraz-veopz)
+Product Market - Price System Equations
+_____________________________________________________________________
+E1: Price of Domestically Produced Goods (PD)
+pdeq
+pd=[gdpaz-pghuc*ghuc-gdwt*pgdwt-gitsz
+          -disez-psnn*snn-pxc*sfm*xrpsfm-(pxc*xc-0.1*pmgs*xc)
+          -(pxnc*xnc-0.25*pmgs*xnc)]
+          /[gdpa-ghuc-gdwt-gits-(dise+disead)-sfm-snn-xc*(0.9)-xnc*(0.75)]
+_____________________________________________________________________
+E2: Total Supply Price for use in Price System (PT)
+pteq
+pt=(gdpiz+diseiz-cre*pcre-snn*psnn-sfm*pxc*xrpsfm-xgs*pxgs+mgs*pmgs)/
+        (gdpi+disei-disead-cre-snn-sfm-xgs+mgs)
+_____________________________________________________________________
+E3: Domestic Supply Price (PSUP)
+psupeq
+psup=[gag*pgag+gmin*pgmin+gman*pgman+gcst*pgcst+gsd*pgsd+gfin*pgfin
+  +gpbs*pgpbs+gsc*pgsc+gegw*pgegw+gcom*pgcom+ghuc*pghuc+gitsz
+  +gdwt*pgdwt+mcon*pmcon+mcap*pmcap+mint*pmint+mpe*pmpe
+  +msrv*pmsrv+mnmg*pmnmg-snn*psnn-sfm*pxc*xrpsfm-xmin*pxmin
+  -xag*pxag+diseiz]/
+  [gag+gmin+gman+gcst+gsd+gfin+gpbs+gsc+gegw+gcom+ghuc+gdwt+gits
+  +dispad+mgs-snn-sfm-xmin-xag+disep]  ?doesn't incude dispad
+_____________________________________________________________________
+E4: Domestic Demand Price (PDEM)
+pdemeq
+pdem=[cona*pcon+cong*pcong+idw*pidw+ibp*pibp+iotc*piotc
+        +ige*pige+igg*pigg+xgs*pxgs-xc*pxc]/
+        [cona+cong+idw+ibp+iotc+ige+igg+xgs+disead-xc]  
+_____________________________________________________________________
+E5: Relative Price Equations
+_____________________________________________________________________
+E5a: Non-Rental Consumption Price (PCNR)
+pcnrfeq
+pcnrf=exp{ log(pcnrf(-1))+(1-a2pcnr-a3pcnr)
+                *[log(pcnrf(-1)/pcnrf(-2))-c1pcnr*(qpcnr(-1)-qpcnr(-2))]
+        +a1pcnr*[rnu-rnu(-2)]
+        +a2pcnr*log[(ppcnr*(1+rtcnr2)*(1+rdisup)*(1+c2pcnr*rtgst2))
+          /(ppcnr(-1)*(1+rtcnr2(-1))*(1+rdisup(-1))*(1+c2pcnr*rtgst2(-1)))]
+        +a3pcnr*log(psup/psup(-1))
+        +a4pcnr*qgst3-a5pcnr*qgst4
+        +c1pcnr*(qpcnr-qpcnr(-1))
+       -a0pcnr*[log(pcnrf(-1))
+         -[log{ppcnr(-1)*(1+rtcnr2(-1))*(1+rdisup(-1))*(1+c2pcnr*rtgst2(-1))}
+         +c1pcnr*qpcnr(-1)]]
+         +upcnr }
+_____________________________________________________________________
+E5b: Consumption of Food Price (PCFD)
+pcfdeq
+pcfd=exp{ log(pcfd(-1))+(1-a1pcfd-a2pcfd)
+               *[log(pcfd(-1)/pcfd(-2))-c1pcfd*(qpcfd(-1)-qpcfd(-2))]
+        +a1pcfd*[log(pcfd(-2)/pcfd(-3))-c1pcfd*(qpcfd(-1)-qpcfd(-2))]
+        +a2pcfd*log[(ppcfd*(1+rtcfd)*(1+.3*rtgst2)*(1+rdisup))
+          /(ppcfd(-1)*(1+rtcfd(-1))*(1+.3*rtgst2(-1))*(1+rdisup(-1)))]
+        +c1pcfd*(qpcfd-qpcfd(-1))
+        -a0pcfd*[log(pcfd(-1))
+             -[log{ppcfd(-1)*(1+rtcfd(-1))
+             *(1+.3*rtgst2(-1))*(1+rdisup(-1))}+c1pcfd*qpcfd(-1)] ]
+        +upcfd }
+_____________________________________________________________________
+E5c: Consumption of Cigarettes and Alcohol Price (PCCAL)
+pccaleq
+pccal=exp{ log(pccal(-1))+(1-a1pccal-a2pccal)
+        *[log(pccal(-1)/pccal(-2))-c1pccal*(qpccal(-1)-qpccal(-2))]
+        +a1pccal*log[(ppccal*(1+rtccal)*(1+rtgst2)*(1+rdisup))
+          /(ppccal(-1)*(1+rtccal(-1))*(1+rtgst2(-1))*(1+rdisup(-1)))]
+       +a2pccal*log[(ppccal(-1)*(1+rtccal(-1))*(1+rtgst2(-1))*(1+rdisup(-1)))
+          /(ppccal(-2)*(1+rtccal(-2))*(1+rtgst2(-2))*(1+rdisup(-2)))]
+        +a3pccal*qgst3-a3pccal*qgst4
+        +c1pccal*(qpccal-qpccal(-1))
+        -a0pccal*[log(pccal(-1))
+     -[log{ppccal(-1)*(1+rtccal(-1))*
+                (1+rtgst2(-1))*(1+rdisup(-1))}+c1pccal*qpccal(-1)] ]
+     +upccal }
+_____________________________________________________________________
+E5d: Consumption of Durables and Other Goods Price (PCDOG)
+pcdogeq
+pcdog=exp{ log(pcdog(-1))
+   +(1-a1pcdog-a2pcdog-a3pcdog)
+        *[log(pcdog(-1))-log(pcdog(-2))-c1pcdog*(qpcdog(-1)-qpcdog(-2))]
+     +a1pcdog*[log(pcdog(-2))-log(pcdog(-3))-c1pcdog*(qpcdog(-1)-qpcdog(-2))]
+        +a2pcdog*log[(ppcdog*(1+rtcdog)*(1+rtgst2)*(1+rdisup))
+          /(ppcdog(-1)*(1+rtcdog(-1))*(1+rtgst2(-1))*(1+rdisup(-1)))]
+      +a3pcdog*log[(ppcdog(-1)*(1+rtcdog(-1))*(1+rtgst2(-1))*(1+rdisup(-1)))
+          /(ppcdog(-2)*(1+rtcdog(-2))*(1+rtgst2(-2))*(1+rdisup(-2)))]
+        +a4pcdog*[log(mcon/mcon(-1))-log(cdog/cdog(-1))]
+        +a5pcdog*qgst3-a5pcdog*qgst4
+        +c1pcdog*(qpcdog-qpcdog(-1))
+        -a0pcdog*[log(pcdog(-1))
+       -[log{ppcdog(-1)*(1+rtcdog(-1))
+                *(1+rtgst2(-1))*(1+rdisup(-1))}+c1pcdog*qpcdog(-1)]]
+        +upcdog }
+_____________________________________________________________________
+E5e: Consumption of Motor Vehicles Price (PCMV)
+pcmveq
+pcmv=exp{ log(pcmv(-1))
+        +(1-a1pcmv-a2pcmv-a3pcmv)
+                *[log(pcmv(-1))-log(pcmv(-2))-c1pcmv*(qpcmv(-1)-qpcmv(-2)) ]
+        +a1pcmv*[log(pcmv(-2))-log(pcmv(-3))-c1pcmv*(qpcmv(-1)-qpcmv(-2)) ]
+        +a2pcmv*log[(ppcmv*(1+rtcmv)*(1+rtgst2)*(1+rdisup))
+          /(ppcmv(-1)*(1+rtcmv(-1))*(1+rtgst2(-1))*(1+rdisup(-1)))]
+        +a3pcmv*log[(ppcmv(-1)*(1+rtcmv(-1))*(1+rtgst2(-1))*(1+rdisup(-1)))
+          /(ppcmv(-2)*(1+rtcmv(-2))*(1+rtgst2(-2))*(1+rdisup(-2)))]
+        +a4pcmv*[log(mcon/mcon(-1))-log(cmv/cmv(-1))]
+        +a5pcmv*qgst2-a5pcmv*qgst3
+        +c1pcmv*(qpcmv-qpcmv(-1))
+        -a0pcmv*[log(pcmv(-1))
+          -[log{ppcmv(-1)*(1+rtcmv(-1))
+                *(1+rtgst2(-1))*(1+rdisup(-1))}+c1pcmv*qpcmv(-1)]]
+        +upcmv }
+_____________________________________________________________________
+E5f: Operation of Motor Vehicles and Transport Services Consumption Price (PCOMT)
+pcomteq
+pcomt=exp{ log(pcomt(-1))
+        +(1-a1pcomt-a2pcomt-a3pcomt-a4pcomt)
+             *[log(pcomt(-1))-log(pcomt(-2))-c1pcomt*(qpcomt(-1)-qpcomt(-2))]
+     +a1pcomt*[log(pcomt(-2))-log(pcomt(-3))-c1pcomt*(qpcomt(-1)-qpcomt(-2))]
+        +a2pcomt*[log(pmpe/pmpe(-1))]
+        +a3pcomt*log[(ppcomt*(1+rtcomt)*(1+rtgst2)*(1+rdisup))
+          /(ppcomt(-1)*(1+rtcomt(-1))*(1+rtgst2(-1))*(1+rdisup(-1)))]
+     +a4pcomt*log[(ppcomt(-1)*(1+rtcomt(-1))*(1+rtgst2(-1))*(1+rdisup(-1)))
+          /(ppcomt(-2)*(1+rtcomt(-2))*(1+rtgst2(-2))*(1+rdisup(-2)))]
+        +c1pcomt*(qpcomt-qpcomt(-1))
+        -a0pcomt*[log(pcomt(-1))
+      -[log{ppcomt(-1)*(1+rtcomt(-1))
+                *(1+rtgst2(-1))*(1+rdisup(-1))}+c1pcomt*qpcomt(-1)]]
+      +upcomt }
+_____________________________________________________________________
+E5g: Consumption of Electricity, Gas and Water Price (PCEGW)
+pcegweq
+pcegw=exp{ log(pcegw(-1))
+     +(1-a1pcegw-a2pcegw)
+             *[log(pcegw(-1))-log(pcegw(-2))-c1pcegw*(qpcegw(-1)-qpcegw(-2))]
+     +a1pcegw*[log(pcegw(-2))-log(pcegw(-3))-c1pcegw*(qpcegw(-1)-qpcegw(-2))]
+        +a2pcegw*log[(ppcegw*(1+rtcegw)*(1+rtgst2)*(1+rdisup))
+          /(ppcegw(-1)*(1+rtcegw(-1))*(1+rtgst2(-1))*(1+rdisup(-1)))]
+        +a3pcegw*qgst3-a3pcegw*qgst4
+        +c1pcegw*(qpcegw-qpcegw(-1))
+        -a0pcegw*[log(pcegw(-1))
+      -[log{ppcegw(-1)*(1+rtcegw(-1))
+                *(1+rtgst2(-1))*(1+rdisup(-1))}+c1pcegw*qpcegw(-1)]]
+      +upcegw }
+_____________________________________________________________________
+E5h: Consumption of Communication Services Price (PCCOM)
+pccomeq
+pccom=exp{ log(pccom(-1))
+      + (1-a1pccom-a2pccom)
+            *[log(pccom(-1))-log(pccom(-2))-c1pccom*(qpccom(-1)-qpccom(-2))]
+      + a1pccom*log[(ppccom*(1+rtccom)*(1+rtgst2)*(1+rdisup))
+          /(ppccom(-1)*(1+rtccom(-1))*(1+rtgst2(-1))*(1+rdisup(-1)))]
+      + a2pccom*log[(ppccom(-1)*(1+rtccom(-1))*(1+rtgst2(-1))*(1+rdisup(-1)))
+          /(ppccom(-2)*(1+rtccom(-2))*(1+rtgst2(-2))*(1+rdisup(-2)))]
+      + a3pccom*qgst3-a3pccom*qgst4
+      + c1pccom*(qpccom-qpccom(-1))
+      - a0pccom*[log(pccom(-1))
+      - [log{ppccom(-1)*(1+rtccom(-1))
+            *(1+rtgst2(-1))*(1+rdisup(-1))}+c1pccom*qpccom(-1)]]
+      + upccom }
+_____________________________________________________________________
+E5j: Consumption of Human Capital (Health, Education) Services Price (PCHUC)
+pchuceq
+pchuc=exp{ log(pchuc(-1))
+     +(1-a1pchuc-a2pchuc-a3pchuc)
+             *[log(pchuc(-1))-log(pchuc(-2))-c1pchuc*(qpchuc(-1)-qpchuc(-2))]
+    +a1pchuc*[log(pchuc(-2))-log(pchuc(-3))-c1pchuc*(qpchuc(-1)-qpchuc(-2)) ]
+        +a2pchuc*log[(ppchuc*(1+rtchuc)*(1+rtgst2)*(1+rdisup))
+          /(ppchuc(-1)*(1+rtchuc(-1))*(1+rtgst2(-1))*(1+rdisup(-1)))]
+       +a3pchuc*log[(ppchuc(-1)*(1+rtchuc(-1))*(1+rtgst2(-1))*(1+rdisup(-1)))
+          /(ppchuc(-2)*(1+rtchuc(-2))*(1+rtgst2(-2))*(1+rdisup(-2)))]
+        +a4pchuc*qgst2-a4pchuc*qgst3
+         +c1pchuc*(qpchuc-qpchuc(-1))
+        -a0pchuc*[log(pchuc(-1))
+      -[log{ppchuc(-1)*(1+rtchuc(-1))
+                *(1+.4*rtgst2(-1))*(1+rdisup(-1))}+c1pchuc*qpchuc(-1)]]
+       +upchuc}
+_____________________________________________________________________
+E5k: Consumption of Other Services Price (PCSRV)
+pcsrveq
+pcsrv=[cnr*pcnr-cfd*pcfd-ccal*pccal-cdog*pcdog-cmv*pcmv-comt*pcomt
+       -cegw*pcegw-ccom*pccom-chuc*pchuc]
+     /[cnr-cfd-ccal-cdog-cmv-comt-cegw-ccom-chuc-discon]
+_____________________________________________________________________
+E5l: Dwelling Investment Deflator (PIDW)
+pidwfeq
+pidwf=exp{ log(pidwf(-1))+(1-a1pidw-a2pidw-a3pidw)
+                *[log(pidwf(-1))-log(pidwf(-2))-c1pidw*(qpidw(-1)-qpidw(-2))]
+        +a1pidw*log[(ppidw*(1+rtidw)*(1+rtgst2)*(1+rdisup))
+                   /(ppidw(-1)*(1+rtidw(-1))*(1+rtgst2(-1))*(1+rdisup(-1)))]
+        +a2pidw*[log(pgcst/pgcst(-1))]
+        +a3pidw*log(pcre/pcre(-1))
+        +a4pidw*[idw/kdw(-1)-idw(-6)/kdw(-7)]
+        +a5pidw*[rdisup-rdisup(-1)]
+        +a6pidw*qgst3-a6pidw*qgst4
+        +c1pidw*(qpidw-qpidw(-1))
+        -a0pidw*[log(pidwf(-1))
+      -[log{ppidw(-1)*(1+rtidw(-1))
+                *(1+rtgst2(-1))*(1+rdisup(-1))}+c1pidw*qpidw(-1)]]
+      +upidw}
+_____________________________________________________________________
+E5m: Other Building and Construction Investment Deflator (PIOB)
+piobeq
+piob=exp{ log(piob(-1))+(1-a1piob-a2piob-a3piob)
+                *[log(piob(-1))-log(piob(-2))-c1piob*(qpiob(-1)-qpiob(-2))]
+        +a1piob*[log(piob(-2))-log(piob(-3))-c1piob*(qpiob(-1)-qpiob(-2))]
+        +a2piob*[log(rwh/rwh(-1))-clam1/4]
+        +a3piob*log[(ppiob*(1+rtiob)*(1+rdisup))
+                   /(ppiob(-1)*(1+rtiob(-1))*(1+rdisup(-1)))]
+        +a4piob*[(iobfin+iobpbs)/(kfin+kpbs)
+-(iobfin(-6)+iobpbs(-6))/(kfin(-6)+kpbs(-6))]
+        +c1piob*(qpiob-qpiob(-1))
+        -a0piob*[log(piob(-1))
+      -[log{ppiob(-1)*(1+rtiob(-1))*(1+rdisup(-1))}+c1piob*qpiob(-1)]]
+      +upiob }
+_____________________________________________________________________
+E5m: Plant and Eqiupment Investment Deflator (PIPE)
+pipeeq
+pipe=exp{ log(pipe(-1))+(1-a1pipe-a2pipe)
+                *[log(pipe(-1))-log(pipe(-2))-c1pipe*(qpipe(-1)-qpipe(-2))]
+        +a1pipe*[log(pipe(-2))-log(pipe(-3))-c1pipe*(qpipe(-1)-qpipe(-2))]
+        +a2pipe*log[(ppipe*(1+rtipe)*(1+rdisup))
+                   /(ppipe(-1)*(1+rtipe(-1))*(1+rdisup(-1)))]
+        +a3pipe*[log(mcap/mcap(-1))-log(ipe/ipe(-1))]
+        +c1pipe*(qpipe-qpipe(-1))
+        -a0pipe*[log(pipe(-1))
+    -[log{ppipe(-1)*(1+rtipe(-1))*(1+rdisup(-1))}+c1pipe*qpipe(-1)]]
+    +upipe }
+_____________________________________________________________________
+E5n: Price of Investment in Biological Resources Deflator (PIBIO)
+pibioeq
+pibio=exp{ log(pibio(-1))+(1-a1pibio-a2pibio)*qpibio2
+            *[log(pibio(-4))-log(pibio(-5))-c1pibio*(qpibio(-1)-qpibio(-2))]
+        +a1pibio*qpibio2*[log(pgag/pgag(-1))]
+        +a2pibio*qpibio2*log[(ppibio*(1+rtibio)*(1+rdisup))
+                   /(ppibio(-1)*(1+rtibio(-1))*(1+rdisup(-1)))]
+        +c1pibio*qpibio2*(qpibio-qpibio(-1))
+        +a3pibio*qpibio2*[grain/gag-grain(-1)/gag(-1)]
+        -a0pibio*qpibio2*[log(pibio(-1))
+     -[log{ppibio(-1)*(1+rtibio(-1))*(1+rdisup(-1))}+c1pibio*qpibio(-1)]]
+     +upibio }
+_____________________________________________________________________
+E5o: Price of Investment in Intellectual Property (PIIP)
+piipeq
+piip=exp{ log(piip(-1))+(1-a1piip-a2piip-a3piip)
+             *[log(piip(-1))-log(piip(-2))-c1piip*(qpiip(-1)-qpiip(-2))]
+     +a1piip*[log(piip(-2))-log(piip(-3))-c1piip*(qpiip(-1)-qpiip(-2))]
+     +a2piip*log[(ppiip*(1+rtiip)*(1+rdisup))
+                 /(ppiip(-1)*(1+rtiip(-1))*(1+rdisup(-1)))]
+     +a3piip*log[(ppiip(-1)*(1+rtiip(-1))*(1+rdisup(-1)))
+                / (ppiip(-2)*(1+rtiip(-2))*(1+rdisup(-2)))]
+     +c1piip*(qpiip-qpiip(-1))
+     -a0piip*[log(piip(-1))
+          -[log{ppiip(-1)*(1+rtiip(-1))*(1+rdisup(-1))}
+          +c0piip+c1piip*qpiip(-1)]]
+     +upiip }
+_____________________________________________________________________
+E5p: Price of Total Private Business Investment (PIBP)
+pibpfeq
+pibpf=[piob*iob+pipe*ipe+piip*iip+pibio*ibio]
+     /[iob+ipe+iip+ibio+disibp]
+_____________________________________________________________________
+E5q: Price of Ownership Transfer Costs Investment (PIBP)
+piotcfeq
+piotcf=exp{ log(piotcf(-1))+(1-a1piotc-a2piotc-a3piotc)
+          *[log(piotcf(-1))-log(piotcf(-2))-c1piotc*(qpiotc(-1)-qpiotc(-2))]
+        +a1piotc*[log(pidw/pidw(-1))]
+        +a2piotc*log[(ppiotc*(1+rtiotc)*(1+rdisup))
+                   /(ppiotc(-1)*(1+rtiotc(-1))*(1+rdisup(-1)))]
+        +a3piotc*log[(ppiotc(-1)*(1+rtiotc(-1))*(1+rdisup(-1)))
+                   / (ppiotc(-2)*(1+rtiotc(-2))*(1+rdisup(-2)))]
+        +c1piotc*(qpiotc-qpiotc(-1))
+        -a0piotc*[log(piotcf(-1))
+     -[log{ppiotc(-1)*(1+rtiotc(-1))*(1+rdisup(-1))}+c1piotc*qpiotc(-1)]]
+     +upiotc }
+_____________________________________________________________________
+E5r: General Government Consumption Deflator (PCONG)
+congfeq
+pcongf=exp{ log(pcong(-1))
+     +(1-a1pcong-a2pcong)
+             *[log(pcong(-1))-log(pcong(-2))-c1pcong*(qpcong(-1)-qpcong(-2))]
+     +a1pcong*[log(pcong(-2))-log(pcong(-3))-c1pcong*(qpcong(-1)-qpcong(-2))]
+     +a2pcong*log[(ppcong*(1+rtcong)*(1+rdisup))
+                   /(ppcong(-1)*(1+rtcong(-1))*(1+rdisup(-1)))]
+     +c1pcong*(qpcong-qpcong(-1))
+     -a0pcong*{log(pcong(-1))
+     -[log{ppcong(-1)*(1+rtcong(-1))*(1+rdisup(-1))}+c1pcong*qpcong(-1)]]
+     +upcong }
+_____________________________________________________________________
+E5s: General Government Investment Deflator (PIGG)
+piggfeq
+piggf=exp{  log(pigg(-1))+(1-a1pigg-a2pigg-a3pigg)
+                  *[log(pigg(-1))-log(pigg(-2))-c1pigg*(qpigg(-1)-qpigg(-2))]
+        +a1pigg*[log(pigg(-2)/pigg(-3))-c1pigg*(qpigg(-1)-qpigg(-2))]
+        +a2pigg*log[(ppigg*(1+rtigg)*(1+rdisup))
+                   /(ppigg(-1)*(1+rtigg(-1))*(1+rdisup(-1)))]
+        +a3pigg*log[(ppigg(-1)*(1+rtigg(-1))*(1+rdisup(-1)))
+                   /(ppigg(-2)*(1+rtigg(-2))*(1+rdisup(-2)))]
+        +c1pigg*(qpigg-qpigg(-1))
+   -a0pigg*{log(pigg(-1))-[log{ppigg(-1)*(1+rtigg(-1))}+c1pigg*qpigg(-1)]]
+   +upigg }
+_____________________________________________________________________
+E5t: Government Enterprise Investment Deflator (PIGE)
+pigefeq
+pigef=exp{ log(pige(-1))+(1-a1pige-a2pige-a3pige)
+                *[log(pige(-1))-log(pige(-2))-c1pige*(qpige(-1)-qpige(-2))
+                                     -c2pige*(qpige2(-1)-qpige2(-2))]
+        +a1pige*[log(pige(-2))-log(pige(-3))-c1pige*(qpige(-1)-qpige(-2))
+                                    -c2pige*(qpige2(-2)-qpige2(-3))]
+        +a2pige*log[(ppige*(1+rtige)*(1+rdisup))
+                   /(ppige(-1)*(1+rtige(-1))*(1+rdisup(-1)))]
+        +a3pige*log[(ppige(-1)*(1+rtige(-1))*(1+rdisup(-1)))
+                   /(ppige(-2)*(1+rtige(-2))*(1+rdisup(-2)))]
+        +c1pige*(qpige-qpige(-1))
+        +c2pige*(qpige2-qpige2(-1))
+        -a0pige*{log(pige(-1))
+            -[log{ppige(-1)*(1+rtige(-1))*(1+rdisup(-1))}+c1pige*qpige(-1)
+              +c2pige*qpige2(-1)]}
+        +upige }
+_____________________________________________________________________
+E5u: Manufacturing Exports Deflator (PXMAN)
+pxmaneq
+pxman=exp{ log(pxman(-1))+c1pxman*(qpxman-qpxman(-1))
+     +[1-a1pxman-a2pxman-a3pxman]
+          *[log(pxman(-1))-log(pxman(-2))-c1pxman*(qpxman(-1)-qpxman(-2))]
+     +a1pxman*log(pxmin/pxmin(-1))
+     +a2pxman*[log(ppxman*(1+rtxman)*(1+rdisup))
+               -log(ppxman(-1)*(1+rtxman(-1))*(1+rdisup(-1)))]
+     +a3pxman*[log(ppxman(-1)*(1+rtxman(-1))*(1+rdisup(-1)))
+               -log(ppxman(-2)*(1+rtxman(-2))*(1+rdisup(-2)))]
+     +a4pxman*[log(retwxg*ppxman*(1+rtxman)*(1+rdisup)/wpmtpg)
+            -log(retwxg(-1)*ppxman(-1)*(1+rtxman(-1))*(1+rdisup(-1))
+          /wpmtpg(-1))]
+  -a0pxman*[log(pxman(-1))-log(ppxman(-1)*(1+rtxman(-1))*(1+rdisup(-1)))
+                      -c1pxman*qpxman(-1)]
+   +upxman }
+_____________________________________________________________________
+E5v: Service Exports Deflator (PXSRV)
+pxsrveq
+pxsrv=exp{ log(pxsrv(-1))
+     +[1-a1pxsrv-a2pxsrv-a3pxsrv-a5pxsrv]
+             *[log(pxsrv(-1))-log(pxsrv(-2))-c1pxsrv*(qpxsrv(-1)-qpxsrv(-2))]
+     +a1pxsrv*log(pmpe/pmpe(-1))
+     +a2pxsrv* log[(ppxsrv*(1+rtxsrv)*(1+.4*rtgst2)*(1+rdisup))
+           /(ppxsrv(-1)*(1+rtxsrv(-1))*(1+.4*rtgst2(-1))*(1+rdisup(-1)))]
+   +a3pxsrv* log[(ppxsrv(-1)*(1+rtxsrv(-1))*(1+.4*rtgst2(-1))*(1+rdisup(-1)))
+           /(ppxsrv(-2)*(1+rtxsrv(-2))*(1+.4*rtgst2(-2))*(1+rdisup(-2)))]
+     +a4pxsrv*[log(retwxs*ppxsrv*(1+rtxsrv)*(1+rdisup)/
+        wpmtps)-
+        log(retwxs(-1)*ppxsrv(-1)*(1+rtxsrv(-1))*(1+rdisup(-1))/
+        wpmtps(-1))]
+     +a5pxsrv*log(pcsrv/pcsrv(-1))
+     +c1pxsrv*(qpxsrv-qpxsrv(-1))
+   -a0pxsrv*[log(pxsrv(-1))-log(ppxsrv(-1)*(1+rtxsrv(-1))
+                *(1+.4*rtgst2(-1))*(1+rdisup(-1)))-c1pxsrv*qpxsrv(-1)
+       -c2pxsrv*[log(retwxs(-1)*ppxsrv(-1)*(1+rtxsrv(-1))*(1+rdisup(-1))/
+        wpmtps(-1))] ]
+      +upxsrv }
+_____________________________________________________________________
+E5w: Non-Commodity Export Deflator (PXNC)
+pxnceq
+pxnc=(pxman*xman+pxsrv*xsrv)/(xman+xsrv+disxgs)
+_____________________________________________________________________
+E6: Input-Output Supply Price Identities (Deflator Base B & Supply Price PP)
+bcfdeq
+bcfd=(uaa*gag+uba*gmin+uca*gman+uda*gcst+uea*gsd+ufa*gfin+uga*gpbs
+      +uha*gsc+uia*gegw+uja*gcom+uka*ghuc+ula*gdwt+uma*gits
+      +una*mcon*(1+rtmcon)+uoa*mcap*(1+rtmcap)
+      +upa*mint*(1+rtmint)+uqa*mpe*(1+rtmpe)+ura*msrv)/100
+ppcfdeq
+ppcfd=(uaa*gag/bcfd*pgag+uba*gmin/bcfd*pgmin+uca*gman/bcfd*pgman
+      +uda*gcst/bcfd*pgcst+uea*gsd/bcfd*pgsd+ufa*gfin/bcfd*pgfin
++uga*gpbs/bcfd*pgpbs
+      +uha*gsc/bcfd*pgsc+uia*gegw/bcfd*pgegw+uja*gcom/bcfd*pgcom
+      +uka*ghuc/bcfd*pghuc+ula*gdwt/bcfd*pgdw
+      +una*mcon/bcfd*pmcon*(1+rtmcon)+uoa*mcap/bcfd*pmcap*(1+rtmcap)
+      +upa*mint/bcfd*pmint*(1+rtmint)+uqa*mpe/bcfd*pmpe*(1+rtmpe)
+      +ura*msrv/bcfd*pmsrv)/100
+bccaleq
+bccal=(uab*gag+ubb*gmin+ucb*gman+udb*gcst+ueb*gsd+ufb*gfin+ugb*gpbs
+      +uhb*gsc+uib*gegw+ujb*gcom+ukb*ghuc+ulb*gdwt+umb*gits
+      +unb*mcon*(1+rtmcon)+uob*mcap*(1+rtmcap)+upb*mint*(1+rtmint)
+      +uqb*mpe*(1+rtmpe)+urb*msrv)/100
+ppccaleq
+ppccal=(uab*gag/bccal*pgag+ubb*gmin/bccal*pgmin+ucb*gman/bccal*pgman
+      +udb*gcst/bccal*pgcst+ueb*gsd/bccal*pgsd+ufb*gfin/bccal*pgfin
+      +ugb*gpbs/bccal*pgpbs+uhb*gsc/bccal*pgsc+uib*gegw/bccal*pgegw
+      +ujb*gcom/bccal*pgcom+ukb*ghuc/bccal*pghuc+ulb*gdwt/bccal*pgdw
+      +unb*mcon/bccal*pmcon*(1+rtmcon)+uob*mcap/bccal*pmcap*(1+rtmcap)
+      +upb*mint/bccal*pmint*(1+rtmint)
+      +uqb*mpe/bccal*pmpe*(1+rtmpe)+urb*msrv/bccal*pmsrv)/100
+bcdogeq
+bcdog=(uac*gag+ubc*gmin+ucc*gman+udc*gcst+uec*gsd+ufc*gfin+ugc*gpbs
+      +uhc*gsc+uic*gegw+ujc*gcom+ukc*ghuc+ulc*gdwt+umc*gits
+      +unc*mcon*(1+rtmcon)
+      +uoc*mcap*(1+rtmcap)+upc*mint*(1+rtmint)
+      +uqc*mpe*(1+rtmpe)+urc*msrv)/100
+ppcdogeq
+ppcdog=(uac*gag/bcdog*pgag+ubc*gmin/bcdog*pgmin+ucc*gman/bcdog*pgman
+      +udc*gcst/bcdog*pgcst+uec*gsd/bcdog*pgsd+ufc*gfin/bcdog*pgfin
+      +ugc*gpbs/bcdog*pgpbs+uhc*gsc/bcdog*pgsc+uic*gegw/bcdog*pgegw
+      +ujc*gcom/bcdog*pgcom+ukc*ghuc/bcdog*pghuc+ulc*gdwt/bcdog*pgdw
+      +unc*mcon/bcdog*pmcon*(1+rtmcon)
+      +uoc*mcap/bcdog*pmcap*(1+rtmcap)+upc*mint/bcdog*pmint*(1+rtmint)
+      +uqc*mpe/bcdog*pmpe*(1+rtmpe)+urc*msrv/bcdog*pmsrv)/100
+bcmveq
+bcmv=(uad*gag+ubd*gmin+ucd*gman+udd*gcst+ued*gsd+ufd*gfin+ugd*gpbs
+      +uhd*gsc+uid*gegw+ujd*gcom+ukd*ghuc+uld*gdwt+umd*gits
+      +und*mcon*(1+rtmcon)
+      +uod*mcap*(1+rtmcap)+upd*mint*(1+rtmint)           
+      +uqd*mpe*(1+rtmpe)+urd*msrv)/100
+ppcmveq
+ppcmv=(uad*gag/bcmv*pgag+ubd*gmin/bcmv*pgmin+ucd*gman/bcmv*pgman
+      +udd*gcst/bcmv*pgcst+ued*gsd/bcmv*pgsd+ufd*gfin/bcmv*pgfin
+      +ugd*gpbs/bcmv*pgpbs+uhd*gsc/bcmv*pgsc+uid*gegw/bcmv*pgegw
+      +ujd*gcom/bcmv*pgcom+ukd*ghuc/bcmv*pghuc+uld*gdwt/bcmv*pgdw
+      +und*mcon/bcmv*pmcon*(1+rtmcon)
+      +uod*mcap/bcmv*pmcap*(1+rtmcap)+upd*mint/bcmv*pmint*(1+rtmint)           
+      +uqd*mpe/bcmv*pmpe*(1+rtmpe)+urd*msrv/bcmv*pmsrv)/100
+bcomteq
+bcomt=(uae*gag+ube*gmin+uce*gman+ude*gcst+uee*gsd+ufe*gfin+uge*gpbs
+      +uhe*gsc+uie*gegw+uje*gcom+uke*ghuc+ule*gdwt+ume*gits
+      +une*mcon*(1+rtmcon)
+      +uoe*mcap*(1+rtmcap)+upe*mint*(1+rtmint)
+      +uqe*mpe*(1+rtmpe)+ure*msrv)/100
+ppcomteq
+ppcomt=(uae*gag/bcomt*pgag+ube*gmin/bcomt*pgmin+uce*gman/bcomt*pgman
+      +ude*gcst/bcomt*pgcst+uee*gsd/bcomt*pgsd+ufe*gfin/bcomt*pgfin
+      +uge*gpbs/bcomt*pgpbs+uhe*gsc/bcomt*pgsc+uie*gegw/bcomt*pgegw
+      +uje*gcom/bcomt*pgcom+uke*ghuc/bcomt*pghuc+ule*gdwt/bcomt*pgdw
+      +une*mcon/bcomt*pmcon*(1+rtmcon)
+      +uoe*mcap/bcomt*pmcap*(1+rtmcap)+upe*mint/bcomt*pmint*(1+rtmint)
+      +uqe*mpe/bcomt*pmpe*(1+rtmpe)+ure*msrv/bcomt*pmsrv)/100
+bcegweq
+bcegw=(uaf*gag+ubf*gmin+ucf*gman+udf*gcst+uef*gsd+uff*gfin+ugf*gpbs
+      +uhf*gsc+uif*gegw+ujf*gcom+ukf*ghuc+ulf*gdwt+umf*gits
+      +unf*mcon*(1+rtmcon)
+      +uof*mcap*(1+rtmcap)+upf*mint*(1+rtmint)
+      +uqf*mpe*(1+rtmpe)+urf*msrv)/100
+ppcegweq
+ppcegw=(uaf*gag/bcegw*pgag+ubf*gmin/bcegw*pgmin+ucf*gman/bcegw*pgman
+      +udf*gcst/bcegw*pgcst+uef*gsd/bcegw*pgsd+uff*gfin/bcegw*pgfin
+      +ugf*gpbs/bcegw*pgpbs+uhf*gsc/bcegw*pgsc+uif*gegw/bcegw*pgegw
+      +ujf*gcom/bcegw*pgcom+ukf*ghuc/bcegw*pghuc+ulf*gdwt/bcegw*pgdw
+      +unf*mcon/bcegw*pmcon*(1+rtmcon)
+      +uof*mcap/bcegw*pmcap*(1+rtmcap)+upf*mint/bcegw*pmint*(1+rtmint)
+      +uqf*mpe/bcegw*pmpe*(1+rtmpe)+urf*msrv/bcegw*pmsrv)/100
+bccomeq
+bccom=(uag*gag+ubg*gmin+ucg*gman+udg*gcst+ueg*gsd+ufg*gfin+ugg*gpbs
+      +uhg*gsc+uig*gegw+ujg*gcom+ukg*ghuc+ulg*gdwt+umg*gits
+      +ung*mcon*(1+rtmcon)
+      +uog*mcap*(1+rtmcap)+upg*mint*(1+rtmint)
+      +uqg*mpe*(1+rtmpe)+urg*msrv)/100
+ppccomeq
+ppccom=(uag*gag/bccom*pgag+ubg*gmin/bccom*pgmin+ucg*gman/bccom*pgman
+      +udg*gcst/bccom*pgcst+ueg*gsd/bccom*pgsd+ufg*gfin/bccom*pgfin
+      +ugg*gpbs/bccom*pgpbs+uhg*gsc/bccom*pgsc+uig*gegw/bccom*pgegw
+      +ujg*gcom/bccom*pgcom+ukg*ghuc/bccom*pghuc+ulg*gdwt/bccom*pgdw
+      +ung*mcon/bccom*pmcon*(1+rtmcon)
+      +uog*mcap/bccom*pmcap*(1+rtmcap)+upg*mint/bccom*pmint*(1+rtmint)
+      +uqg*mpe/bccom*pmpe*(1+rtmpe)+urg*msrv/bccom*pmsrv)/100
+bchuceq
+bchuc=(uah*gag+ubh*gmin+uch*gman+udh*gcst+ueh*gsd+ufh*gfin+ugh*gpbs
+      +uhh*gsc+uih*gegw+ujh*gcom+ukh*ghuc+ulh*gdwt+umh*gits
+      +unh*mcon*(1+rtmcon)
+      +uoh*mcap*(1+rtmcap)+uph*mint*(1+rtmint)
+      +uqh*mpe*(1+rtmpe)+urh*msrv)/100
+ppchuceq
+ppchuc=(uah*gag/bchuc*pgag+ubh*gmin/bchuc*pgmin+uch*gman/bchuc*pgman
+      +udh*gcst/bchuc*pgcst+ueh*gsd/bchuc*pgsd+ufh*gfin/bchuc*pgfin
+      +ugh*gpbs/bchuc*pgpbs+uhh*gsc/bchuc*pgsc+uih*gegw/bchuc*pgegw
+      +ujh*gcom/bchuc*pgcom+ukh*ghuc/bchuc*pghuc+ulh*gdwt/bchuc*pgdw
+      +unh*mcon/bchuc*pmcon*(1+rtmcon)
+      +uoh*mcap/bchuc*pmcap*(1+rtmcap)+uph*mint/bchuc*pmint*(1+rtmint)
+      +uqh*mpe/bchuc*pmpe*(1+rtmpe)+urh*msrv/bchuc*pmsrv)/100
+bcsrveq
+bcsrv=(uai*gag+ubi*gmin+uci*gman+udi*gcst+uei*gsd+ufi*gfin+ugi*gpbs
+      +uhi*gsc+uii*gegw+uji*gcom+uki*ghuc+uli*gdwt+umi*gits
+      +uni*mcon*(1+rtmcon)
+      +uoi*mcap*(1+rtmcap)+upi*mint*(1+rtmint)
+      +uqi*mpe*(1+rtmpe)+uri*msrv)/100
+ppcsrveq
+ppcsrv=(uai*gag/bcsrv*pgag+ubi*gmin/bcsrv*pgmin+uci*gman/bcsrv*pgman
+      +udi*gcst/bcsrv*pgcst+uei*gsd/bcsrv*pgsd+ufi*gfin/bcsrv*pgfin
+      +ugi*gpbs/bcsrv*pgpbs+uhi*gsc/bcsrv*pgsc+uii*gegw/bcsrv*pgegw
+      +uji*gcom/bcsrv*pgcom+uki*ghuc/bcsrv*pghuc+uli*gdwt/bcsrv*pgdw
+      +uni*mcon/bcsrv*pmcon*(1+rtmcon)                             
+      +uoi*mcap/bcsrv*pmcap*(1+rtmcap)+upi*mint/bcsrv*pmint*(1+rtmint)
+      +uqi*mpe/bcsrv*pmpe*(1+rtmpe)+uri*msrv/bcsrv*pmsrv)/100
+bcreeq
+bcre=(uaj*gag+ubj*gmin+ucj*gman+udj*gcst+uej*gsd+ufj*gfin+ugj*gpbs
+      +uhj*gsc+uij*gegw+ujj*gcom+ukj*ghuc+ulj*gdwt+umj*gits
+      +unj*mcon*(1+rtmcon)
+      +uoj*mcap*(1+rtmcap)+upj*mint*(1+rtmint)
+      +uqj*mpe*(1+rtmpe)+urj*msrv)/100
+ppcreeq
+ppcre=(uaj*gag/bcre*pgag+ubj*gmin/bcre*pgmin+ucj*gman/bcre*pgman
+      +udj*gcst/bcre*pgcst+uej*gsd/bcre*pgsd+ufj*gfin/bcre*pgfin
+      +ugj*gpbs/bcre*pgpbs+uhj*gsc/bcre*pgsc+uij*gegw/bcre*pgegw
+      +ujj*gcom/bcre*pgcom+ukj*ghuc/bcre*pghuc+ulj*gdwt/bcre*pgdw
+      +unj*mcon/bcre*pmcon*(1+rtmcon)
+      +uoj*mcap/bcre*pmcap*(1+rtmcap)+upj*mint/bcre*pmint*(1+rtmint)
+      +uqj*mpe/bcre*pmpe*(1+rtmpe)+urj*msrv/bcre*pmsrv)/100
+bcongeq
+bcong=(uak*gag+ubk*gmin+uck*gman+udk*gcst+uek*gsd+ufk*gfin+ugk*gpbs
+      +uhk*gsc+uik*gegw+ujk*gcom+ukk*ghuc+ulk*gdwt+umk*gits
+      +unk*mcon*(1+rtmcon)
+      +uok*mcap*(1+rtmcap)+upk*mint*(1+rtmint)
+      +uqk*mpe*(1+rtmpe)+urk*msrv)/100
+ppcongeq
+ppcong=(uak*gag/bcong*pgag+ubk*gmin/bcong*pgmin+uck*gman/bcong*pgman
+      +udk*gcst/bcong*pgcst+uek*gsd/bcong*pgsd+ufk*gfin/bcong*pgfin
+      +ugk*gpbs/bcong*pgpbs+uhk*gsc/bcong*pgsc+uik*gegw/bcong*pgegw
+      +ujk*gcom/bcong*pgcom+ukk*ghuc/bcong*pghuc+ulk*gdwt/bcong*pgdw
+      +unk*mcon/bcong*pmcon*(1+rtmcon)
+      +uok*mcap/bcong*pmcap*(1+rtmcap)+upk*mint/bcong*pmint*(1+rtmint)
+      +uqk*mpe/bcong*pmpe*(1+rtmpe)+urk*msrv/bcong*pmsrv)/100
+bidweq
+bidw=(ual*gag+ubl*gmin+ucl*gman+udl*gcst+uel*gsd+ufl*gfin+ugl*gpbs
+      +uhl*gsc+uil*gegw+ujl*gcom+ukl*ghuc+ull*gdwt+uml*gits
+      +unl*mcon*(1+rtmcon)
+      +uol*mcap*(1+rtmcap)+upl*mint*(1+rtmint)
+      +uql*mpe*(1+rtmpe)+url*msrv)/100
+ppidweq
+ppidw=(ual*gag/bidw*pgag+ubl*gmin/bidw*pgmin+ucl*gman/bidw*pgman
+      +udl*gcst/bidw*pgcst+uel*gsd/bidw*pgsd+ufl*gfin/bidw*pgfin
+      +ugl*gpbs/bidw*pgpbs+uhl*gsc/bidw*pgsc+uil*gegw/bidw*pgegw
+      +ujl*gcom/bidw*pgcom+ukl*ghuc/bidw*pghuc+ull*gdwt/bidw*pgdw
+      +unl*mcon/bidw*pmcon*(1+rtmcon)
+      +uol*mcap/bidw*pmcap*(1+rtmcap)+upl*mint/bidw*pmint*(1+rtmint)
+      +uql*mpe/bidw*pmpe*(1+rtmpe)+url*msrv/bidw*pmsrv)/100
+biobeq
+biob=(uam*gag+ubm*gmin+ucm*gman+udm*gcst+uem*gsd+ufm*gfin+ugm*gpbs
+      +uhm*gsc+uim*gegw+ujm*gcom+ukm*ghuc+ulm*gdwt+umm*gits
+      +unm*mcon*(1+rtmcon)
+      +uom*mcap*(1+rtmcap)+upm*mint*(1+rtmint)
+      +uqm*mpe*(1+rtmpe)+urm*msrv)/100
+ppiobeq
+ppiob=(uam*gag/biob*pgag+ubm*gmin/biob*pgmin+ucm*gman/biob*pgman
+      +udm*gcst/biob*pgcst+uem*gsd/biob*pgsd+ufm*gfin/biob*pgfin
+      +ugm*gpbs/biob*pgpbs+uhm*gsc/biob*pgsc+uim*gegw/biob*pgegw
+      +ujm*gcom/biob*pgcom+ukm*ghuc/biob*pghuc+ulm*gdwt/biob*pgdw
+      +unm*mcon/biob*pmcon*(1+rtmcon)
+      +uom*mcap/biob*pmcap*(1+rtmcap)+upm*mint/biob*pmint*(1+rtmint)
+      +uqm*mpe/biob*pmpe*(1+rtmpe)+urm*msrv/biob*pmsrv)/100
+bipeeq
+bipe=(uan*gag+ubn*gmin+ucn*gman+udn*gcst+uen*gsd+ufn*gfin+ugn*gpbs
+      +uhn*gsc+uin*gegw+ujn*gcom+ukn*ghuc+uln*gdwt+umn*gits
+      +unn*mcon*(1+rtmcon)
+      +uon*mcap*(1+rtmcap)+upn*mint*(1+rtmint)
+      +uqn*mpe*(1+rtmpe)+urn*msrv)/100
+ppipeeq
+ppipe=(uan*gag/bipe*pgag+ubn*gmin/bipe*pgmin+ucn*gman/bipe*pgman
+      +udn*gcst/bipe*pgcst+uen*gsd/bipe*pgsd+ufn*gfin/bipe*pgfin
+      +ugn*gpbs/bipe*pgpbs+uhn*gsc/bipe*pgsc+uin*gegw/bipe*pgegw
+      +ujn*gcom/bipe*pgcom+ukn*ghuc/bipe*pghuc+uln*gdwt/bipe*pgdw
+      +unn*mcon/bipe*pmcon*(1+rtmcon)
+      +uon*mcap/bipe*pmcap*(1+rtmcap)+upn*mint/bipe*pmint*(1+rtmint)
+      +uqn*mpe/bipe*pmpe*(1+rtmpe)+urn*msrv/bipe*pmsrv)/100
+bibioeq
+bibio=(uao*gag+ubo*gmin+uco*gman+udo*gcst+ueo*gsd+ufo*gfin+ugo*gpbs
+      +uho*gsc+uio*gegw+ujo*gcom+uko*ghuc+ulo*gdwt+umo*gits
+      +uno*mcon*(1+rtmcon)
+      +uoo*mcap*(1+rtmcap)+upo*mint*(1+rtmint)
+      +uqo*mpe*(1+rtmpe)+uro*msrv)/100
+ppibioeq
+ppibio=(uao*gag/bibio*pgag+ubo*gmin/bibio*pgmin+uco*gman/bibio*pgman
+      +udo*gcst/bibio*pgcst+ueo*gsd/bibio*pgsd+ufo*gfin/bibio*pgfin
+      +ugo*gpbs/bibio*pgpbs+uho*gsc/bibio*pgsc+uio*gegw/bibio*pgegw
+      +ujo*gcom/bibio*pgcom+uko*ghuc/bibio*pghuc+ulo*gdwt/bibio*pgdw
+      +uno*mcon/bibio*pmcon*(1+rtmcon)
+      +uoo*mcap/bibio*pmcap*(1+rtmcap)+upo*mint/bibio*pmint*(1+rtmint)
+      +uqo*mpe/bibio*pmpe*(1+rtmpe)+uro*msrv/bibio*pmsrv)/100
+biipeq
+biip=(uap*gag+ubp*gmin+ucp*gman+udp*gcst+uep*gsd+ufp*gfin+ugp*gpbs
+      +uhp*gsc+uip*gegw+ujp*gcom+ukp*ghuc+ulp*gdwt+ump*gits
+      +unp*mcon*(1+rtmcon)
+      +uop*mcap*(1+rtmcap)+upp*mint*(1+rtmint)
+      +uqp*mpe*(1+rtmpe)+urp*msrv)/100
+ppiipeq
+ppiip=(uap*gag/biip*pgag+ubp*gmin/biip*pgmin+ucp*gman/biip*pgman
+      +udp*gcst/biip*pgcst+uep*gsd/biip*pgsd+ufp*gfin/biip*pgfin
+      +ugp*gpbs/biip*pgpbs+uhp*gsc/biip*pgsc+uip*gegw/biip*pgegw
+      +ujp*gcom/biip*pgcom+ukp*ghuc/biip*pghuc+ulp*gdwt/biip*pgdw
+      +unp*mcon/biip*pmcon*(1+rtmcon)  
+      +uop*mcap/biip*pmcap*(1+rtmcap)+upp*mint/biip*pmint*(1+rtmint)
+      +uqp*mpe/biip*pmpe*(1+rtmpe)+urp*msrv/biip*pmsrv)/100
+biotceq
+biotc=(uaq*gag+ubq*gmin+ucq*gman+udq*gcst+ueq*gsd+ufq*gfin+ugq*gpbs
+      +uhq*gsc+uiq*gegw+ujq*gcom+ukq*ghuc+ulq*gdwt+umq*gits
+      +unq*mcon*(1+rtmcon)
+      +uoq*mcap*(1+rtmcap)+upq*mint*(1+rtmint)
+      +uqq*mpe*(1+rtmpe)+urq*msrv)/100
+ppiotceq
+ppiotc=(uaq*gag/biotc*pgag+ubq*gmin/biotc*pgmin+ucq*gman/biotc*pgman
+      +udq*gcst/biotc*pgcst+ueq*gsd/biotc*pgsd+ufq*gfin/biotc*pgfin
+      +ugq*gpbs/biotc*pgpbs+uhq*gsc/biotc*pgsc+uiq*gegw/biotc*pgegw
+      +ujq*gcom/biotc*pgcom+ukq*ghuc/biotc*pghuc+ulq*gdwt/biotc*pgdw
+      +unq*mcon/biotc*pmcon*(1+rtmcon)
+      +uoq*mcap/biotc*pmcap*(1+rtmcap)+upq*mint/biotc*pmint*(1+rtmint)
+      +uqq*mpe/biotc*pmpe*(1+rtmpe)+urq*msrv/biotc*pmsrv)/100
+bigeeq
+bige=(uar*gag+ubr*gmin+ucr*gman+udr*gcst+uer*gsd+ufr*gfin+ugr*gpbs
+      +uhr*gsc+uir*gegw+ujr*gcom+ukr*ghuc+ulr*gdwt+umr*gits
+      +unr*mcon*(1+rtmcon)
+      +uor*mcap*(1+rtmcap)+upr*mint*(1+rtmint)
+      +uqr*mpe*(1+rtmpe)+urr*msrv)/100
+ppigeeq
+ppige=(uar*gag/bige*pgag+ubr*gmin/bige*pgmin+ucr*gman/bige*pgman
+      +udr*gcst/bige*pgcst+uer*gsd/bige*pgsd+ufr*gfin/bige*pgfin
+      +ugr*gpbs/bige*pgpbs+uhr*gsc/bige*pgsc+uir*gegw/bige*pgegw
+      +ujr*gcom/bige*pgcom+ukr*ghuc/bige*pghuc+ulr*gdwt/bige*pgdw
+      +unr*mcon/bige*pmcon*(1+rtmcon)
+      +uor*mcap/bige*pmcap*(1+rtmcap)+upr*mint/bige*pmint*(1+rtmint)
+      +uqr*mpe/bige*pmpe*(1+rtmpe)+urr*msrv/bige*pmsrv)/100
+biggeq
+bigg=(uas*gag+ubs*gmin+ucs*gman+uds*gcst+ues*gsd+ufs*gfin+ugs*gpbs
+      +uhs*gsc+uis*gegw+ujs*gcom+uks*ghuc+uls*gdwt+ums*gits
+      +uns*mcon*(1+rtmcon)
+      +uos*mcap*(1+rtmcap)+ups*mint*(1+rtmint)
+      +uqs*mpe*(1+rtmpe)+urs*msrv)/100
+ppiggeq
+ppigg=(uas*gag/bigg*pgag+ubs*gmin/bigg*pgmin+ucs*gman/bigg*pgman
+      +uds*gcst/bigg*pgcst+ues*gsd/bigg*pgsd+ufs*gfin/bigg*pgfin
+      +ugs*gpbs/bigg*pgpbs+uhs*gsc/bigg*pgsc+uis*gegw/bigg*pgegw
+      +ujs*gcom/bigg*pgcom+uks*ghuc/bigg*pghuc+uls*gdwt/bigg*pgdw
+      +uns*mcon/bigg*pmcon*(1+rtmcon)
+      +uos*mcap/bigg*pmcap*(1+rtmcap)+ups*mint/bigg*pmint*(1+rtmint)
+      +uqs*mpe/bigg*pmpe*(1+rtmpe)+urs*msrv/bigg*pmsrv)/100
+bxageq
+bxag=(uat*gag+ubt*gmin+uct*gman+udt*gcst+uet*gsd+uft*gfin+ugt*gpbs
+      +uht*gsc+uit*gegw+ujt*gcom+ukt*ghuc+ult*gdwt+umt*gits
+      +unt*mcon*(1+rtmcon)
+      +uot*mcap*(1+rtmcap)+upt*mint*(1+rtmint)
+      +uqt*mpe*(1+rtmpe)+urt*msrv)/100
+ppxageq
+ppxag=(uat*gag/bxag*pgag+ubt*gmin/bxag*pgmin+uct*gman/bxag*pgman
+      +udt*gcst/bxag*pgcst+uet*gsd/bxag*pgsd+uft*gfin/bxag*pgfin
+      +ugt*gpbs/bxag*pgpbs+uht*gsc/bxag*pgsc+uit*gegw/bxag*pgegw
+      +ujt*gcom/bxag*pgcom+ukt*ghuc/bxag*pghuc+ult*gdwt/bxag*pgdw
+      +unt*mcon/bxag*pmcon*(1+rtmcon)
+      +uot*mcap/bxag*pmcap*(1+rtmcap)+upt*mint/bxag*pmint*(1+rtmint)
+      +uqt*mpe/bxag*pmpe*(1+rtmpe)+urt*msrv/bxag*pmsrv)/100
+bxmineq
+bxmin=(uau*gag+ubu*gmin+ucu*gman+udu*gcst+ueu*gsd+ufu*gfin+ugu*gpbs
+      +uhu*gsc+uiu*gegw+uju*gcom+uku*ghuc+ulu*gdwt+umu*gits
+      +unu*mcon*(1+rtmcon)
+      +uou*mcap*(1+rtmcap)+upu*mint*(1+rtmint)
+      +uqu*mpe*(1+rtmpe)+uru*msrv)/100
+ppxmineq
+ppxmin=(uau*gag/bxmin*pgag+ubu*gmin/bxmin*pgmin+ucu*gman/bxmin*pgman
+      +udu*gcst/bxmin*pgcst+ueu*gsd/bxmin*pgsd+ufu*gfin/bxmin*pgfin
+      +ugu*gpbs/bxmin*pgpbs+uhu*gsc/bxmin*pgsc+uiu*gegw/bxmin*pgegw
+      +uju*gcom/bxmin*pgcom+uku*ghuc/bxmin*pghuc+ulu*gdwt/bxmin*pgdw
+      +unu*mcon/bxmin*pmcon*(1+rtmcon)
+      +uou*mcap/bxmin*pmcap*(1+rtmcap)+upu*mint/bxmin*pmint*(1+rtmint)
+      +uqu*mpe/bxmin*pmpe*(1+rtmpe)+uru*msrv/bxmin*pmsrv)/100
+bxmaneq
+bxman=(uav*gag+ubv*gmin+ucv*gman+udv*gcst+uev*gsd+ufv*gfin+ugv*gpbs
+      +uhv*gsc+uiv*gegw+ujv*gcom+ukv*ghuc+ulv*gdwt+umv*gits
+      +unv*mcon*(1+rtmcon)
+      +uov*mcap*(1+rtmcap)+upv*mint*(1+rtmint)
+      +uqv*mpe*(1+rtmpe)+urv*msrv)/100
+ppxmaneq
+ppxman=(uav*gag/bxman*pgag+ubv*gmin/bxman*pgmin+ucv*gman/bxman*pgman
+      +udv*gcst/bxman*pgcst+uev*gsd/bxman*pgsd+ufv*gfin/bxman*pgfin
+      +ugv*gpbs/bxman*pgpbs+uhv*gsc/bxman*pgsc+uiv*gegw/bxman*pgegw
+      +ujv*gcom/bxman*pgcom+ukv*ghuc/bxman*pghuc+ulv*gdwt/bxman*pgdw
+      +unv*mcon/bxman*pmcon*(1+rtmcon)
+      +uov*mcap/bxman*pmcap*(1+rtmcap)+upv*mint/bxman*pmint*(1+rtmint)
+      +uqv*mpe/bxman*pmpe*(1+rtmpe)+urv*msrv/bxman*pmsrv)/100
+bxsrveq
+bxsrv=(uaw*gag+ubw*gmin+ucw*gman+udw*gcst+uew*gsd+ufw*gfin+ugw*gpbs
+      +uhw*gsc+uiw*gegw+ujw*gcom+ukw*ghuc+ulw*gdwt+umw*gits
+      +unw*mcon*(1+rtmcon)
+      +uow*mcap*(1+rtmcap)+upw*mint*(1+rtmint)
+      +uqw*mpe*(1+rtmpe)+urw*msrv)/100
+ppxsrveq
+ppxsrv=(uaw*gag/bxsrv*pgag+ubw*gmin/bxsrv*pgmin+ucw*gman/bxsrv*pgman
+      +udw*gcst/bxsrv*pgcst+uew*gsd/bxsrv*pgsd+ufw*gfin/bxsrv*pgfin
+      +ugw*gpbs/bxsrv*pgpbs+uhw*gsc/bxsrv*pgsc+uiw*gegw/bxsrv*pgegw
+      +ujw*gcom/bxsrv*pgcom+ukw*ghuc/bxsrv*pghuc+ulw*gdwt/bxsrv*pgdw
+      +unw*mcon/bxsrv*pmcon*(1+rtmcon)
+      +uow*mcap/bxsrv*pmcap*(1+rtmcap)+upw*mint/bxsrv*pmint*(1+rtmint)
+      +uqw*mpe/bxsrv*pmpe*(1+rtmpe)+urw*msrv/bxsrv*pmsrv)/100
+bcnreq
+bcnr=(uax*gag+ubx*gmin+ucx*gman+udx*gcst+uex*gsd+ufx*gfin+ugx*gpbs
+      +uhx*gsc+uix*gegw+ujx*gcom+ukx*ghuc+ulx*gdwt+umx*gits
+      +unx*mcon*(1+rtmcon)
+      +uox*mcap*(1+rtmcap)+upx*mint*(1+rtmint)
+      +uqx*mpe*(1+rtmpe)+urx*msrv)/100
+ppcnreq
+ppcnr=(uax*gag/bcnr*pgag+ubx*gmin/bcnr*pgmin+ucx*gman/bcnr*pgman
+      +udx*gcst/bcnr*pgcst+uex*gsd/bcnr*pgsd+ufx*gfin/bcnr*pgfin
+      +ugx*gpbs/bcnr*pgpbs+uhx*gsc/bcnr*pgsc+uix*gegw/bcnr*pgegw
+      +ujx*gcom/bcnr*pgcom+ukx*ghuc/bcnr*pghuc+ulx*gdwt/bcnr*pgdw
+      +unx*mcon/bcnr*pmcon*(1+rtmcon)
+      +uox*mcap/bcnr*pmcap*(1+rtmcap)+upx*mint/bcnr*pmint*(1+rtmint)
+      +uqx*mpe/bcnr*pmpe*(1+rtmpe)+urx*msrv/bcnr*pmsrv)/100
+_____________________________________________________________________
+E7: Partial Closure via Scaling Factor Equations 
+Discrepancy allocated within the system (RDISUP)
+rdisupeq
+rdisup=[1+diseiz/(gdpaz+mgs*pmgs-xc*pxc)]/[1+disep/(gdpa+mgs-xc)]-1
+       +urdisup
+Scaling Factor Equation (PSF)
+psfeq
+psf=pt*[cong+cnr+idw+ibp+iotc+ige+igg]/
+       [cong*pcongf+pcnrf*cnr+pibpf*ibp+pidwf*idw
+        +piotcf*iotc+pigef*ige+piggf*igg]+upsf
+Scaled Price Equations
+pcongeq pcong=pcongf*psf
+pcnreq pcnr=pcnrf*psf
+pidweq pidw=pidwf*psf
+pibpeq pibp=pibpf*psf
+piotceq piotc=piotcf*psf
+pigeeq pige=pigef*psf
+piggeq pigg=piggf*psf
+pdgfeq pdgf=(cong*pcong+ige*pige+igg*pigg)/(cong+ige+igg)
+_____________________________________________________________________
+E8: Price of Consumption Identities
+Endog: pcon pcnr con cre pcre
+pconeq pcon=[pcnr*(con-cre)+pcre*cre]/con+upcon
+pconfeq pconf=[pcnrf*(con-cre)+pcre*cre]/con
+pconueq
+pconu=(pcre*cre+cnr*
+       [pcnr/
+      (1+.75*rtcnrt+.125*rtcnrt(-1)+.0625*rtcnrt(-2)+.03125*rtcnrt(-3)
+       +.03125*rtcnrt(-4))]
+       )/con
+Financial Market Equations and Identities (Exchange Rate, Interest Rates)
+______________________________________________________________________
+F1: Exchange Rate Equations
+retwieq
+retwi=retwix(+40)*exp{ a1retwi
+                *[10*log[(rigl-(fie-fiex)-wrigl-riskp)/100+1]]
+              +a2retwi*{[log(wpxag)-log(wpmgs)
+                -c0pmgs-[c1pmgs/(1+c2pmgs*exp(-(c3pmgs*qtpmgs)))]]
+                -[log(wpxagx(40))-log(wpmgs(40))
+                -c0pmgs-[c1pmgs/(1+c2pmgs*exp(-(c3pmgs*qtpmgs(40))))]]}
+              +a3retwi*{[log(wpxmin)-log(wpmgs)
+                -c0pmgs-[c1pmgs/(1+c2pmgs*exp(-(c3pmgs*qtpmgs)))]]
+                -[log(wpxminx(40))-log(wpmgs(40))
+                -c0pmgs-[c1pmgs/(1+c2pmgs*exp(-(c3pmgs*qtpmgs(40))))]]}
+              +a4retwi*[log(pgneax(40)/pgnea)-log(wpmtp(40)/wpmtp)]
+              +uretwi }
+resdreq resdr=retwi*xrsdr
+retwimeq retwim=xrretwim*retwi
+reusdeq  reusd=xrreusd*retwi
+retwxgeq retwxg=xrretwxg*retwi
+retwxseq retwxs=xrretwxs*retwi
+_____________________________________________________________________
+F2: Short-term (90 day) Interest Rates (RI90)
+    (Modified Taylor’s Rule)
+ri90eq
+ri90 = ri90(-1)
+        +a1ri90*[rnu-rnu(-1)-(wsu-wsu(-1))]
+        +a2ri90*[rnu(-1)-rnu(-2)-(wsu(-1)-wsu(-2))]
+        +a3ri90*[log(pconu/pconu(-4))*100-log(pconut/pconut(-4))*100]
+        +a4ri90*[log(pxgs/pmgs)-log(pxgs(-4)/pmgs(-4))]*100
+        +a6ri90*[log(rwh/rwh(-4))-log(rwh(-1)/rwh(-5))]*100
+        +a7ri90*[ri90(-1)-ri90(-2)]
+        -a0ri90*{ri90(-1)-[c1ri90
+                +c2ri90*[wrigl-wfie]
+                +c3ri90*log(pconu/pconu(-4))*100
+                +c4ri90*[log(fm1z/gneaz)-lrfmt] ]}
+ +uri90
+_____________________________________________________________________
+F3: Long-Term Interest Rate
+rigleq
+rigl=rigl(-1)+fie-fie(-1)
+                + a1rigl*{(ri90-fie)-(ri90(-1)-fie(-1))}
+                + a2rigl*[(wrigl-wfie)-(wrigl(-1)-wfie(-1))]
+                + a3rigl*{c1rigl*ri90(-1)+(1-c1rigl)
+                        *[wrigl(-1)-wfie(-1)+riskp+fie(-1)]
+                        -rigl(-1)}
+                +urigl
+rriglteq
+rriglt=.05*rriglt(-1)
++.95*[(rigl-fie)/(1+fie/100)+a2qinv*fie]
+_____________________________________________________________________
+F4: Long-run Inflationary Expectations Identity
+fiexeq
+fiex={exp{log[pgneax(+40)/(gneaz/gnea)]/10}*100-100}+ufiex
+fieeq
+fie=(1-a1fie)*fie(-1) + a1fie*fiex+ufie
+____________________________________________________________________
+F5: Valuation Ratio for Government Securities
+qvaleq
+qval={0.2*ri90(-1)+(0.8/40)
+    *[rigl(-1)-rimarg(-1)+rigl(-2)-rimarg(-2)+rigl(-3)-rimarg(-2)
+    +rigl(-4)-rimarg(-4)+rigl(-5)-rimarg(-5)+rigl(-6)-rimarg(-6)
+    +rigl(-7)-rimarg(-7)+rigl(-8)-rimarg(-8)+rigl(-9)-rimarg(-9)
+    +rigl(-10)-rimarg(-10)+rigl(-11)-rimarg(-11)+rigl(-12)-rimarg(-12)
+    +rigl(-13)-rimarg(-13)+rigl(-14)-rimarg(-14)+rigl(-15)-rimarg(-15)
+    +rigl(-16)-rimarg(-16)+rigl(-17)-rimarg(-17)+rigl(-18)-rimarg(-18)
+    +rigl(-19)-rimarg(-19)+rigl(-20)-rimarg(-20)+rigl(-21)-rimarg(-21)
+    +rigl(-22)-rimarg(-22)+rigl(-23)-rimarg(-23)+rigl(-24)-rimarg(-24)
+    +rigl(-25)-rimarg(-25)+rigl(-26)-rimarg(-26)+rigl(-27)-rimarg(-27)
+    +rigl(-28)-rimarg(-28)+rigl(-29)-rimarg(-29)+rigl(-30)-rimarg(-30)
+    +rigl(-31)-rimarg(-31)+rigl(-32)-rimarg(-32)+rigl(-33)-rimarg(-33)
+    +rigl(-34)-rimarg(-34)+rigl(-35)-rimarg(-35)+rigl(-36)-rimarg(-36)
+    +rigl(-37)-rimarg(-37)+rigl(-38)-rimarg(-38)+rigl(-39)-rimarg(-39)
+    +rigl(-40)-rimarg(-40)]}
+        /(0.2*ri90+0.8*(rigl-rimarg))
+Fiscal Policy, Taxes, Public Debt and the PSBR
+____________________________________________________________________
+G1: Rate of Tax on Labour Income (RTN)
+rtneq
+rtn=rtn(-1)+a1rtn*((vdgoaz+vdgofz+vdgpz-vdoraz)/gdpaz-xrvdgt)
+      +a2rtn*{[(vdgoaz+vdgofz+vdgpz-vdoraz)/gdpaz-xrvdgt]
+      -[(vdgoaz(-1)+vdgofz(-1)+vdgpz(-1)-vdoraz(-1))/gdpaz(-1)-xrvdgt(-1)]}
+      +urtn
+____________________________________________________________________
+G2: Rate of Tax on Capital Income (RTK)
+rtkeq
+rtk=(1-a0rtk)*rtk(-1)
+      +a0rtk*[.9*c0rtk+c1rtk*log(gdpa/gdpat)+c2rtk*rnu+c3rtk*qord
+              +c4rtk*(rnu-rnu(-4))+c5rtk*(qord-qord(-4))+.1*rtkx]+urtk
+____________________________________________________________________
+G3: General Government Net Debt to GDP Ratio (RVDGT)
+rvdgteq rvdgt=(vdgoaz+vdgofz+vdgpz-vdoraz)/gdpaz/4
+_____________________________________________________________________
+G4: Indirect taxes less subsidies on Products (GITSZ)
+gitszeq
+gitsz =  rtmgs*mgs*pmgs
+        +[cfd*pcfd*(1-1/(1+.3*rtgst2))+ccal*pccal*(1-1/(1+rtgst2))
+        +cdog*pcdog*(1-1/(1+rtgst2)) +cmv*pcmv*(1-1/(1+rtgst2))
+        +comt*pcomt*(1-1/(1+rtgst2)) +cegw*pcegw*(1-1/(1+rtgst2))
+        +ccom*pccom*(1-1/(1+rtgst2)) +chuc*pchuc*(1-1/(1+.4*rtgst2))
+        +csrv*pcsrv*(1-1/(1+.7*rtgst2))+idw*pidw*(1-1/(1+rtgst2))
+        +xsrv*pxsrv*(1-1/(1+.4*rtgst2))]
+        +rtcong/(1+rtcong)*cong*pcong
+        +rtcnr2/(1+rtcnr2)*cnr*pcnr
+        +rtcreo/(1+rtcreo)*cre*pcre
+        +rtidw/(1+rtidw)*idw*pidw
+        +rtibp3/(1+rtibp3)*ibp*pibp
+        +rtiotc/(1+rtiotc)*iotc*piotc
+        +rtige/(1+rtige)*ige*pige
+        +rtigg/(1+rtigg)*igg*pigg
+        +rtxag/(1+rtxag)*xag*pxag
+        +rtxmin/(1+rtxmin)*xmin*pxmin
+        +rtxman/(1+rtxman)*xman*pxman
+        +rtxsrv/(1+rtxsrv)*xsrv*pxsrv
+        +ugitsz*gdpaz
+_____________________________________________________________________
+G5: Public Sector Borrowing Requirement (BPSBRZ)
+bpsbrzeq
+bpsbrz= {pigg*igg
+        +cong*pcong
+        +xrocb*npada*rub
+        +rub*nubr*1.1+(npad-npada)*rwt/nh*.32*xrself
+        +(rigl/400)*qval*(vdgpz+vdgoaz+vdgofz)+ugintn*gdpaz
+        +rgintps*gdpaz
+        +rtrnaid*gdpaz
+        +rtrnoth*gdpaz}
+      -{rtn*wse*rwt
+        +rtk*ykz
+        +rtpr*[wse-negg]*rwt  
+        +gitsz
+        +rtg*[gdpi*pgdpe-gitsz-gdwt*pgdwt]}
+        -rtdiv*[gge/(gcom+gegw)*(gcom*pgcom+gegw*pgegw)]
+        -rtres*xmin*pxmin
+        -xrggos*rkdgg*kgg*(pigg+pigg(-1)+pigg(-2)+pigg(-3))/4
+  +ubpsbrz*gdpaz
+_____________________________________________________________________
+G6: Capital Income (YKZ)
+(Forms the base for taxes on capital income)
+ykzeq
+ykz = gdpi*pgdpe-gitsz-gdwt*pgdwt
+                -rtg*[gdpi*pgdpe-gitsz-gdwt*pgdwt]
+                -ghuc*pghuc
+                -(1+rtpr)*[wse-nehuc]*rwt
+                -ydpoz
+                -[rkdag*kag(-1)*piag+rkdmin*kmin(-1)*pimin
+                 +rkdman*kman(-1)*piman+rkdcst*kcst(-1)*picst
+                 +rkdsd*ksd(-1)*pisd+rkdfin*kfin(-1)*pifin
+                 +rkdpbs*kpbs(-1)*pipbs+rkdsc*ksc(-1)*pisc
+                 +rkdegw*kegw(-1)*piegw+rkdcom*kcom(-1)*picom]
+_____________________________________________________________________
+G7: Government Market Demand Identity
+dgfeq dgf=cong+ige+igg
+_____________________________________________________________________
+G8: Goverment Capital Production Identity
+ggfineq ggfin=xrggfin*(rkdgg*kgg(-1))
+_____________________________________________________________________
+G9: Public Enterprise Output Equation
+ggeeq gge=xrgge*(gcom+gegw)
+_____________________________________________________________________
+G10: Government Enterprise Capital Stock Identity
+kgeeq kge=kge(-1)*(1-rkdge)+ige+ukge
+_____________________________________________________________________
+G11: General Government Capital Stock
+kggeq kgg=kgg(-1)*(1-rkdgga)+igg
+_____________________________________________________________________
+G12: Government Enterprise Investment Identity (IGE)
+igeeq
+ige=[iag+imin+iman+icst+isd+ifin+ipbs+isc+iegw+icom+ihuc+idwt-idw]
+    -(ibpu+ibs)-igg+uige
+____________________________________________________________________
+G13: Change in Inventories for Public Sector
+sbgeq sbg=0.001*gdpa
+GDP and Other Accounting Identities
+_____________________________________________________________________
+H1: Miscellaneous Identities
+gegweq gegw=xrgegw*egegw
+ghuceq ghuc=xrghuc*eghuc
+gdwteq gdwt=xrgdwt*cre
+gitseq gits=xrgits*egits
+pgdweq pgdw=xrpgdw*pcre
+pgdwteq pgdwt=xrpgdwt*pcre
+pgitseq pgits=gitsz/gits
+iobeq  iob=xriob*[iobmin+iobsd+iobfin+iobpbs+iobsc]+iobs
+iipeq iip=xriip*[iipmin+iipsd+iipfin+iippbs+iipsc]
+ibioeq  ibio=xribio*ibp
+ipeeq  ipe=ibp-iob-iip-ibio-disibp
+iotceq iotc=xriotc*idw
+diseizeq diseiz=(gdpaz-disez)-gdpiz  
+disepeq disep=gdpe-gdpp
+_____________________________________________________________________
+H2: Business Sector Output at Factor Cost
+gbpeq gbp=xrgbp*[gag+gmin+gman+gcst+gsd+gfin+gpbs+gsc+.5*gcom]
+____________________________________________________________________
+H3: GDPE, GDPA, Real and Nominal GDPI 
+gdpeeq   gdpe=cona+ibp+iotc+idw+dgf+snn+sfm+disead+xgs-mgs
+gdpizeq  gdpiz= gag*pgag+gmin*pgmin+gman*pgman+gcst*pgcst
+                   +gsd*pgsd+gfin*pgfin+gpbs*pgpbs+gsc*pgsc+gegw*pgegw
+                   +gcom*pgcom+ghuc*pghuc+gdwt*pgdwt+gitsz
+gdpieq   gdpi=gdpiz/pgdpe
+gdpaeq   gdpa=(gdpe+gdpi+gdpp)/3+disaad
+____________________________________________________________________
+H4: GDP Deflators (PGDPA, PGDPE)
+pgdpaeq pgdpa=pgdpe
+pgdpeeq pgdpe=[cong*pcong+con*pcon+ibp*pibp+idw*pidw+iotc*piotc
+        +ige*pige+igg*pigg+snn*psnn+xrpsfm*sfm*pxc
+        +xc*pxc+xnc*pxnc-mgs*pmgs]/gdpe
+____________________________________________________________________
+H5: Nominal GDP (GDPAZ)
+gdpazeq
+gdpaz=gdpa*pgdpe
+____________________________________________________________________
+H6: Real Statistical Discrepancy (DISE)
+diseeq dise=gdpa-gdpe
+____________________________________________________________________
+H7: Nominal Statistical Discrepancy (DISEZ)
+disezeq disez=gdpaz-pgdpe*gdpe
+____________________________________________________________________
+H8: Gross National Expenditure (including the statistical discrepancy) (GNEA)
+gneaeq gnea=gdpa+mgs-xgs
+____________________________________________________________________
+H9: Nominal Gross National Expenditure (GNEAZ)
+gneazeq gneaz=gdpaz+mgs*pmgs-xgs*pxgs
+____________________________________________________________________
+H10: GNEA Deflator (PGNEA)
+pgneaeq pgnea=gneaz/gnea
+____________________________________________________________________
+H10: Non-Rental Consumption (CNR)
+cnreq cnr=con-cre
+____________________________________________________________________
+H10: Private Business Output Adjusted for Rain (GBA)
+gbaeq gba=gbp-grain
